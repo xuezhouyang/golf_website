@@ -1,0 +1,18 @@
+@-webkit-viewport   { width: device-width; }
+@-moz-viewport      { width: device-width; }
+@-ms-viewport       { width: device-width; }
+@-o-viewport        { width: device-width; }
+@viewport           { width: device-width; }	
+@media print {
+	.container {
+		width: auto;
+	}
+}
+.reset-box-sizing,
+.reset-box-sizing *,
+.reset-box-sizing *:before,
+.reset-box-sizing *:after {
+-webkit-box-sizing: content-box;
+-moz-box-sizing: content-box;
+box-sizing: content-box;
+}
