@@ -1,0 +1,49 @@
+name: golf_app
+description: 高迷网 - 高尔夫电商移动应用
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI 组件
+  cupertino_icons: ^1.0.6
+
+  # 状态管理
+  provider: ^6.1.1
+
+  # 网络请求
+  dio: ^5.4.0
+
+  # 本地存储
+  shared_preferences: ^2.2.2
+
+  # 图片加载和缓存
+  cached_network_image: ^3.3.1
+
+  # 轮播图
+  carousel_slider: ^4.2.1
+
+  # Toast 提示
+  fluttertoast: ^8.2.4
+
+  # 路由
+  go_router: ^13.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
