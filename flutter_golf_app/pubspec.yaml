@@ -47,3 +47,12 @@ flutter:
 
   assets:
     - assets/images/
+
+  # 多平台支持配置
+  platforms:
+    android:
+    ios:
+    web:
+    macos:
+    windows:
+    linux:

@@ -3,6 +3,11 @@ import 'package:provider/provider.dart';
 import '../services/auth_provider.dart';
 import 'login_screen.dart';
 import 'orders_screen.dart';
+import 'favorites_screen.dart';
+import 'address_manage_screen.dart';
+import 'profile_edit_screen.dart';
+import 'security_center_screen.dart';
+import 'settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -119,28 +124,56 @@ class ProfileScreen extends StatelessWidget {
                       context,
                       icon: Icons.favorite_outline,
                       title: '我的收藏',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FavoritesScreen(),
+                          ),
+                        );
+                      },
                     ),
                     const Divider(height: 1),
                     _buildMenuItem(
                       context,
                       icon: Icons.location_on_outlined,
                       title: '收货地址',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AddressManageScreen(),
+                          ),
+                        );
+                      },
                     ),
                     const Divider(height: 1),
                     _buildMenuItem(
                       context,
                       icon: Icons.account_circle_outlined,
                       title: '个人信息',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfileEditScreen(),
+                          ),
+                        );
+                      },
                     ),
                     const Divider(height: 1),
                     _buildMenuItem(
                       context,
                       icon: Icons.security_outlined,
                       title: '安全中心',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SecurityCenterScreen(),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -164,7 +197,14 @@ class ProfileScreen extends StatelessWidget {
                       context,
                       icon: Icons.settings_outlined,
                       title: '设置',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsScreen(),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
