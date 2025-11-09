@@ -12,8 +12,8 @@ android {
         applicationId = "com.flumenis.sms2email"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -106,6 +106,23 @@ dependencies {
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Animation - Lottie for Compose
+    implementation("com.airbnb.android:lottie-compose:6.3.0")
+
+    // Accompanist (System UI Controller for theme)
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.32.0")
+
+    // Security & Crypto
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    // OkHttp for API calls
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    // Coil for image loading (SVG support)
+    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("io.coil-kt:coil-svg:2.5.0")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
