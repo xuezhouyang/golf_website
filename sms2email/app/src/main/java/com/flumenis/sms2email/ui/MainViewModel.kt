@@ -7,7 +7,9 @@ import android.os.Build
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.flumenis.sms2email.data.AppConfig
+import com.flumenis.sms2email.data.AppDatabase
 import com.flumenis.sms2email.data.EmailConfig
+import com.flumenis.sms2email.data.EmailLog
 import com.flumenis.sms2email.data.PreferencesManager
 import com.flumenis.sms2email.security.ActivationManager
 import com.flumenis.sms2email.service.EmailService
@@ -22,9 +24,11 @@ import com.flumenis.sms2email.ui.theme.AccentColor
 import com.flumenis.sms2email.util.ConfigManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -36,6 +40,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val themeManager = ThemeManager(application)
     private val smsForwardingService = SmsForwardingService(application)
     private val oauthTokenManager = OAuthTokenManager(application)
+    private val database = AppDatabase.getDatabase(application)
 
     val emailConfig = preferencesManager.emailConfigFlow
     val appConfig = preferencesManager.appConfigFlow
@@ -268,6 +273,50 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 onFailure = { UiState.Error(it.message ?: "SMS forwarding failed") }
             )
         }
+    }
+
+    // Email Log Management
+    fun getLogsForDate(dateMillis: Long): Flow<List<EmailLog>> {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = dateMillis
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val startTime = calendar.timeInMillis
+
+        calendar.add(Calendar.DAY_OF_MONTH, 1)
+        val endTime = calendar.timeInMillis
+
+        return database.emailLogDao().getLogsByDateRange(startTime, endTime)
+    }
+
+    fun getTodayLogs(): Flow<List<EmailLog>> {
+        val todayStart = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+        return database.emailLogDao().getTodayLogs(todayStart)
+    }
+
+    fun clearAllLogs() {
+        viewModelScope.launch {
+            _uiState.value = UiState.Loading("Clearing logs...")
+            try {
+                database.emailLogDao().deleteAllLogs()
+                _uiState.value = UiState.Success("All logs cleared")
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(e.message ?: "Failed to clear logs")
+            }
+        }
+    }
+
+    suspend fun insertEmailLog(log: EmailLog): Long {
+        return database.emailLogDao().insertLog(log)
     }
 
     private fun startMonitoringService() {

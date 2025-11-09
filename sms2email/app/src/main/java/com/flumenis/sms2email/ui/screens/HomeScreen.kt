@@ -17,8 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.flumenis.sms2email.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flumenis.sms2email.ui.MainViewModel
 import com.flumenis.sms2email.ui.UiState
@@ -34,7 +36,8 @@ fun HomeScreen(
     onNavigateToCloudSync: () -> Unit = {},
     onNavigateToSmsForwarding: () -> Unit = {},
     onNavigateToTheme: () -> Unit = {},
-    onNavigateToPermissions: () -> Unit = {}
+    onNavigateToPermissions: () -> Unit = {},
+    onNavigateToLogViewer: () -> Unit = {}
 ) {
     val emailConfig by viewModel.emailConfig.collectAsStateWithLifecycle(initialValue = null)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -56,7 +59,20 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("PostaFide") },
+                title = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_postafide_logo_small),
+                            contentDescription = "PostaFide Logo",
+                            modifier = Modifier.size(28.dp),
+                            tint = androidx.compose.ui.graphics.Color.Unspecified
+                        )
+                        Text("PostaFide")
+                    }
+                },
                 actions = {
                     // Premium status bell icon with animation
                     PremiumBellIcon(
@@ -119,7 +135,7 @@ fun HomeScreen(
                     )
                 }
 
-                // Row 2: Permissions
+                // Row 2: Permissions & Logs
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -131,8 +147,12 @@ fun HomeScreen(
                         modifier = Modifier.weight(1f)
                     )
 
-                    // Empty spacer to maintain alignment
-                    Spacer(modifier = Modifier.weight(1f))
+                    QuickActionCard(
+                        icon = Icons.Default.History,
+                        label = "View Logs",
+                        onClick = onNavigateToLogViewer,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
 
                 // Row 2: Premium features

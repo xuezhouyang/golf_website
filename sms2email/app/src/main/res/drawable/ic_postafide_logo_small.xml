@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PostaFide Small Logo - Adaptive to theme (uses tintable glyph) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+    <!-- P letter -->
+    <path
+        android:fillColor="#E0A84C"
+        android:pathData="M80,80 h48 v360 h-48 z"/>
+
+    <path
+        android:fillColor="#E0A84C"
+        android:pathData="M128,80 h100 c40,0 80,30 80,70 c0,50 -40,90 -80,90 h-100 z"/>
+
+    <!-- F letter -->
+    <path
+        android:fillColor="#0F7A72"
+        android:pathData="M280,200 h48 v240 h-48 z"/>
+    
+    <path
+        android:fillColor="#0F7A72"
+        android:pathData="M280,200 h140 v48 h-140 z"/>
+    
+    <path
+        android:fillColor="#0F7A72"
+        android:pathData="M280,300 h120 v48 h-120 z"/>
+</vector>

@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- PostaFide Launcher Icon Foreground -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-  <group android:scaleX="2.61"
-      android:scaleY="2.61"
-      android:translateX="22.68"
-      android:translateY="22.68">
-    <path
-        android:pathData="M20,4L4,4c-1.1,0 -1.99,0.9 -1.99,2L2,18c0,1.1 0.9,2 2,2h16c1.1,0 2,-0.9 2,-2L22,6c0,-1.1 -0.9,-2 -2,-2zM20,8l-8,5 -8,-5L4,6l8,5 8,-5v2z"
-        android:fillColor="#FFFFFF"/>
+  
+  <!-- Center the icon in the safe zone (21dp margin from edges) -->
+  <group 
+      android:translateX="27"
+      android:translateY="27">
+    
+    <!-- Scale the 512x512 glyph to fit in 54x54 safe zone -->
+    <group
+        android:scaleX="0.105"
+        android:scaleY="0.105">
+      
+      <!-- P letter in gold -->
+      <path
+          android:fillColor="#E0A84C"
+          android:pathData="M80,80 h48 c0,0 0,360 0,360 h-48 z"/>
+
+      <path
+          android:fillColor="#E0A84C"
+          android:pathData="M128,80 h100 c40,0 80,30 80,70 c0,50 -40,90 -80,90 h-100 z"/>
+
+      <!-- F letter in teal -->
+      <path
+          android:fillColor="#0F7A72"
+          android:pathData="M280,200 h48 v240 h-48 z"/>
+      
+      <path
+          android:fillColor="#0F7A72"
+          android:pathData="M280,200 h140 v48 h-140 z"/>
+      
+      <path
+          android:fillColor="#0F7A72"
+          android:pathData="M280,300 h120 v48 h-120 z"/>
+    </group>
   </group>
 </vector>

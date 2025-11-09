@@ -3,7 +3,9 @@ package com.flumenis.sms2email.service
 import android.content.Context
 import android.os.Build
 import android.telephony.TelephonyManager
+import com.flumenis.sms2email.data.AppDatabase
 import com.flumenis.sms2email.data.EmailConfig
+import com.flumenis.sms2email.data.EmailLog
 import com.flumenis.sms2email.data.SmsMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -24,17 +26,26 @@ import javax.mail.internet.MimeMessage
  */
 class EmailService(private val context: Context) {
 
+    private val database = AppDatabase.getDatabase(context)
+
     /**
      * Send SMS message via email using configured SMTP settings
      */
     suspend fun sendEmail(smsMessage: SmsMessage, config: EmailConfig): Result<Unit> = withContext(Dispatchers.IO) {
+        val startTime = System.currentTimeMillis()
+        var emailSubject = ""
+
         try {
             if (!config.enabled) {
-                return@withContext Result.failure(Exception("Email service is not enabled"))
+                val error = Exception("Email service is not enabled")
+                logEmail(smsMessage, config, emailSubject, false, error.message, startTime)
+                return@withContext Result.failure(error)
             }
 
             if (config.smtpHost.isBlank() || config.toEmail.isBlank()) {
-                return@withContext Result.failure(Exception("SMTP configuration incomplete"))
+                val error = Exception("SMTP configuration incomplete")
+                logEmail(smsMessage, config, emailSubject, false, error.message, startTime)
+                return@withContext Result.failure(error)
             }
 
             val properties = Properties().apply {
@@ -61,21 +72,57 @@ class EmailService(private val context: Context) {
                 }
             })
 
+            // Process subject template
+            emailSubject = processTemplate(config.subjectTemplate, smsMessage, context)
+
             val message = MimeMessage(session).apply {
                 setFrom(InternetAddress(config.fromEmail, config.fromName))
                 setRecipients(Message.RecipientType.TO, InternetAddress.parse(config.toEmail))
 
-                // Process subject template
-                subject = processTemplate(config.subjectTemplate, smsMessage, context)
+                subject = emailSubject
 
                 // Process body template
                 setText(processTemplate(config.bodyTemplate, smsMessage, context), "UTF-8", "html")
             }
 
             Transport.send(message)
+
+            // Log success
+            logEmail(smsMessage, config, emailSubject, true, null, startTime)
+
             Result.success(Unit)
         } catch (e: Exception) {
+            // Log failure
+            logEmail(smsMessage, config, emailSubject, false, e.message, startTime)
             Result.failure(e)
+        }
+    }
+
+    /**
+     * Log email send attempt to database
+     */
+    private suspend fun logEmail(
+        smsMessage: SmsMessage,
+        config: EmailConfig,
+        subject: String,
+        success: Boolean,
+        errorMessage: String?,
+        timestamp: Long
+    ) {
+        try {
+            val log = EmailLog(
+                timestamp = timestamp,
+                sender = smsMessage.sender,
+                subject = subject.ifBlank { "(no subject)" },
+                toEmail = config.toEmail,
+                success = success,
+                errorMessage = errorMessage,
+                simSlot = smsMessage.simSlot
+            )
+            database.emailLogDao().insertLog(log)
+        } catch (e: Exception) {
+            // Silently fail logging to avoid disrupting email sending
+            e.printStackTrace()
         }
     }
 
