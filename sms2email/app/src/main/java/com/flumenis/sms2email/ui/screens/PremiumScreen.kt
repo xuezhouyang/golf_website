@@ -36,6 +36,8 @@ fun PremiumScreen(
 
     var inviteCode by remember { mutableStateOf("") }
     var verificationResult by remember { mutableStateOf<String?>(null) }
+    var isLockedOut by remember { mutableStateOf(false) }
+    var lockoutTimeRemaining by remember { mutableStateOf("") }
 
     // Collect states from ViewModel
     val isPremium by viewModel.isPremiumActive.collectAsStateWithLifecycle()
@@ -48,6 +50,21 @@ fun PremiumScreen(
     LaunchedEffect(Unit) {
         viewModel.getActivatedCode()?.let { code ->
             inviteCode = code
+        }
+        isLockedOut = viewModel.isLockedOut()
+        lockoutTimeRemaining = viewModel.getRemainingLockoutTime()
+    }
+
+    // Update lockout countdown every minute
+    LaunchedEffect(isLockedOut) {
+        if (isLockedOut) {
+            while (viewModel.isLockedOut()) {
+                kotlinx.coroutines.delay(60000) // Update every minute
+                isLockedOut = viewModel.isLockedOut()
+                lockoutTimeRemaining = viewModel.getRemainingLockoutTime()
+            }
+            // Lockout expired, update state
+            isLockedOut = false
         }
     }
 
@@ -145,7 +162,7 @@ fun PremiumScreen(
                         },
                         label = { Text("Invite Code") },
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = !isVerifying && attemptsRemaining > 0,
+                        enabled = !isLockedOut && attemptsRemaining > 0,
                         singleLine = true,
                         leadingIcon = {
                             Icon(Icons.Default.Key, "Invite Code")
@@ -154,8 +171,41 @@ fun PremiumScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Attempts remaining
-                    if (attemptsRemaining < 10) {
+                    // Lockout warning
+                    if (isLockedOut) {
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.errorContainer
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    Icons.Default.Lock,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.error
+                                )
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Column {
+                                    Text(
+                                        text = "Account Locked",
+                                        style = MaterialTheme.typography.titleSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                    Text(
+                                        text = "Too many failed attempts. Try again in: $lockoutTimeRemaining",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onErrorContainer
+                                    )
+                                }
+                            }
+                        }
+                    } else if (attemptsRemaining < 10) {
+                        // Attempts remaining warning
                         Text(
                             text = "Attempts remaining: $attemptsRemaining/10",
                             style = MaterialTheme.typography.bodySmall,
@@ -176,7 +226,7 @@ fun PremiumScreen(
                             viewModel.verifyInviteCode(inviteCode)
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = inviteCode.isNotBlank() && !isLoading && attemptsRemaining > 0
+                        enabled = inviteCode.isNotBlank() && !isLoading && !isLockedOut && attemptsRemaining > 0
                     ) {
                         if (isLoading) {
                             CircularProgressIndicator(

@@ -239,7 +239,7 @@ class InviteCodeManager(private val context: Context) {
     /**
      * Check if locked out due to too many attempts
      */
-    private fun isLockedOut(): Boolean {
+    fun isLockedOut(): Boolean {
         val lockoutUntil = encryptedPrefs.getLong(KEY_LOCKOUT_UNTIL, 0)
         return System.currentTimeMillis() < lockoutUntil
     }
@@ -247,12 +247,20 @@ class InviteCodeManager(private val context: Context) {
     /**
      * Get remaining lockout time
      */
-    private fun getRemainingLockoutTime(): String {
+    fun getRemainingLockoutTime(): String {
         val lockoutUntil = encryptedPrefs.getLong(KEY_LOCKOUT_UNTIL, 0)
         val remaining = lockoutUntil - System.currentTimeMillis()
+        if (remaining <= 0) return "0h 0m"
         val hours = TimeUnit.MILLISECONDS.toHours(remaining)
         val minutes = TimeUnit.MILLISECONDS.toMinutes(remaining) % 60
         return "${hours}h ${minutes}m"
+    }
+
+    /**
+     * Get lockout end time in milliseconds
+     */
+    fun getLockoutEndTime(): Long {
+        return encryptedPrefs.getLong(KEY_LOCKOUT_UNTIL, 0)
     }
 
     /**

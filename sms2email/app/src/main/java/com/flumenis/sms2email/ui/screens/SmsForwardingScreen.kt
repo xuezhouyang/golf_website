@@ -45,11 +45,24 @@ fun SmsForwardingScreen(
     // Collect premium status from ViewModel
     val isPremium by viewModel.isPremiumActive.collectAsStateWithLifecycle()
 
+    // Load real SIM card data from ViewModel
     LaunchedEffect(Unit) {
-        availableSimSlots = listOf(
-            SimSlotData(0, "China Mobile", "SIM 1", "+86 138****1234"),
-            SimSlotData(1, "China Unicom", "SIM 2", "+86 186****5678")
-        )
+        val simSlots = viewModel.getAvailableSimSlots()
+        availableSimSlots = simSlots.map { simInfo ->
+            SimSlotData(
+                slotIndex = simInfo.slotIndex,
+                carrierName = simInfo.carrierName,
+                displayName = simInfo.displayName,
+                phoneNumber = simInfo.phoneNumber
+            )
+        }
+
+        // If no SIM slots found, show a message
+        if (availableSimSlots.isEmpty()) {
+            availableSimSlots = listOf(
+                SimSlotData(-1, "No SIM", "No SIM cards detected", "N/A")
+            )
+        }
     }
 
     // Save configuration when changed

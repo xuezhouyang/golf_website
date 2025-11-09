@@ -12,8 +12,10 @@ import com.flumenis.sms2email.data.PreferencesManager
 import com.flumenis.sms2email.security.InviteCodeManager
 import com.flumenis.sms2email.service.EmailService
 import com.flumenis.sms2email.service.SmsMonitorService
+import com.flumenis.sms2email.service.SmsForwardingService
 import com.flumenis.sms2email.sync.CloudSyncManager
 import com.flumenis.sms2email.sync.CloudProvider
+import com.flumenis.sms2email.sync.OAuthTokenManager
 import com.flumenis.sms2email.ui.theme.ThemeManager
 import com.flumenis.sms2email.ui.theme.ThemeMode
 import com.flumenis.sms2email.ui.theme.AccentColor
@@ -32,6 +34,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val inviteCodeManager = InviteCodeManager(application)
     private val cloudSyncManager = CloudSyncManager(application)
     private val themeManager = ThemeManager(application)
+    private val smsForwardingService = SmsForwardingService(application)
+    private val oauthTokenManager = OAuthTokenManager(application)
 
     val emailConfig = preferencesManager.emailConfigFlow
     val appConfig = preferencesManager.appConfigFlow
@@ -138,6 +142,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return inviteCodeManager.getActivatedCode()
     }
 
+    fun isLockedOut(): Boolean {
+        return inviteCodeManager.isLockedOut()
+    }
+
+    fun getRemainingLockoutTime(): String {
+        return inviteCodeManager.getRemainingLockoutTime()
+    }
+
+    fun getLockoutEndTime(): Long {
+        return inviteCodeManager.getLockoutEndTime()
+    }
+
     // Theme Management
     fun setThemeMode(mode: ThemeMode) {
         viewModelScope.launch {
@@ -161,6 +177,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun backupToCloud(provider: CloudProvider, accessToken: String) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading("Backing up to cloud...")
+
+            // Save token for future use
+            oauthTokenManager.saveToken(provider, accessToken)
+
             val config = appConfig.first()
             val result = cloudSyncManager.syncToCloud(config, provider, accessToken)
             _uiState.value = result.fold(
@@ -173,6 +193,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun restoreFromCloud(provider: CloudProvider, accessToken: String) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading("Restoring from cloud...")
+
+            // Save token for future use
+            oauthTokenManager.saveToken(provider, accessToken)
+
             val result = cloudSyncManager.restoreFromCloud(provider, accessToken)
             _uiState.value = result.fold(
                 onSuccess = { config ->
@@ -180,6 +204,39 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     UiState.Success("Restore successful")
                 },
                 onFailure = { UiState.Error(it.message ?: "Restore failed") }
+            )
+        }
+    }
+
+    // OAuth Token Management
+    fun hasCloudToken(provider: CloudProvider): Boolean {
+        return oauthTokenManager.hasToken(provider)
+    }
+
+    fun getCloudToken(provider: CloudProvider): String? {
+        return oauthTokenManager.getToken(provider)
+    }
+
+    fun isCloudTokenExpired(provider: CloudProvider): Boolean {
+        return oauthTokenManager.isTokenExpired(provider)
+    }
+
+    fun clearCloudToken(provider: CloudProvider) {
+        oauthTokenManager.clearToken(provider)
+    }
+
+    // SMS Forwarding Management
+    fun getAvailableSimSlots(): List<SmsForwardingService.SimSlotInfo> {
+        return smsForwardingService.getAvailableSimSlots()
+    }
+
+    fun forwardSms(originalMessage: String, sender: String, targetNumber: String, simSlot: Int) {
+        viewModelScope.launch {
+            _uiState.value = UiState.Loading("Forwarding SMS...")
+            val result = smsForwardingService.forwardSms(originalMessage, sender, targetNumber, simSlot)
+            _uiState.value = result.fold(
+                onSuccess = { UiState.Success("SMS forwarded successfully") },
+                onFailure = { UiState.Error(it.message ?: "SMS forwarding failed") }
             )
         }
     }

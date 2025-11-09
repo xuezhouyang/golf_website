@@ -38,11 +38,26 @@ fun CloudSyncScreen(
     var lastSyncTime by remember { mutableStateOf<String?>(null) }
     var accessToken by remember { mutableStateOf("") }
     var showTokenDialog by remember { mutableStateOf(false) }
-    var pendingAction by remember { mutableStateOf<(() -> Unit)?>(null) }
+    var pendingAction by remember { mutableStateOf<(String) -> Unit>({})}
 
     // Collect states from ViewModel
     val isPremium by viewModel.isPremiumActive.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    // Load saved token when provider is selected
+    LaunchedEffect(selectedProvider) {
+        selectedProvider?.let { provider ->
+            viewModel.getCloudToken(provider)?.let { savedToken ->
+                if (!viewModel.isCloudTokenExpired(provider)) {
+                    accessToken = savedToken
+                } else {
+                    // Token expired, clear it
+                    viewModel.clearCloudToken(provider)
+                    accessToken = ""
+                }
+            }
+        }
+    }
 
     // Handle UI state changes
     LaunchedEffect(uiState) {
@@ -181,8 +196,15 @@ fun CloudSyncScreen(
                     onClick = {
                         if (selectedProvider != null) {
                             syncResult = null
-                            // Using demo token for now - in production, implement OAuth flow
-                            viewModel.backupToCloud(selectedProvider!!, accessToken.ifBlank { "demo_token" })
+                            if (accessToken.isBlank()) {
+                                // Show token input dialog
+                                pendingAction = { token ->
+                                    viewModel.backupToCloud(selectedProvider!!, token)
+                                }
+                                showTokenDialog = true
+                            } else {
+                                viewModel.backupToCloud(selectedProvider!!, accessToken)
+                            }
                         }
                     },
                     modifier = Modifier.weight(1f),
@@ -206,8 +228,15 @@ fun CloudSyncScreen(
                     onClick = {
                         if (selectedProvider != null) {
                             syncResult = null
-                            // Using demo token for now - in production, implement OAuth flow
-                            viewModel.restoreFromCloud(selectedProvider!!, accessToken.ifBlank { "demo_token" })
+                            if (accessToken.isBlank()) {
+                                // Show token input dialog
+                                pendingAction = { token ->
+                                    viewModel.restoreFromCloud(selectedProvider!!, token)
+                                }
+                                showTokenDialog = true
+                            } else {
+                                viewModel.restoreFromCloud(selectedProvider!!, accessToken)
+                            }
                         }
                     },
                     modifier = Modifier.weight(1f),
@@ -288,6 +317,71 @@ fun CloudSyncScreen(
                 }
             }
         }
+    }
+
+    // OAuth Token Input Dialog
+    if (showTokenDialog) {
+        var tokenInput by remember { mutableStateOf("") }
+
+        AlertDialog(
+            onDismissRequest = { showTokenDialog = false },
+            title = { Text("Enter OAuth Access Token") },
+            text = {
+                Column {
+                    Text(
+                        text = "Obtain an OAuth token from ${selectedProvider?.name ?: "provider"}'s developer console:",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    when (selectedProvider) {
+                        CloudProvider.GOOGLE_DRIVE -> Text(
+                            "1. Go to Google Cloud Console\n2. Enable Drive API\n3. Create OAuth credentials\n4. Copy access token",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        CloudProvider.ONEDRIVE -> Text(
+                            "1. Go to Azure Portal\n2. Register app\n3. Add Graph API permissions\n4. Generate access token",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        CloudProvider.GITHUB -> Text(
+                            "1. Go to GitHub Settings > Developer settings\n2. Personal access tokens\n3. Generate new token with gist scope",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        null -> {}
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedTextField(
+                        value = tokenInput,
+                        onValueChange = { tokenInput = it },
+                        label = { Text("Access Token") },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = false,
+                        maxLines = 3
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (tokenInput.isNotBlank()) {
+                            accessToken = tokenInput
+                            pendingAction(tokenInput)
+                            showTokenDialog = false
+                        }
+                    },
+                    enabled = tokenInput.isNotBlank()
+                ) {
+                    Text("Confirm")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showTokenDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 }
 
