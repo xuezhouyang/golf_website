@@ -69,13 +69,13 @@ android {
             excludes += "/META-INF/LICENSE.md"
         }
     }
-}
 
-// Rename output APK files to PostaFide branding
-androidComponents {
-    onVariants { variant ->
-        variant.outputs.forEach { output ->
-            output.outputFileName.set("PostaFide-v${variant.buildType}-${variant.name}.apk")
+    // Rename output APK files to PostaFide branding
+    applicationVariants.all {
+        outputs.all {
+            val outputImpl = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            val variantName = name
+            outputImpl.outputFileName = "PostaFide-v${defaultConfig.versionName}-${variantName}.apk"
         }
     }
 }
