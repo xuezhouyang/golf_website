@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,7 +26,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flumenis.sms2email.ui.MainViewModel
 import com.flumenis.sms2email.ui.theme.AccentColor
 import com.flumenis.sms2email.ui.theme.ThemeMode
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +33,6 @@ fun ThemeScreen(
     viewModel: MainViewModel = viewModel(),
     onNavigateBack: () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
     // Collect theme settings from ViewModel
@@ -47,7 +46,7 @@ fun ThemeScreen(
                 title = { Text("Theme Settings") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "返回")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -119,7 +118,7 @@ fun ThemeScreen(
             )
 
             Spacer(modifier = Modifier.height(32.dp))
-            Divider()
+            HorizontalDivider()
             Spacer(modifier = Modifier.height(32.dp))
 
             // Dynamic colors (Android 12+)
@@ -184,7 +183,7 @@ fun ThemeScreen(
             }
 
             Spacer(modifier = Modifier.height(32.dp))
-            Divider()
+            HorizontalDivider()
             Spacer(modifier = Modifier.height(32.dp))
 
             // Accent colors

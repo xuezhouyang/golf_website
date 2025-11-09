@@ -316,13 +316,16 @@ class CloudSyncManager(private val context: Context) {
                     return@retryWithPolicy Result.failure(IOException("Failed to list gists"))
                 }
 
+                @Suppress("UNCHECKED_CAST")
                 val gists = gson.fromJson(response.body?.string(), List::class.java) as List<Map<String, Any>>
                 val backupGist = gists.find { gist ->
                     val files = gist["files"] as? Map<String, Any>
                     files?.containsKey(BACKUP_FILENAME) == true
                 } ?: return@retryWithPolicy Result.failure(IOException("Backup gist not found"))
 
+                @Suppress("UNCHECKED_CAST")
                 val files = backupGist["files"] as Map<String, Any>
+                @Suppress("UNCHECKED_CAST")
                 val fileData = files[BACKUP_FILENAME] as Map<String, Any>
                 val json = fileData["content"] as? String ?: ""
 

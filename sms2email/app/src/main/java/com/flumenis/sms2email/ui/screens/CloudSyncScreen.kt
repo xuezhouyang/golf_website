@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -81,7 +83,7 @@ fun CloudSyncScreen(
                 title = { Text("Cloud Sync") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "返回")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -483,7 +485,7 @@ fun PremiumRequiredBanner() {
             }
             IconButton(onClick = { /* Navigate to premium */ }) {
                 Icon(
-                    Icons.Default.ArrowForward,
+                    Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = "Upgrade",
                     tint = MaterialTheme.colorScheme.onTertiaryContainer
                 )

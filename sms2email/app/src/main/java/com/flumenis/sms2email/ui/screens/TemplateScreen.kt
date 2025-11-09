@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -44,7 +44,7 @@ fun TemplateScreen(
                 title = { Text("Email Template") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -74,12 +74,12 @@ fun TemplateScreen(
                             }
                         )
                         if (variable != TemplateVariables.ALL_VARIABLES.last().first) {
-                            Divider(modifier = Modifier.padding(vertical = 8.dp))
+                            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                         }
                     }
 
                     // Additional variables
-                    Divider(modifier = Modifier.padding(vertical = 8.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                     Text(
                         "Enhanced Variables:",
                         style = MaterialTheme.typography.labelMedium,
@@ -94,7 +94,7 @@ fun TemplateScreen(
                         "{{OsName}}" to "Operating system (Android version)",
                         "{{DeviceName}}" to "Device model and manufacturer"
                     ).forEach { (variable, description) ->
-                        Divider(modifier = Modifier.padding(vertical = 4.dp))
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
                         VariableItem(
                             variable = variable,
                             description = description,

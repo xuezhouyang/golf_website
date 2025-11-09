@@ -147,10 +147,8 @@ class SecurityManager(private val context: Context) {
 
         // Check for Xposed bridge
         try {
-            val clazz = Class.forName("de.robv.android.xposed.XposedBridge")
-            if (clazz != null) {
-                return true
-            }
+            Class.forName("de.robv.android.xposed.XposedBridge")
+            return true
         } catch (e: Exception) {
             // Not found
         }

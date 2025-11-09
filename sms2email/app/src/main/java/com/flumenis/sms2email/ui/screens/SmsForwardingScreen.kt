@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.PhoneForwarded
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -107,7 +109,7 @@ fun SmsForwardingScreen(
                 title = { Text("SMS Forwarding") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, "返回")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -147,7 +149,7 @@ fun SmsForwardingScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        if (forwardingEnabled) Icons.Default.PhoneForwarded else Icons.Default.PhonePaused,
+                        if (forwardingEnabled) Icons.AutoMirrored.Filled.PhoneForwarded else Icons.Default.PhonePaused,
                         contentDescription = null,
                         modifier = Modifier.size(32.dp),
                         tint = if (forwardingEnabled)

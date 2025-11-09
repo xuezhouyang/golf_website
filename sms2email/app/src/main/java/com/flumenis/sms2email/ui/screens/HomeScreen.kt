@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.PhoneForwarded
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -177,7 +178,7 @@ fun HomeScreen(
                     )
 
                     QuickActionCard(
-                        icon = Icons.Default.PhoneForwarded,
+                        icon = Icons.AutoMirrored.Filled.PhoneForwarded,
                         label = "SMS Forward",
                         onClick = if (isPremium) onNavigateToSmsForwarding else onNavigateToPremium,
                         isPremium = true,
