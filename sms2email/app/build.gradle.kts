@@ -125,6 +125,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
+    // SSH/SFTP support for NAS users
+    implementation("com.jcraft:jsch:0.1.55")
+
     // Coil for image loading (SVG support)
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("io.coil-kt:coil-svg:2.5.0")
