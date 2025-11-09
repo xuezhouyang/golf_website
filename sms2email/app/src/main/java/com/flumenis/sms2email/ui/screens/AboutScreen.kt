@@ -99,7 +99,7 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
                         )
                         IconButton(
                             onClick = {
-                                clipboardManager.setText(AnnotatedString("${deviceInfo.androidId}-${deviceInfo.deviceModel}"))
+                                clipboardManager.setText(AnnotatedString("${deviceInfo.deviceId}-${deviceInfo.deviceModel}"))
                                 scope.launch {
                                     snackbarHostState.showSnackbar("Machine code copied to clipboard")
                                 }
@@ -134,7 +134,7 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                text = deviceInfo.androidId,
+                                text = deviceInfo.deviceId,
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontFamily = FontFamily.Monospace
                             )
