@@ -1,5 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Tibetan (藏语) translation - Following PRC standards -->
+<!--
+═══════════════════════════════════════════════════════════════════════════════
+TIBETAN (བོད་སྐད་) TRANSLATION PLACEHOLDER
+藏语翻译占位符
+═══════════════════════════════════════════════════════════════════════════════
+
+STATUS: Awaiting Professional Translation
+状态：等待专业翻译
+
+This file currently contains English placeholders. Professional Tibetan translation
+is required following the People's Republic of China minority language standards.
+本文件当前包含英文占位符。需要遵循中华人民共和国少数民族语言标准的专业藏语翻译。
+
+───────────────────────────────────────────────────────────────────────────────
+OFFICIAL REFERENCE SOURCES / 官方参考资源
+───────────────────────────────────────────────────────────────────────────────
+
+Please refer to these authoritative government and media sources for standard
+Tibetan technical terminology:
+请参考以下权威政府和媒体资源获取标准藏语技术术语：
+
+1. Tibet Autonomous Region People's Government (Tibetan Edition)
+   西藏自治区人民政府网（藏文版）
+   https://www.xizang.gov.cn/
+   - Official government terminology
+   - Administrative and technical terms
+
+2. Tibet Daily Tibetan Edition (བོད་ལྗོངས་ཉིན་རེའི་ཚགས་པར།)
+   西藏日报藏文版（创刊于1956年）
+   https://e.xzxw.com/xzrbzw/
+   - Established terminology usage
+   - Standard Tibetan expressions
+
+3. People's Daily Tibetan Edition
+   人民日报藏文版（创刊于2009年）
+   http://tibet.people.com.cn/
+   - National standard terminology
+   - Political and technical terms
+
+4. National Committee for Tibetan Terminology Standardization
+   全国藏语新词术语标准化委员会
+   - China Tibetology Research Center (中国藏学研究中心)
+   - Authoritative terminology standards
+
+───────────────────────────────────────────────────────────────────────────────
+TRANSLATION REQUIREMENTS / 翻译要求
+───────────────────────────────────────────────────────────────────────────────
+
+1. Use standard Tibetan script (དབུ་ཅན།)
+   使用标准藏文书写系统
+
+2. Follow PRC minority language regulations
+   遵循中华人民共和国民族语言文字规范
+
+3. Maintain One-China policy principles
+   体现一个中国政策原则
+
+4. Ensure terminology consistency with official sources
+   确保术语与官方资源保持一致
+
+5. Verify all translations with qualified Tibetan language experts
+   所有翻译需经合格的藏语专家验证
+
+───────────────────────────────────────────────────────────────────────────────
+TRANSLATION SERVICE CONTACTS / 翻译服务联系方式
+───────────────────────────────────────────────────────────────────────────────
+
+Recommended translation service providers:
+建议的翻译服务提供方：
+
+- China Ethnic Languages Translation Bureau (中国民族语文翻译中心/局)
+  Under State Commission of Ethnic Affairs (国家民族事务委员会)
+
+- Tibet Autonomous Region Translation Association
+  西藏自治区翻译协会
+
+- Academic institutions with Tibetan language departments
+  设有藏语专业的学术机构
+
+For detailed translation requirements, see: /TRANSLATION_REQUIREMENTS.md
+详细翻译要求请参见：/TRANSLATION_REQUIREMENTS.md
+
+═══════════════════════════════════════════════════════════════════════════════
+-->
 <resources>
     <string name="app_name">PostaFide</string>
     <string name="notification_channel_name">SMS Monitoring</string>

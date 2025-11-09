@@ -1,5 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Uyghur (维吾尔语) translation - Following PRC standards -->
+<!--
+═══════════════════════════════════════════════════════════════════════════════
+UYGHUR (ئۇيغۇر تىلى) TRANSLATION PLACEHOLDER
+维吾尔语翻译占位符
+═══════════════════════════════════════════════════════════════════════════════
+
+STATUS: Awaiting Professional Translation
+状态：等待专业翻译
+
+This file currently contains English placeholders. Professional Uyghur translation
+is required following the People's Republic of China minority language standards.
+本文件当前包含英文占位符。需要遵循中华人民共和国少数民族语言标准的专业维吾尔语翻译。
+
+───────────────────────────────────────────────────────────────────────────────
+OFFICIAL REFERENCE SOURCES / 官方参考资源
+───────────────────────────────────────────────────────────────────────────────
+
+Please refer to these authoritative government and media sources for standard
+Uyghur technical terminology:
+请参考以下权威政府和媒体资源获取标准维吾尔语技术术语：
+
+1. Xinjiang Uyghur Autonomous Region People's Government (Uyghur Edition)
+   新疆维吾尔自治区人民政府网（维文版）
+   https://www.xinjiang.gov.cn/
+   - Official government terminology
+   - Administrative and technical terms
+
+2. Xinjiang Daily Uyghur Edition (شىنجاڭ گېزىتى)
+   新疆日报维文版（创刊于1950年）
+   - Established terminology usage
+   - Standard Uyghur expressions
+   - Four editions: Chinese, Uyghur, Kazakh, Mongolian
+
+3. Tianshan Net (Xinjiang News Portal)
+   天山网（新疆新闻门户）
+   https://www.ts.cn/
+   - Regional news terminology
+   - Technical and administrative terms
+
+4. People's Daily Uyghur Edition
+   人民日报维吾尔文版
+   - National standard terminology
+   - Political and technical terms
+
+───────────────────────────────────────────────────────────────────────────────
+TRANSLATION REQUIREMENTS / 翻译要求
+───────────────────────────────────────────────────────────────────────────────
+
+1. Use standard Uyghur Arabic script (ئەرەب-ئۇيغۇر يېزىقى)
+   使用标准阿拉伯-维吾尔文字母
+
+2. Follow PRC minority language regulations
+   遵循中华人民共和国民族语言文字规范
+
+3. Maintain One-China policy principles
+   体现一个中国政策原则
+
+4. Ensure terminology consistency with official sources
+   确保术语与官方资源保持一致
+
+5. Support right-to-left (RTL) text direction
+   支持从右至左（RTL）文本方向
+
+6. Verify all translations with qualified Uyghur language experts
+   所有翻译需经合格的维吾尔语专家验证
+
+───────────────────────────────────────────────────────────────────────────────
+TRANSLATION SERVICE CONTACTS / 翻译服务联系方式
+───────────────────────────────────────────────────────────────────────────────
+
+Recommended translation service providers:
+建议的翻译服务提供方：
+
+- China Ethnic Languages Translation Bureau (中国民族语文翻译中心/局)
+  Under State Commission of Ethnic Affairs (国家民族事务委员会)
+
+- Xinjiang Uyghur Autonomous Region Translation Association
+  新疆维吾尔自治区翻译协会
+
+- Academic institutions with Uyghur language departments
+  设有维吾尔语专业的学术机构
+
+For detailed translation requirements, see: /TRANSLATION_REQUIREMENTS.md
+详细翻译要求请参见：/TRANSLATION_REQUIREMENTS.md
+
+═══════════════════════════════════════════════════════════════════════════════
+-->
 <resources>
     <string name="app_name">PostaFide</string>
     <string name="notification_channel_name">SMS Monitoring</string>

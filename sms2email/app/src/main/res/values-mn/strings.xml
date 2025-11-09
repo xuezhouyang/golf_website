@@ -1,5 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Mongolian (蒙古语) translation - Following PRC standards -->
+<!--
+═══════════════════════════════════════════════════════════════════════════════
+MONGOLIAN (ᠮᠣᠩᠭᠣᠯ ᠬᠡᠯᠡ) TRANSLATION PLACEHOLDER
+蒙古语翻译占位符
+═══════════════════════════════════════════════════════════════════════════════
+
+STATUS: Awaiting Professional Translation
+状态：等待专业翻译
+
+This file currently contains English placeholders. Professional Mongolian translation
+is required following the People's Republic of China minority language standards.
+本文件当前包含英文占位符。需要遵循中华人民共和国少数民族语言标准的专业蒙古语翻译。
+
+───────────────────────────────────────────────────────────────────────────────
+OFFICIAL REFERENCE SOURCES / 官方参考资源
+───────────────────────────────────────────────────────────────────────────────
+
+Please refer to these authoritative government and media sources for standard
+Mongolian technical terminology:
+请参考以下权威政府和媒体资源获取标准蒙古语技术术语：
+
+1. Inner Mongolia Autonomous Region People's Government (Mongolian Edition)
+   内蒙古自治区人民政府网（蒙文版）
+   https://www.nmg.gov.cn/
+   - Official government terminology
+   - Administrative and technical terms
+
+2. Inner Mongolia Daily Mongolian Edition (ᠥᠪᠥᠷ ᠮᠣᠩᠭᠣᠯ ᠤᠨ ᠡᠳᠦᠷ ᠦᠨ ᠰᠣᠨᠢᠨ)
+   内蒙古日报蒙文版（创刊于1948年）
+   - First daily newspaper in Mongolian by Mongolian people
+   - Established terminology usage
+   - Standard Mongolian expressions
+
+3. Inner Mongolia News Network
+   内蒙古新闻网
+   https://www.nmgnews.com.cn/
+   - Regional news terminology
+   - Technical and administrative terms
+
+4. Mongolian Language Media Alliance Digital Platform
+   蒙古文报网联盟数字平台（建立于2013年）
+   - Connects 12 Mongolian newspapers and China Mongolian Language News Network
+   - Comprehensive terminology database
+
+5. People's Daily Mongolian Edition
+   人民日报蒙古文版
+   - National standard terminology
+   - Political and technical terms
+
+───────────────────────────────────────────────────────────────────────────────
+TRANSLATION REQUIREMENTS / 翻译要求
+───────────────────────────────────────────────────────────────────────────────
+
+1. Use traditional Mongolian script (ᠮᠣᠩᠭᠣᠯ ᠪᠢᠴᠢᠭ᠌) or Cyrillic Mongolian
+   使用传统蒙古文或西里尔蒙古文
+
+2. Follow PRC minority language regulations
+   遵循中华人民共和国民族语言文字规范
+
+3. Maintain One-China policy principles
+   体现一个中国政策原则
+
+4. Ensure terminology consistency with official sources
+   确保术语与官方资源保持一致
+
+5. Support vertical text layout if using traditional script
+   如使用传统蒙古文需支持竖排文字布局
+
+6. Verify all translations with qualified Mongolian language experts
+   所有翻译需经合格的蒙古语专家验证
+
+───────────────────────────────────────────────────────────────────────────────
+TRANSLATION SERVICE CONTACTS / 翻译服务联系方式
+───────────────────────────────────────────────────────────────────────────────
+
+Recommended translation service providers:
+建议的翻译服务提供方：
+
+- China Ethnic Languages Translation Bureau (中国民族语文翻译中心/局)
+  Under State Commission of Ethnic Affairs (国家民族事务委员会)
+
+- Inner Mongolia Autonomous Region Translation Association
+  内蒙古自治区翻译协会
+
+- Academic institutions with Mongolian language departments
+  设有蒙古语专业的学术机构
+
+For detailed translation requirements, see: /TRANSLATION_REQUIREMENTS.md
+详细翻译要求请参见：/TRANSLATION_REQUIREMENTS.md
+
+═══════════════════════════════════════════════════════════════════════════════
+-->
 <resources>
     <string name="app_name">PostaFide</string>
     <string name="notification_channel_name">SMS Monitoring</string>
