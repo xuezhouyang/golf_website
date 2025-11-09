@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -431,8 +432,11 @@ fun AccentColorOption(
             else
                 null
         ) {
-            Box(contentAlignment = Alignment.Center) {
-                AnimatedVisibility(
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                androidx.compose.animation.AnimatedVisibility(
                     visible = isSelected,
                     enter = scaleIn() + fadeIn(),
                     exit = scaleOut() + fadeOut()

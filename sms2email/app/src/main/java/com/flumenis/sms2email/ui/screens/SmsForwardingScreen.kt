@@ -16,6 +16,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flumenis.sms2email.ui.MainViewModel
 import kotlinx.coroutines.launch
 
+// SIM slot data model
+data class SimSlotData(
+    val slotIndex: Int,
+    val carrierName: String,
+    val displayName: String,
+    val phoneNumber: String
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SmsForwardingScreen(
@@ -30,14 +38,6 @@ fun SmsForwardingScreen(
     var selectedSimSlot by remember { mutableStateOf(-1) }
     var isPremium by remember { mutableStateOf(false) }
     var availableSimSlots by remember { mutableStateOf<List<SimSlotData>>(emptyList()) }
-
-    // Mock SIM slots data
-    data class SimSlotData(
-        val slotIndex: Int,
-        val carrierName: String,
-        val displayName: String,
-        val phoneNumber: String
-    )
 
     LaunchedEffect(Unit) {
         // TODO: Load from viewModel
@@ -175,7 +175,7 @@ fun SmsForwardingScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             // Available SIM slots
-            availableSimSlots.forEach { simSlot ->
+            for (simSlot in availableSimSlots) {
                 Spacer(modifier = Modifier.height(8.dp))
                 SimSlotSelectionCard(
                     title = simSlot.displayName,
