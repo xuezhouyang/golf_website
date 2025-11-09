@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.flumenis.sms2email.ui.MainViewModel
+import com.flumenis.sms2email.ui.components.AnimationConfig
 import com.flumenis.sms2email.ui.screens.*
 
 sealed class Screen(val route: String) {
@@ -43,61 +44,115 @@ fun AppNavigation(viewModel: MainViewModel) {
             )
         }
 
-        composable(Screen.Settings.route) {
+        composable(
+            route = Screen.Settings.route,
+            enterTransition = { AnimationConfig.enterTransition() },
+            exitTransition = { AnimationConfig.exitTransition() },
+            popEnterTransition = { AnimationConfig.popEnterTransition() },
+            popExitTransition = { AnimationConfig.popExitTransition() }
+        ) {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.Template.route) {
+        composable(
+            route = Screen.Template.route,
+            enterTransition = { AnimationConfig.enterTransition() },
+            exitTransition = { AnimationConfig.exitTransition() },
+            popEnterTransition = { AnimationConfig.popEnterTransition() },
+            popExitTransition = { AnimationConfig.popExitTransition() }
+        ) {
             TemplateScreen(
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.About.route) {
+        composable(
+            route = Screen.About.route,
+            enterTransition = { AnimationConfig.enterTransition() },
+            exitTransition = { AnimationConfig.exitTransition() },
+            popEnterTransition = { AnimationConfig.popEnterTransition() },
+            popExitTransition = { AnimationConfig.popExitTransition() }
+        ) {
             AboutScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.Premium.route) {
+        composable(
+            route = Screen.Premium.route,
+            enterTransition = { AnimationConfig.enterTransition() },
+            exitTransition = { AnimationConfig.exitTransition() },
+            popEnterTransition = { AnimationConfig.popEnterTransition() },
+            popExitTransition = { AnimationConfig.popExitTransition() }
+        ) {
             PremiumScreen(
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.CloudSync.route) {
+        composable(
+            route = Screen.CloudSync.route,
+            enterTransition = { AnimationConfig.enterTransition() },
+            exitTransition = { AnimationConfig.exitTransition() },
+            popEnterTransition = { AnimationConfig.popEnterTransition() },
+            popExitTransition = { AnimationConfig.popExitTransition() }
+        ) {
             CloudSyncScreen(
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.SmsForwarding.route) {
+        composable(
+            route = Screen.SmsForwarding.route,
+            enterTransition = { AnimationConfig.enterTransition() },
+            exitTransition = { AnimationConfig.exitTransition() },
+            popEnterTransition = { AnimationConfig.popEnterTransition() },
+            popExitTransition = { AnimationConfig.popExitTransition() }
+        ) {
             SmsForwardingScreen(
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.Theme.route) {
+        composable(
+            route = Screen.Theme.route,
+            enterTransition = { AnimationConfig.enterTransition() },
+            exitTransition = { AnimationConfig.exitTransition() },
+            popEnterTransition = { AnimationConfig.popEnterTransition() },
+            popExitTransition = { AnimationConfig.popExitTransition() }
+        ) {
             ThemeScreen(
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.Permissions.route) {
+        composable(
+            route = Screen.Permissions.route,
+            enterTransition = { AnimationConfig.enterTransition() },
+            exitTransition = { AnimationConfig.exitTransition() },
+            popEnterTransition = { AnimationConfig.popEnterTransition() },
+            popExitTransition = { AnimationConfig.popExitTransition() }
+        ) {
             PermissionSettingsScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }
 
-        composable(Screen.LogViewer.route) {
+        composable(
+            route = Screen.LogViewer.route,
+            enterTransition = { AnimationConfig.enterTransition() },
+            exitTransition = { AnimationConfig.exitTransition() },
+            popEnterTransition = { AnimationConfig.popEnterTransition() },
+            popExitTransition = { AnimationConfig.popExitTransition() }
+        ) {
             LogViewerScreen(
                 viewModel = viewModel,
                 onNavigateBack = { navController.popBackStack() }

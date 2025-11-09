@@ -1,4 +1,4 @@
-name: Build SMS2Email Android APK
+name: Build PostaFide Android APK
 
 on:
   push:
@@ -50,36 +50,37 @@ jobs:
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
           echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
 
-      - name: Rename APK
+      - name: List APK files (for debugging)
         run: |
-          mv sms2email/app/build/outputs/apk/release/app-release.apk \
-             sms2email/app/build/outputs/apk/release/SMS2Email-v${{ steps.version.outputs.version_name }}.apk
-          mv sms2email/app/build/outputs/apk/debug/app-debug.apk \
-             sms2email/app/build/outputs/apk/debug/SMS2Email-v${{ steps.version.outputs.version_name }}-debug.apk
+          echo "Release APKs:"
+          ls -lh sms2email/app/build/outputs/apk/release/
+          echo ""
+          echo "Debug APKs:"
+          ls -lh sms2email/app/build/outputs/apk/debug/
 
       - name: Generate checksums
         run: |
           cd sms2email/app/build/outputs/apk/release
-          sha256sum SMS2Email-v${{ steps.version.outputs.version_name }}.apk > SMS2Email-v${{ steps.version.outputs.version_name }}.apk.sha256
+          sha256sum PostaFide-v${{ steps.version.outputs.version_name }}-release.apk > PostaFide-v${{ steps.version.outputs.version_name }}-release.apk.sha256
           cd ../debug
-          sha256sum SMS2Email-v${{ steps.version.outputs.version_name }}-debug.apk > SMS2Email-v${{ steps.version.outputs.version_name }}-debug.apk.sha256
+          sha256sum PostaFide-v${{ steps.version.outputs.version_name }}-debug.apk > PostaFide-v${{ steps.version.outputs.version_name }}-debug.apk.sha256
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: SMS2Email-v${{ steps.version.outputs.version_name }}-release
+          name: PostaFide-v${{ steps.version.outputs.version_name }}-release
           path: |
-            sms2email/app/build/outputs/apk/release/SMS2Email-v${{ steps.version.outputs.version_name }}.apk
-            sms2email/app/build/outputs/apk/release/SMS2Email-v${{ steps.version.outputs.version_name }}.apk.sha256
+            sms2email/app/build/outputs/apk/release/PostaFide-v${{ steps.version.outputs.version_name }}-release.apk
+            sms2email/app/build/outputs/apk/release/PostaFide-v${{ steps.version.outputs.version_name }}-release.apk.sha256
           retention-days: 90
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: SMS2Email-v${{ steps.version.outputs.version_name }}-debug
+          name: PostaFide-v${{ steps.version.outputs.version_name }}-debug
           path: |
-            sms2email/app/build/outputs/apk/debug/SMS2Email-v${{ steps.version.outputs.version_name }}-debug.apk
-            sms2email/app/build/outputs/apk/debug/SMS2Email-v${{ steps.version.outputs.version_name }}-debug.apk.sha256
+            sms2email/app/build/outputs/apk/debug/PostaFide-v${{ steps.version.outputs.version_name }}-debug.apk
+            sms2email/app/build/outputs/apk/debug/PostaFide-v${{ steps.version.outputs.version_name }}-debug.apk.sha256
           retention-days: 30
 
       - name: Create Release (on tag)
@@ -87,23 +88,23 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            sms2email/app/build/outputs/apk/release/SMS2Email-v${{ steps.version.outputs.version_name }}.apk
-            sms2email/app/build/outputs/apk/release/SMS2Email-v${{ steps.version.outputs.version_name }}.apk.sha256
+            sms2email/app/build/outputs/apk/release/PostaFide-v${{ steps.version.outputs.version_name }}-release.apk
+            sms2email/app/build/outputs/apk/release/PostaFide-v${{ steps.version.outputs.version_name }}-release.apk.sha256
           body_path: sms2email/RELEASE_NOTES.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build summary
         run: |
-          echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## PostaFide Build Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Version Name**: ${{ steps.version.outputs.version_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Version Code**: ${{ steps.version.outputs.version_code }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Release APK**: SMS2Email-v${{ steps.version.outputs.version_name }}.apk" >> $GITHUB_STEP_SUMMARY
-          echo "- **Debug APK**: SMS2Email-v${{ steps.version.outputs.version_name }}-debug.apk" >> $GITHUB_STEP_SUMMARY
+          echo "- **Release APK**: PostaFide-v${{ steps.version.outputs.version_name }}-release.apk" >> $GITHUB_STEP_SUMMARY
+          echo "- **Debug APK**: PostaFide-v${{ steps.version.outputs.version_name }}-debug.apk" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### APK Sizes" >> $GITHUB_STEP_SUMMARY
-          RELEASE_SIZE=$(du -h sms2email/app/build/outputs/apk/release/SMS2Email-v${{ steps.version.outputs.version_name }}.apk | cut -f1)
-          DEBUG_SIZE=$(du -h sms2email/app/build/outputs/apk/debug/SMS2Email-v${{ steps.version.outputs.version_name }}-debug.apk | cut -f1)
+          RELEASE_SIZE=$(du -h sms2email/app/build/outputs/apk/release/PostaFide-v${{ steps.version.outputs.version_name }}-release.apk | cut -f1)
+          DEBUG_SIZE=$(du -h sms2email/app/build/outputs/apk/debug/PostaFide-v${{ steps.version.outputs.version_name }}-debug.apk | cut -f1)
           echo "- Release: $RELEASE_SIZE" >> $GITHUB_STEP_SUMMARY
           echo "- Debug: $DEBUG_SIZE" >> $GITHUB_STEP_SUMMARY
