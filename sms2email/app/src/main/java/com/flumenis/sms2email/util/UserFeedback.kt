@@ -1,4 +1,4 @@
-package com.flumenis.sms2email.ui.components
+package com.flumenis.sms2email.util
 
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
