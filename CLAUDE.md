@@ -4,7 +4,122 @@ This document records important experiences and lessons learned during the devel
 
 ---
 
-## 2025-11-09: BuildConfig, Internationalization, and Warning Fixes
+## 2025-11-09 (Session 2): Gradle 8 API 兼容性排查
+
+### Context
+根据用户要求"类似的问题都排查下"，对整个项目进行了全面的 API 兼容性检查。
+
+### Issues Found and Fixed
+
+#### 1. Gradle 8 弃用的 buildDir 属性
+
+**Problem**: 根级 build.gradle.kts 使用了已弃用的 `rootProject.buildDir` 属性
+
+**Root Cause**:
+- `Project.buildDir` 在 Gradle 8.x 中已被弃用
+- 会在未来的 Gradle 版本中移除
+
+**Incorrect Code**:
+```kotlin
+// build.gradle.kts (root level)
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)  // Deprecated in Gradle 8
+}
+```
+
+**Solution**:
+```kotlin
+tasks.register("clean", Delete::class) {
+    delete(layout.buildDirectory)  // New API
+}
+```
+
+**Lesson**:
+- Gradle 8+ 使用 `layout.buildDirectory` 替代 `buildDir`
+- `layout.buildDirectory` 返回 `DirectoryProperty`，更符合 Gradle 的配置缓存机制
+
+**Commit**: `46918ea`
+
+---
+
+#### 2. APK 文件名配置与 GitHub Actions 不匹配
+
+**Problem**: GitHub Actions 构建失败，错误信息显示 APK 文件名格式不匹配
+
+**Error Message**:
+```
+Error: Invalid format 'PostaFide-v${defaultConfig.versionName}-${variantName}.apk'
+```
+
+**Root Cause**:
+- `outputs.all { name }` 返回的可能不是简单的 "debug" 或 "release"
+- 当项目有 product flavors 时，`name` 会返回完整的变体名称（如 "flavorDebug"）
+- GitHub Actions 工作流期望特定的文件名格式
+
+**Incorrect Code**:
+```kotlin
+applicationVariants.all {
+    outputs.all {
+        val outputImpl = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+        val variantName = name  // 可能不是我们期望的值
+        outputImpl.outputFileName = "PostaFide-v${defaultConfig.versionName}-${variantName}.apk"
+    }
+}
+```
+
+**Solution**:
+```kotlin
+applicationVariants.all {
+    outputs.all {
+        val outputImpl = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+        outputImpl.outputFileName = "PostaFide-v${defaultConfig.versionName}-${buildType.name}.apk"
+    }
+}
+```
+
+**Generated Filenames**:
+- `PostaFide-v2.0.0-debug.apk`
+- `PostaFide-v2.0.0-release.apk`
+
+**Lesson**:
+- 使用 `buildType.name` 明确获取构建类型名称
+- 如果需要包含 flavor，应该使用 `variant.flavorName` 和 `buildType.name` 组合
+- 确保 Gradle 配置与 CI/CD 工作流的期望保持一致
+
+**Commit**: `c634340`
+
+---
+
+### Verification Results
+
+进行了以下全面检查，未发现其他问题：
+
+✅ **Gradle 配置文件**:
+- Root build.gradle.kts: 已修复 buildDir 问题
+- App build.gradle.kts: 已修复 APK 命名问题
+- settings.gradle.kts: 配置正确
+
+✅ **ProGuard/R8 配置**:
+- 所有规则语法正确
+- 安全加固配置合理
+
+✅ **Android APIs**:
+- PendingIntent: 所有地方都正确使用 FLAG_IMMUTABLE
+- Material Design: 已全部更新为 Material3 API
+- AndroidManifest: 所有组件的 exported 属性设置正确
+
+✅ **依赖版本**:
+- AndroidX 库版本合理
+- Kotlin 1.9.22 + Compose Compiler 1.5.10 版本匹配
+- 无明显版本冲突
+
+⚠️ **潜在改进** (非紧急):
+- JSch 库 (0.1.55) 版本很旧，长期未维护
+- 建议未来考虑迁移到维护中的替代方案
+
+---
+
+## 2025-11-09 (Session 1): BuildConfig, Internationalization, and Warning Fixes
 
 ### Context
 Continuation from previous session. Fixed GitHub Actions build errors and implemented comprehensive code quality improvements.
