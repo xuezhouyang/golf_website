@@ -79,18 +79,43 @@ app/build/outputs/apk/release/app-release.apk
 **解决**: chmod +x 并 git update-index
 **状态**: ✅ 已修复
 
+### Issue 4: Kotlin compilation errors (2025-11-09)
+
+**问题**: Kotlin编译错误
+**原因**:
+- `const val` 用于长字符串（编译时常量限制）
+- 缺少 `return` 语句
+- META-INF 重复文件冲突
+
+**解决**:
+1. 将 `DEVELOPER_PUBLIC_KEY` 从 `const val` 改为 `val`
+2. 在 `InviteCodeManager.kt` 和 `CloudSyncManager.kt` 中添加缺失的 `return@withContext`
+3. 在 `build.gradle.kts` 中添加 packaging excludes:
+   - `/META-INF/NOTICE.md`
+   - `/META-INF/LICENSE.md`
+
+**状态**: ✅ 已修复
+
+**修复文件**:
+- `sms2email/app/build.gradle.kts`
+- `sms2email/app/src/main/java/com/flumenis/sms2email/security/InviteCodeManager.kt`
+- `sms2email/app/src/main/java/com/flumenis/sms2email/sync/CloudSyncManager.kt`
+
 ---
 
 ## 📋 提交历史
 
 ```
-bcdd963 - Add gradle-wrapper.jar for GitHub Actions build
+6ab188b - Fix compilation issues (2025-11-09)
+9bf163a - Fix const val compiler error (2025-11-09)
+0c49204 - Fix Kotlin compilation errors (2025-11-09)
+faddb92 - Fix reserved keyword in strings.xml (2025-11-09)
+34442c9 - Add project status summary
+bfbac65 - Add APK build guide
 7c44a35 - Fix gradlew line endings for Linux compatibility
+0185da5 - Add comprehensive v2.0.0 release documentation
+bcdd963 - Add gradle-wrapper.jar for GitHub Actions build
 6361f08 - Release SMS2Email v2.0.0 - Major Update
-6656d3f - Add comprehensive project summary documentation
-6b32c89 - Add GitHub Actions workflow for automated APK builds
-4e3a58c - Add build configuration and release documentation
-14de03d - Add SMS2Email Android Application - v1.0.0
 ```
 
 ---
