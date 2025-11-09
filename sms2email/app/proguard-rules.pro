@@ -19,3 +19,16 @@
 # Keep data classes
 -keep class com.flumenis.sms2email.data.** { *; }
 -keepclassmembers class com.flumenis.sms2email.data.** { *; }
+
+# Google Error Prone Annotations (used by Tink)
+-dontwarn com.google.errorprone.annotations.**
+-dontwarn javax.annotation.**
+-dontwarn org.checkerframework.checker.nullness.qual.**
+
+# Google Tink (for EncryptedSharedPreferences)
+-keep class com.google.crypto.tink.** { *; }
+-dontwarn com.google.crypto.tink.**
+
+# AndroidX Security Crypto
+-keep class androidx.security.crypto.** { *; }
+-dontwarn androidx.security.crypto.**
