@@ -18,7 +18,7 @@
     <string name="template">Template</string>
     <string name="configuration">Configuration</string>
     <string name="export">Export</string>
-    <string name="import">Import</string>
+    <string name="import_config">Import</string>
     <string name="current_config">Current Configuration</string>
 
     <!-- Settings Screen -->

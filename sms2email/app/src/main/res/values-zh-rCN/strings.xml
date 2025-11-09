@@ -18,7 +18,7 @@
     <string name="template">模板</string>
     <string name="configuration">配置</string>
     <string name="export">导出</string>
-    <string name="import">导入</string>
+    <string name="import_config">导入</string>
     <string name="current_config">当前配置</string>
 
     <!-- Settings Screen -->
