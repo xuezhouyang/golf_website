@@ -49,9 +49,28 @@
     <!-- About Screen -->
     <string name="about">About</string>
     <string name="version">Version</string>
+    <string name="version_name">Version 2.0.0</string>
+    <string name="app_slogan">Your SMS, Your Control</string>
+    <string name="machine_code">Device Machine Code</string>
+    <string name="copy_machine_code">Copy machine code</string>
+    <string name="machine_code_usage">Use this code when requesting activation from the author</string>
+    <string name="android_id">Android ID:</string>
+    <string name="device_model">Device Model:</string>
     <string name="features">Features</string>
+    <string name="feature_dual_sim">• Dual SIM support</string>
+    <string name="feature_custom_smtp">• Custom SMTP configuration</string>
+    <string name="feature_email_template">• Email template with variables</string>
+    <string name="feature_config_import_export">• Configuration import/export</string>
+    <string name="feature_background_service">• Background service with keep-alive</string>
+    <string name="feature_no_root">• No root required</string>
+    <string name="feature_material_design">• Material Design 3 UI</string>
     <string name="developed_by">Developed by</string>
+    <string name="company_name_full">Flumenis LLC</string>
+    <string name="company_location">Delaware, USA</string>
     <string name="privacy_permissions">Privacy &amp; Permissions</string>
+    <string name="privacy_description">This app requires SMS and internet permissions to forward messages. All data is sent directly to your configured email server. No data is collected or stored by third parties.</string>
+    <string name="copyright">© 2025 Flumenis LLC. All rights reserved.</string>
+    <string name="back">Back</string>
 
     <!-- Call Log -->
     <string name="call_log_monitoring">Call Log Monitoring</string>
@@ -73,4 +92,17 @@
     <string name="premium_features">Premium Features</string>
     <string name="subscribe">Subscribe</string>
     <string name="upgrade_to_premium">Upgrade to Premium</string>
+
+    <!-- Log Viewer -->
+    <string name="send_logs">Send Logs</string>
+    <string name="clear_all_logs">Clear All Logs</string>
+    <string name="previous_day">Previous Day</string>
+    <string name="today">Today</string>
+    <string name="next_day">Next Day</string>
+    <string name="success">Success</string>
+    <string name="failed">Failed</string>
+    <string name="logs_total">Logs (%1$d total)</string>
+    <string name="no_logs_for_date">No logs for this date</string>
+    <string name="sim_slot">SIM%1$d</string>
+    <string name="machine_code_copied">Machine code copied to clipboard</string>
 </resources>

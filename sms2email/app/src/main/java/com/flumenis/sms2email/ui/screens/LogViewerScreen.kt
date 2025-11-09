@@ -9,9 +9,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.flumenis.sms2email.R
 import com.flumenis.sms2email.data.EmailLog
 import com.flumenis.sms2email.ui.MainViewModel
 import java.text.SimpleDateFormat
@@ -54,16 +56,16 @@ fun LogViewerScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Send Logs") },
+                title = { Text(stringResource(R.string.send_logs)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 },
                 actions = {
                     // Delete all logs button
                     IconButton(onClick = { viewModel.clearAllLogs() }) {
-                        Icon(Icons.Default.DeleteSweep, contentDescription = "Clear All Logs")
+                        Icon(Icons.Default.DeleteSweep, contentDescription = stringResource(R.string.clear_all_logs))
                     }
                 }
             )
@@ -97,7 +99,7 @@ fun LogViewerScreen(
                             selectedDate = calendar.timeInMillis
                         }
                     ) {
-                        Icon(Icons.Default.ChevronLeft, contentDescription = "Previous Day")
+                        Icon(Icons.Default.ChevronLeft, contentDescription = stringResource(R.string.previous_day))
                     }
 
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -106,7 +108,7 @@ fun LogViewerScreen(
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
-                        
+
                         // "Today" indicator
                         val today = Calendar.getInstance().apply {
                             set(Calendar.HOUR_OF_DAY, 0)
@@ -114,10 +116,10 @@ fun LogViewerScreen(
                             set(Calendar.SECOND, 0)
                             set(Calendar.MILLISECOND, 0)
                         }.timeInMillis
-                        
+
                         if (selectedDate == today) {
                             Text(
-                                text = "Today",
+                                text = stringResource(R.string.today),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.primary
                             )
@@ -136,9 +138,9 @@ fun LogViewerScreen(
                                 }.timeInMillis
                             }
                         ) {
-                            Icon(Icons.Default.Today, contentDescription = "Today")
+                            Icon(Icons.Default.Today, contentDescription = stringResource(R.string.today))
                         }
-                        
+
                         IconButton(
                             onClick = {
                                 calendar.timeInMillis = selectedDate
@@ -156,7 +158,7 @@ fun LogViewerScreen(
                                 }
                             }
                         ) {
-                            Icon(Icons.Default.ChevronRight, contentDescription = "Next Day")
+                            Icon(Icons.Default.ChevronRight, contentDescription = stringResource(R.string.next_day))
                         }
                     }
                 }
@@ -169,15 +171,15 @@ fun LogViewerScreen(
             ) {
                 StatCard(
                     icon = Icons.Default.CheckCircle,
-                    label = "Success",
+                    label = stringResource(R.string.success),
                     count = successCount,
                     color = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier.weight(1f)
                 )
-                
+
                 StatCard(
                     icon = Icons.Default.Error,
-                    label = "Failed",
+                    label = stringResource(R.string.failed),
                     count = failureCount,
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.weight(1f)
@@ -186,7 +188,7 @@ fun LogViewerScreen(
 
             // Logs List
             Text(
-                text = "Logs (${logs.size} total)",
+                text = stringResource(R.string.logs_total, logs.size),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -212,7 +214,7 @@ fun LogViewerScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "No logs for this date",
+                            text = stringResource(R.string.no_logs_for_date),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -338,7 +340,7 @@ fun LogEntryCard(
                             shape = MaterialTheme.shapes.extraSmall
                         ) {
                             Text(
-                                text = "SIM${log.simSlot + 1}",
+                                text = stringResource(R.string.sim_slot, log.simSlot + 1),
                                 style = MaterialTheme.typography.labelSmall,
                                 modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
                             )

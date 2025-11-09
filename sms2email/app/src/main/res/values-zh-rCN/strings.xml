@@ -49,9 +49,28 @@
     <!-- About Screen -->
     <string name="about">关于</string>
     <string name="version">版本</string>
+    <string name="version_name">版本 2.0.0</string>
+    <string name="app_slogan">您的短信，由您掌控</string>
+    <string name="machine_code">设备机器码</string>
+    <string name="copy_machine_code">复制机器码</string>
+    <string name="machine_code_usage">请使用此代码向作者请求激活</string>
+    <string name="android_id">Android ID：</string>
+    <string name="device_model">设备型号：</string>
     <string name="features">功能特性</string>
+    <string name="feature_dual_sim">• 双卡双待支持</string>
+    <string name="feature_custom_smtp">• 自定义SMTP配置</string>
+    <string name="feature_email_template">• 邮件模板与变量</string>
+    <string name="feature_config_import_export">• 配置导入导出</string>
+    <string name="feature_background_service">• 后台服务保活</string>
+    <string name="feature_no_root">• 无需Root权限</string>
+    <string name="feature_material_design">• Material Design 3 界面</string>
     <string name="developed_by">开发者</string>
+    <string name="company_name_full">Flumenis LLC</string>
+    <string name="company_location">特拉华州，美国</string>
     <string name="privacy_permissions">隐私与权限</string>
+    <string name="privacy_description">此应用需要短信和网络权限以转发消息。所有数据直接发送至您配置的邮件服务器。我们不会收集或向第三方存储任何数据。</string>
+    <string name="copyright">© 2025 Flumenis LLC. 保留所有权利。</string>
+    <string name="back">返回</string>
 
     <!-- Call Log -->
     <string name="call_log_monitoring">通话记录监控</string>
@@ -73,4 +92,17 @@
     <string name="premium_features">高级功能</string>
     <string name="subscribe">订阅</string>
     <string name="upgrade_to_premium">升级到高级版</string>
+
+    <!-- Log Viewer -->
+    <string name="send_logs">发送日志</string>
+    <string name="clear_all_logs">清除所有日志</string>
+    <string name="previous_day">前一天</string>
+    <string name="today">今天</string>
+    <string name="next_day">后一天</string>
+    <string name="success">成功</string>
+    <string name="failed">失败</string>
+    <string name="logs_total">日志（共 %1$d 条）</string>
+    <string name="no_logs_for_date">该日期无日志记录</string>
+    <string name="sim_slot">SIM%1$d</string>
+    <string name="machine_code_copied">机器码已复制到剪贴板</string>
 </resources>

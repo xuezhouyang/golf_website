@@ -16,7 +16,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.flumenis.sms2email.R
 import com.flumenis.sms2email.security.ActivationManager
 import kotlinx.coroutines.launch
 
@@ -34,10 +36,10 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("About") },
+                title = { Text(stringResource(R.string.about)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -56,20 +58,20 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = "PostaFide",
+                text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.displaySmall,
                 textAlign = TextAlign.Center
             )
 
             Text(
-                text = "Your SMS, Your Control",
+                text = stringResource(R.string.app_slogan),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center
             )
 
             Text(
-                text = "Version 2.0.0",
+                text = stringResource(R.string.version_name),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -93,7 +95,7 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Device Machine Code",
+                            text = stringResource(R.string.machine_code),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
@@ -101,20 +103,20 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
                             onClick = {
                                 clipboardManager.setText(AnnotatedString("${deviceInfo.deviceId}-${deviceInfo.deviceModel}"))
                                 scope.launch {
-                                    snackbarHostState.showSnackbar("Machine code copied to clipboard")
+                                    snackbarHostState.showSnackbar(context.getString(R.string.machine_code_copied))
                                 }
                             }
                         ) {
                             Icon(
                                 Icons.Default.ContentCopy,
-                                contentDescription = "Copy machine code",
+                                contentDescription = stringResource(R.string.copy_machine_code),
                                 tint = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                         }
                     }
 
                     Text(
-                        text = "Use this code when requesting activation from the author",
+                        text = stringResource(R.string.machine_code_usage),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
@@ -129,7 +131,7 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
                             verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Text(
-                                text = "Android ID:",
+                                text = stringResource(R.string.android_id),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -142,7 +144,7 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
                             Spacer(modifier = Modifier.height(8.dp))
 
                             Text(
-                                text = "Device Model:",
+                                text = stringResource(R.string.device_model),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -162,16 +164,16 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "Features",
+                        text = stringResource(R.string.features),
                         style = MaterialTheme.typography.titleMedium
                     )
-                    Text("• Dual SIM support")
-                    Text("• Custom SMTP configuration")
-                    Text("• Email template with variables")
-                    Text("• Configuration import/export")
-                    Text("• Background service with keep-alive")
-                    Text("• No root required")
-                    Text("• Material Design 3 UI")
+                    Text(stringResource(R.string.feature_dual_sim))
+                    Text(stringResource(R.string.feature_custom_smtp))
+                    Text(stringResource(R.string.feature_email_template))
+                    Text(stringResource(R.string.feature_config_import_export))
+                    Text(stringResource(R.string.feature_background_service))
+                    Text(stringResource(R.string.feature_no_root))
+                    Text(stringResource(R.string.feature_material_design))
                 }
             }
 
@@ -181,15 +183,15 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "Developed by",
+                        text = stringResource(R.string.developed_by),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        text = "Flumenis LLC",
+                        text = stringResource(R.string.company_name_full),
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Text(
-                        text = "Delaware, USA",
+                        text = stringResource(R.string.company_location),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -202,18 +204,18 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "Privacy & Permissions",
+                        text = stringResource(R.string.privacy_permissions),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
-                        text = "This app requires SMS and internet permissions to forward messages. All data is sent directly to your configured email server. No data is collected or stored by third parties.",
+                        text = stringResource(R.string.privacy_description),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
 
             Text(
-                text = "© 2025 Flumenis LLC. All rights reserved.",
+                text = stringResource(R.string.copyright),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
