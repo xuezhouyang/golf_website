@@ -3,7 +3,7 @@ package com.flumenis.sms2email.sync
 import android.content.Context
 import android.util.Log
 import com.flumenis.sms2email.data.AppConfig
-import com.flumenis.sms2email.security.InviteCodeManager
+import com.flumenis.sms2email.security.ActivationManager
 import com.flumenis.sms2email.util.ConfigManager
 import com.flumenis.sms2email.util.RetryPolicy
 import com.flumenis.sms2email.util.retryWithPolicy
@@ -31,7 +31,7 @@ import java.io.IOException
  */
 class CloudSyncManager(private val context: Context) {
 
-    private val inviteCodeManager = InviteCodeManager(context)
+    private val activationManager = ActivationManager(context)
     private val configManager = ConfigManager(context)
     private val gson = Gson()
     private val client = OkHttpClient()
@@ -42,10 +42,10 @@ class CloudSyncManager(private val context: Context) {
     }
 
     /**
-     * Check if premium is activated
+     * Check if activated
      */
-    private fun checkPremium(): Boolean {
-        return inviteCodeManager.isActivated()
+    private fun checkActivated(): Boolean {
+        return activationManager.isActivated()
     }
 
     /**
@@ -57,8 +57,8 @@ class CloudSyncManager(private val context: Context) {
         accessToken: String
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
-            if (!checkPremium()) {
-                return@withContext Result.failure(Exception("Cloud sync requires premium subscription"))
+            if (!checkActivated()) {
+                return@withContext Result.failure(Exception("Cloud sync requires activation"))
             }
 
             return@withContext when (provider) {
@@ -80,8 +80,8 @@ class CloudSyncManager(private val context: Context) {
         accessToken: String
     ): Result<AppConfig> = withContext(Dispatchers.IO) {
         try {
-            if (!checkPremium()) {
-                return@withContext Result.failure(Exception("Cloud sync requires premium subscription"))
+            if (!checkActivated()) {
+                return@withContext Result.failure(Exception("Cloud sync requires activation"))
             }
 
             return@withContext when (provider) {

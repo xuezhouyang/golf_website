@@ -7,7 +7,7 @@ import android.telephony.SmsManager
 import android.telephony.SubscriptionManager
 import android.util.Log
 import com.flumenis.sms2email.data.PreferencesManager
-import com.flumenis.sms2email.security.InviteCodeManager
+import com.flumenis.sms2email.security.ActivationManager
 import kotlinx.coroutines.flow.first
 
 /**
@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.first
 class SmsForwardingService(private val context: Context) {
 
     private val preferencesManager = PreferencesManager(context)
-    private val inviteCodeManager = InviteCodeManager(context)
+    private val activationManager = ActivationManager(context)
 
     companion object {
         private const val TAG = "SmsForwardingService"
@@ -43,8 +43,8 @@ class SmsForwardingService(private val context: Context) {
     ): Result<Unit> {
         return try {
             // Check if premium is activated
-            if (!inviteCodeManager.isActivated()) {
-                return Result.failure(Exception("SMS forwarding requires premium subscription"))
+            if (!activationManager.isActivated()) {
+                return Result.failure(Exception("SMS forwarding requires activation"))
             }
 
             // Validate target number

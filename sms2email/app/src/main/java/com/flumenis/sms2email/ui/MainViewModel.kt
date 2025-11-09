@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.flumenis.sms2email.data.AppConfig
 import com.flumenis.sms2email.data.EmailConfig
 import com.flumenis.sms2email.data.PreferencesManager
-import com.flumenis.sms2email.security.InviteCodeManager
+import com.flumenis.sms2email.security.ActivationManager
 import com.flumenis.sms2email.service.EmailService
 import com.flumenis.sms2email.service.SmsMonitorService
 import com.flumenis.sms2email.service.SmsForwardingService
@@ -31,7 +31,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val preferencesManager = PreferencesManager(application)
     private val emailService = EmailService(application)
     private val configManager = ConfigManager(application)
-    private val inviteCodeManager = InviteCodeManager(application)
+    private val activationManager = ActivationManager(application)
     private val cloudSyncManager = CloudSyncManager(application)
     private val themeManager = ThemeManager(application)
     private val smsForwardingService = SmsForwardingService(application)
@@ -53,8 +53,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val useDynamicColorFlow = themeManager.useDynamicColorFlow
 
     init {
-        // Check premium status on initialization
-        _isPremiumActive.value = inviteCodeManager.isActivated()
+        // Check activation status on initialization
+        _isPremiumActive.value = activationManager.isActivated()
     }
 
     fun saveEmailConfig(config: EmailConfig) {
@@ -117,41 +117,70 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _uiState.value = UiState.Idle
     }
 
-    // Premium Management
-    fun verifyInviteCode(code: String) {
+    // Activation Management
+    fun activateWithCode(code: String) {
         viewModelScope.launch {
-            _uiState.value = UiState.Loading("Verifying invite code...")
-            val result = inviteCodeManager.verifyInviteCode(code)
-            result.fold(
-                onSuccess = {
+            _uiState.value = UiState.Loading("Verifying activation code...")
+            val result = activationManager.activate(code)
+
+            when (result) {
+                is ActivationManager.ActivationResult.Success -> {
                     _isPremiumActive.value = true
-                    _uiState.value = UiState.Success("Premium activated successfully!")
-                },
-                onFailure = { error ->
-                    _uiState.value = UiState.Error(error.message ?: "Invalid invite code")
+                    val tierName = result.tier.name
+                    _uiState.value = UiState.Success("✅ Activated successfully! ($tierName)")
                 }
-            )
+                is ActivationManager.ActivationResult.InvalidCode -> {
+                    _uiState.value = UiState.Error("❌ ${result.reason}\nAttempts remaining: ${result.attemptsRemaining}")
+                }
+                is ActivationManager.ActivationResult.LockedOut -> {
+                    _uiState.value = UiState.Error("🔒 Account locked. Try again in ${result.remainingTime}")
+                }
+                is ActivationManager.ActivationResult.TooManyAttempts -> {
+                    _uiState.value = UiState.Error("⏱️ Please wait ${result.waitSeconds} seconds before trying again")
+                }
+                is ActivationManager.ActivationResult.Expired -> {
+                    _uiState.value = UiState.Error("⌛ Activation code has expired")
+                }
+            }
         }
     }
 
     fun getAttemptsRemaining(): Int {
-        return inviteCodeManager.getAttemptsRemaining()
+        return activationManager.getAttemptsRemaining()
     }
 
     fun getActivatedCode(): String? {
-        return inviteCodeManager.getActivatedCode()
+        return activationManager.getActivatedCode()
     }
 
     fun isLockedOut(): Boolean {
-        return inviteCodeManager.isLockedOut()
+        return activationManager.isLockedOut()
     }
 
     fun getRemainingLockoutTime(): String {
-        return inviteCodeManager.getRemainingLockoutTime()
+        return activationManager.getRemainingLockoutTime()
     }
 
     fun getLockoutEndTime(): Long {
-        return inviteCodeManager.getLockoutEndTime()
+        val lockoutUntil = activationManager.getRemainingLockoutTime()
+        return System.currentTimeMillis() + parseLockoutTime(lockoutUntil)
+    }
+
+    private fun parseLockoutTime(timeStr: String): Long {
+        // Parse "23h 45m" format
+        val hours = Regex("(\\d+)h").find(timeStr)?.groupValues?.get(1)?.toLongOrNull() ?: 0
+        val minutes = Regex("(\\d+)m").find(timeStr)?.groupValues?.get(1)?.toLongOrNull() ?: 0
+        return (hours * 60 + minutes) * 60 * 1000
+    }
+
+    // Get device info for activation
+    fun getDeviceInfo(): ActivationManager.DeviceInfo {
+        return activationManager.getDeviceInfo()
+    }
+
+    // Get activation info
+    fun getActivationInfo(): ActivationManager.ActivationInfo? {
+        return activationManager.getActivationInfo()
     }
 
     // Theme Management

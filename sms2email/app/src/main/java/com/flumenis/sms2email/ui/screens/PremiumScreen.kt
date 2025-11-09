@@ -13,6 +13,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -33,11 +36,13 @@ fun PremiumScreen(
 ) {
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
 
-    var inviteCode by remember { mutableStateOf("") }
+    var activationCode by remember { mutableStateOf("") }
     var verificationResult by remember { mutableStateOf<String?>(null) }
     var isLockedOut by remember { mutableStateOf(false) }
     var lockoutTimeRemaining by remember { mutableStateOf("") }
+    var showDeviceInfo by remember { mutableStateOf(false) }
 
     // Collect states from ViewModel
     val isPremium by viewModel.isPremiumActive.collectAsStateWithLifecycle()
@@ -46,11 +51,11 @@ fun PremiumScreen(
         derivedStateOf { viewModel.getAttemptsRemaining() }
     }
 
-    // Check premium status and get activated code on launch
+    // Get device info
+    val deviceInfo = remember { viewModel.getDeviceInfo() }
+
+    // Check activation status on launch
     LaunchedEffect(Unit) {
-        viewModel.getActivatedCode()?.let { code ->
-            inviteCode = code
-        }
         isLockedOut = viewModel.isLockedOut()
         lockoutTimeRemaining = viewModel.getRemainingLockoutTime()
     }
@@ -139,7 +144,7 @@ fun PremiumScreen(
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = if (isPremium) "Change Invite Code" else "Enter Invite Code",
+                        text = if (isPremium) "Change Activation Code" else "Enter Activation Code",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -147,7 +152,7 @@ fun PremiumScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "Default codes: ONEDAY, FLUMENIS, WELCOME2025",
+                        text = "Please contact the author to obtain an activation code",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -155,17 +160,18 @@ fun PremiumScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     OutlinedTextField(
-                        value = inviteCode,
+                        value = activationCode,
                         onValueChange = {
-                            inviteCode = it.uppercase()
+                            activationCode = it.uppercase().replace(" ", "")
                             verificationResult = null
                         },
-                        label = { Text("Invite Code") },
+                        label = { Text("Activation Code") },
+                        placeholder = { Text("XXXXX-XXXXX-XXXXX-XXXXX-XXXXX") },
                         modifier = Modifier.fillMaxWidth(),
                         enabled = !isLockedOut && attemptsRemaining > 0,
                         singleLine = true,
                         leadingIcon = {
-                            Icon(Icons.Default.Key, "Invite Code")
+                            Icon(Icons.Default.Key, "Activation")
                         }
                     )
 
@@ -223,10 +229,10 @@ fun PremiumScreen(
                     Button(
                         onClick = {
                             verificationResult = null
-                            viewModel.verifyInviteCode(inviteCode)
+                            viewModel.activateWithCode(activationCode)
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = inviteCode.isNotBlank() && !isLoading && !isLockedOut && attemptsRemaining > 0
+                        enabled = activationCode.isNotBlank() && !isLoading && !isLockedOut && attemptsRemaining > 0
                     ) {
                         if (isLoading) {
                             CircularProgressIndicator(

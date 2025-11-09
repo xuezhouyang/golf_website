@@ -54,33 +54,36 @@ object ValidationUtils {
     }
 
     /**
-     * Validate invite code format
+     * Validate activation code format
+     * Format: XXXXX-XXXXX-XXXXX-XXXXX-XXXXX
+     * Uses custom alphabet without confusing characters (0, O, 1, I removed)
      */
-    fun isValidInviteCodeFormat(code: String): Boolean {
+    fun isValidActivationCodeFormat(code: String): Boolean {
         if (code.isBlank()) return false
 
-        // Check for default codes
-        val defaultCodes = setOf("ONEDAY", "FLUMENIS", "WELCOME2025")
-        if (code.uppercase() in defaultCodes) return true
+        // Remove any spaces and convert to uppercase
+        val cleaned = code.trim().uppercase().replace(" ", "")
 
-        // Check for signed code format: CODE-YYYYMMDD-SIGNATURE
-        val parts = code.split("-")
-        if (parts.size != 3) return false
+        // Check format: XXXXX-XXXXX-XXXXX-XXXXX-XXXXX
+        val parts = cleaned.split("-")
+        if (parts.size != 5) return false
 
-        val codeName = parts[0]
-        val dateStr = parts[1]
-        val signature = parts[2]
+        // Each part must be exactly 5 characters
+        if (parts.any { it.length != 5 }) return false
 
-        // Validate code name (alphanumeric, 3-20 chars)
-        if (!codeName.matches(Regex("^[A-Z0-9]{3,20}$"))) return false
+        // Valid characters: A-Z (except I, O) and 2-9 (no 0, 1)
+        val validAlphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+        return parts.all { part ->
+            part.all { char -> char in validAlphabet }
+        }
+    }
 
-        // Validate date format (YYYYMMDD)
-        if (!dateStr.matches(Regex("^\\d{8}$"))) return false
-
-        // Validate signature (base64url, at least 16 chars)
-        if (signature.length < 16) return false
-
-        return true
+    /**
+     * Validate invite code format (deprecated - use isValidActivationCodeFormat)
+     */
+    @Deprecated("Use isValidActivationCodeFormat instead")
+    fun isValidInviteCodeFormat(code: String): Boolean {
+        return isValidActivationCodeFormat(code)
     }
 
     /**
@@ -129,7 +132,8 @@ object ValidationUtils {
         const val INVALID_PHONE = "Invalid phone number format (use international format: +1234567890)"
         const val INVALID_HOST = "Invalid SMTP host (use domain name or IP address)"
         const val INVALID_PORT = "Invalid port number (must be 1-65535)"
-        const val INVALID_INVITE_CODE = "Invalid invite code format"
+        const val INVALID_ACTIVATION_CODE = "Invalid activation code format (expected: XXXXX-XXXXX-XXXXX-XXXXX-XXXXX)"
+        const val INVALID_INVITE_CODE = "Invalid activation code format (expected: XXXXX-XXXXX-XXXXX-XXXXX-XXXXX)"
         const val INVALID_OAUTH_TOKEN = "Invalid OAuth token (minimum 20 characters)"
         const val EMPTY_FIELD = "This field cannot be empty"
         const val INVALID_TEMPLATE = "Template must contain \${sender} or \${message} placeholder"

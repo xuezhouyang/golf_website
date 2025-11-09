@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS2Email 激活码生成器 - 作者专用</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-copy {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            background: #059669;
+        }
+
+        .btn-batch {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-batch:hover {
+            background: #d97706;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .result h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .activation-code {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: bold;
+            color: #1f2937;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            text-align: center;
+            letter-spacing: 2px;
+            user-select: all;
+            margin-bottom: 15px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .info-item {
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .batch-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .batch-code {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            padding: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .warning {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #92400e;
+        }
+
+        .warning strong {
+            color: #b45309;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 SMS2Email 激活码生成器</h1>
+        <p class="subtitle">作者专用工具 - 请勿泄露</p>
+
+        <div class="warning">
+            <strong>⚠️ 重要提示：</strong><br>
+            1. 此工具仅供作者使用，请妥善保管<br>
+            2. 每个激活码绑定设备，无法转移<br>
+            3. 生成后请立即提供给用户激活<br>
+            4. 主密钥已硬编码，切勿修改
+        </div>
+
+        <div class="form-group">
+            <label for="deviceId">设备ID (Android ID):</label>
+            <input type="text" id="deviceId" placeholder="例如: 9774d56d682e549c" />
+        </div>
+
+        <div class="form-group">
+            <label for="deviceModel">设备型号 (Build.MODEL):</label>
+            <input type="text" id="deviceModel" placeholder="例如: samsung_SM-G998B" />
+        </div>
+
+        <div class="form-group">
+            <label for="subscriptionTier">订阅类型:</label>
+            <select id="subscriptionTier">
+                <option value="1">试用1天 (TRIAL_1_DAY)</option>
+                <option value="2">试用7天 (TRIAL_7_DAY)</option>
+                <option value="3">月度订阅 (MONTHLY)</option>
+                <option value="4">年度订阅 (YEARLY)</option>
+                <option value="9" selected>永久订阅 (PERMANENT)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="batchCount">批量生成数量 (用于不同设备):</label>
+            <input type="number" id="batchCount" value="1" min="1" max="100" />
+        </div>
+
+        <div class="button-group">
+            <button class="btn-generate" onclick="generateCode()">🎫 生成激活码</button>
+            <button class="btn-copy" onclick="copyCode()">📋 复制激活码</button>
+        </div>
+
+        <div id="result" class="result" style="display: none;">
+            <h3>✅ 激活码生成成功</h3>
+            <div class="activation-code" id="activationCode"></div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">设备ID</div>
+                    <div class="info-value" id="infoDeviceId"></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">设备型号</div>
+                    <div class="info-value" id="infoDeviceModel"></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">订阅类型</div>
+                    <div class="info-value" id="infoTier"></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">生成时间</div>
+                    <div class="info-value" id="infoGenTime"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="batchResult" class="batch-result" style="display: none;"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+        const MASTER_KEY = "SMS2EMAIL_MASTER_SECRET_KEY_2025";
+        const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+        const SUBSCRIPTION_TIERS = {
+            1: { name: "试用1天", days: 1 },
+            2: { name: "试用7天", days: 7 },
+            3: { name: "月度订阅", days: 30 },
+            4: { name: "年度订阅", days: 365 },
+            9: { name: "永久订阅", days: 999999 }
+        };
+
+        function calculateDeviceFingerprint(deviceId, deviceModel) {
+            const combined = `${deviceId}|${deviceModel}`.toLowerCase();
+            const hash = CryptoJS.SHA256(combined);
+            const hashArray = hash.words;
+            return hashArray[0];
+        }
+
+        function calculateHMAC(data, key) {
+            const hmac = CryptoJS.HmacSHA256(CryptoJS.lib.WordArray.create(data), key);
+            return Array.from({ length: 32 }, (_, i) => (hmac.words[i >> 2] >> (24 - (i % 4) * 8)) & 0xFF);
+        }
+
+        function base32Encode(data) {
+            let result = '';
+            let buffer = 0;
+            let bitsLeft = 0;
+
+            for (let byte of data) {
+                buffer = (buffer << 8) | (byte & 0xFF);
+                bitsLeft += 8;
+
+                while (bitsLeft >= 5) {
+                    const index = (buffer >> (bitsLeft - 5)) & 0x1F;
+                    result += ALPHABET[index];
+                    bitsLeft -= 5;
+                }
+            }
+
+            if (bitsLeft > 0) {
+                const index = (buffer << (5 - bitsLeft)) & 0x1F;
+                result += ALPHABET[index];
+            }
+
+            return result;
+        }
+
+        function generateActivationCode(deviceId, deviceModel, tierCode, issuedDate = null) {
+            if (!issuedDate) {
+                issuedDate = Math.floor(Date.now() / 1000);
+            }
+
+            const deviceFingerprint = calculateDeviceFingerprint(deviceId, deviceModel);
+            const issuedDays = Math.floor(issuedDate / 86400);
+
+            // 构建数据块
+            const buffer = new Uint8Array(20);
+            buffer[0] = 1; // 版本号
+            buffer[1] = tierCode; // 订阅类型
+
+            // 发布日期（天数）
+            buffer[2] = (issuedDays >> 24) & 0xFF;
+            buffer[3] = (issuedDays >> 16) & 0xFF;
+            buffer[4] = (issuedDays >> 8) & 0xFF;
+            buffer[5] = issuedDays & 0xFF;
+
+            // 设备指纹
+            buffer[6] = (deviceFingerprint >> 24) & 0xFF;
+            buffer[7] = (deviceFingerprint >> 16) & 0xFF;
+            buffer[8] = (deviceFingerprint >> 8) & 0xFF;
+            buffer[9] = deviceFingerprint & 0xFF;
+
+            // 计算HMAC签名
+            const hmac = calculateHMAC(buffer.slice(0, 10), MASTER_KEY);
+            buffer.set(hmac.slice(0, 11), 9);
+
+            // Base32编码
+            const encoded = base32Encode(buffer);
+
+            // 格式化为 XXXXX-XXXXX-XXXXX-XXXXX-XXXXX
+            return encoded.match(/.{1,5}/g).join('-');
+        }
+
+        function generateCode() {
+            const deviceId = document.getElementById('deviceId').value.trim();
+            const deviceModel = document.getElementById('deviceModel').value.trim();
+            const tierCode = parseInt(document.getElementById('subscriptionTier').value);
+            const batchCount = parseInt(document.getElementById('batchCount').value);
+
+            if (!deviceId || !deviceModel) {
+                alert('请填写设备ID和设备型号！');
+                return;
+            }
+
+            if (batchCount > 1) {
+                generateBatchCodes(deviceId, deviceModel, tierCode, batchCount);
+                return;
+            }
+
+            const code = generateActivationCode(deviceId, deviceModel, tierCode);
+            const tierName = SUBSCRIPTION_TIERS[tierCode].name;
+
+            document.getElementById('activationCode').textContent = code;
+            document.getElementById('infoDeviceId').textContent = deviceId.substring(0, 8) + '...';
+            document.getElementById('infoDeviceModel').textContent = deviceModel;
+            document.getElementById('infoTier').textContent = tierName;
+            document.getElementById('infoGenTime').textContent = new Date().toLocaleString('zh-CN');
+
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('batchResult').style.display = 'none';
+        }
+
+        function generateBatchCodes(baseDeviceId, baseDeviceModel, tierCode, count) {
+            const codes = [];
+            const tierName = SUBSCRIPTION_TIERS[tierCode].name;
+
+            for (let i = 0; i < count; i++) {
+                const deviceId = `${baseDeviceId}_${i.toString().padStart(4, '0')}`;
+                const code = generateActivationCode(deviceId, baseDeviceModel, tierCode);
+                codes.push({ deviceId, code });
+            }
+
+            let html = `<h3>📦 批量生成成功 (${count}个激活码 - ${tierName})</h3>`;
+            codes.forEach(({ deviceId, code }, index) => {
+                html += `<div class="batch-code">${index + 1}. ${code} (${deviceId})</div>`;
+            });
+
+            document.getElementById('batchResult').innerHTML = html;
+            document.getElementById('batchResult').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+        }
+
+        function copyCode() {
+            const codeElement = document.getElementById('activationCode');
+            const code = codeElement.textContent;
+
+            if (!code) {
+                alert('请先生成激活码！');
+                return;
+            }
+
+            navigator.clipboard.writeText(code).then(() => {
+                alert('✅ 激活码已复制到剪贴板！');
+            }).catch(err => {
+                alert('❌ 复制失败：' + err);
+            });
+        }
+
+        // 自动填充示例（仅用于测试）
+        window.onload = function() {
+            if (window.location.search.includes('demo')) {
+                document.getElementById('deviceId').value = '9774d56d682e549c';
+                document.getElementById('deviceModel').value = 'samsung_SM-G998B';
+            }
+        };
+    </script>
+</body>
+</html>
