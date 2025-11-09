@@ -4,6 +4,165 @@ This document records important experiences and lessons learned during the devel
 
 ---
 
+## 2025-11-09 (Session 3): 性能和构建优化
+
+### Context
+根据用户要求"全部优化吧"，对应用进行全面的性能和构建优化。
+
+### Optimizations Implemented
+
+#### 1. 清理 PendingIntent 冗余代码
+
+**Problem**: KeepAliveManager 中存在冗余的版本检查
+
+**Location**: `KeepAliveManager.kt:74-75`
+
+**Incorrect Code**:
+```kotlin
+val pendingIntent = PendingIntent.getBroadcast(
+    context,
+    ALARM_REQUEST_CODE,
+    intent,
+    PendingIntent.FLAG_UPDATE_CURRENT or
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+)
+```
+
+**Root Cause**:
+- 检查 `Build.VERSION_CODES.M` (API 23)
+- 但项目 `minSdk = 24`，永远运行在 API 24+
+- 条件检查永远为 true，造成代码冗余
+
+**Solution**:
+```kotlin
+val pendingIntent = PendingIntent.getBroadcast(
+    context,
+    ALARM_REQUEST_CODE,
+    intent,
+    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+)
+```
+
+**Lesson**:
+- 根据 minSdk 简化版本检查
+- 移除永远为 true 的条件判断
+- 提高代码可读性和维护性
+
+---
+
+#### 2. Gradle 构建性能优化
+
+**Optimizations Added**: `gradle.properties`
+
+```properties
+# Build performance optimizations
+org.gradle.caching=true                 # 启用构建缓存
+org.gradle.parallel=true                # 启用并行构建
+org.gradle.configureondemand=true       # 按需配置
+
+# Kotlin compilation optimizations
+kotlin.incremental=true                 # Kotlin 增量编译
+kotlin.caching.enabled=true            # Kotlin 缓存
+```
+
+**Benefits**:
+- **增量构建**：只重新编译修改的模块
+- **并行构建**：多核 CPU 并行处理
+- **构建缓存**：复用之前的构建结果
+- **预期提速**：30-50% 构建时间减少（视硬件而定）
+
+**Impact**:
+- 本地开发：更快的构建反馈循环
+- CI/CD：更快的持续集成
+- 团队协作：共享构建缓存（需配置远程缓存服务器）
+
+---
+
+#### 3. ProGuard/R8 优化
+
+**Optimizations Added**: `proguard-rules.pro`
+
+```proguard
+# Build performance optimization
+-dontpreverify
+
+# Aggressive optimizations (safe for modern Android)
+-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+```
+
+**Explanation**:
+- `-dontpreverify`: 跳过预验证（Android 运行时不需要）
+- `-optimizations`: 排除某些可能破坏反射的优化
+- 保留现有的 5 次优化遍历 (`-optimizationpasses 5`)
+
+**Benefits**:
+- 更快的 Release 构建
+- 略小的 APK 体积
+- 保持代码混淆和安全性
+
+**Trade-offs**:
+- 某些边缘情况的优化被禁用
+- 但避免了反射和序列化问题
+
+---
+
+#### 4. 依赖库分析
+
+**Checked**: 所有依赖已是 AndroidX 或纯 Java/Kotlin 库
+
+**Jetifier Status**:
+- 检查结果：无 `android.support.*` 依赖
+- 决定：暂时保留 `android.enableJetifier=true`
+- 原因：某些传递依赖可能需要
+
+**JSch Status**:
+- 版本：0.1.55 (2017年，已停止维护)
+- 使用场景：SSH/SFTP 同步（高级功能）
+- 决定：暂不迁移
+- 原因：
+  - 迁移到 SSHJ/Apache MINA SSHD 需要大量重写
+  - 需要完整的功能测试
+  - 当前版本仍可工作
+  - 可作为未来改进项
+
+---
+
+### Performance Impact Summary
+
+| 优化项 | 预期效果 | 适用场景 |
+|--------|---------|---------|
+| Gradle 并行构建 | 构建时间 -30~50% | 多核 CPU 开发机 |
+| Gradle 构建缓存 | 增量构建更快 | 频繁小改动 |
+| Kotlin 增量编译 | Kotlin 编译更快 | 大型 Kotlin 项目 |
+| ProGuard 优化 | Release 构建稍快 | CI/CD 发布流程 |
+| 代码简化 | 略微减小体积 | APK 大小敏感场景 |
+
+---
+
+### Future Improvements (Not Implemented)
+
+1. **JSch → SSHJ 迁移**
+   - 需要重写 SSHSyncManager.kt
+   - 需要完整的 SSH/SFTP 功能测试
+   - 优点：更现代的 API，持续维护
+   - 工作量：中等（~200 行代码）
+
+2. **移除 Jetifier**
+   - 前提：确认所有传递依赖都是 AndroidX
+   - 测试：完整的功能测试
+   - 优点：略微加快构建速度
+
+3. **Compose 性能优化**
+   - 使用 `remember`、`derivedStateOf` 优化重组
+   - 添加 `key()` 优化列表
+   - 需要性能分析工具辅助
+
+---
+
+**Commit**: `ce83ec4`
+
+---
+
 ## 2025-11-09 (Session 2): Gradle 8 API 兼容性排查
 
 ### Context
