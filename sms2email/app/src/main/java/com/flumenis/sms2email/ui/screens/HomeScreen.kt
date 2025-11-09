@@ -37,10 +37,8 @@ fun HomeScreen(
 ) {
     val emailConfig by viewModel.emailConfig.collectAsStateWithLifecycle(initialValue = null)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isPremium by viewModel.isPremiumActive.collectAsStateWithLifecycle()
     val context = LocalContext.current
-
-    // Mock premium status - TODO: Get from viewModel
-    var isPremium by remember { mutableStateOf(false) }
 
     val exportLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/json")
@@ -135,7 +133,7 @@ fun HomeScreen(
                     QuickActionCard(
                         icon = Icons.Default.Cloud,
                         label = "Cloud Sync",
-                        onClick = onNavigateToCloudSync,
+                        onClick = if (isPremium) onNavigateToCloudSync else onNavigateToPremium,
                         isPremium = true,
                         isLocked = !isPremium,
                         modifier = Modifier.weight(1f)
@@ -144,7 +142,7 @@ fun HomeScreen(
                     QuickActionCard(
                         icon = Icons.Default.PhoneForwarded,
                         label = "SMS Forward",
-                        onClick = onNavigateToSmsForwarding,
+                        onClick = if (isPremium) onNavigateToSmsForwarding else onNavigateToPremium,
                         isPremium = true,
                         isLocked = !isPremium,
                         modifier = Modifier.weight(1f)
@@ -359,9 +357,8 @@ fun QuickActionCard(
     )
 
     OutlinedCard(
-        onClick = if (!isLocked) onClick else ({}),
+        onClick = onClick,
         modifier = modifier.scale(scale),
-        enabled = !isLocked,
         colors = if (isPremium) {
             CardDefaults.outlinedCardColors(
                 containerColor = if (isLocked)

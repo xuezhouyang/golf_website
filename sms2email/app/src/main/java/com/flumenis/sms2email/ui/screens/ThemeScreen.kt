@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flumenis.sms2email.ui.MainViewModel
 import com.flumenis.sms2email.ui.theme.AccentColor
@@ -35,16 +36,10 @@ fun ThemeScreen(
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
-    var selectedThemeMode by remember { mutableStateOf(ThemeMode.AUTO) }
-    var selectedAccentColor by remember { mutableStateOf(AccentColor.TEAL) }
-    var useDynamicColor by remember { mutableStateOf(true) }
-
-    LaunchedEffect(Unit) {
-        // TODO: Load from ThemeManager
-        // selectedThemeMode = viewModel.getThemeMode()
-        // selectedAccentColor = viewModel.getAccentColor()
-        // useDynamicColor = viewModel.getUseDynamicColor()
-    }
+    // Collect theme settings from ViewModel
+    val selectedThemeMode by viewModel.themeModeFlow.collectAsStateWithLifecycle(initialValue = ThemeMode.AUTO)
+    val selectedAccentColor by viewModel.accentColorFlow.collectAsStateWithLifecycle(initialValue = AccentColor.TEAL)
+    val useDynamicColor by viewModel.useDynamicColorFlow.collectAsStateWithLifecycle(initialValue = true)
 
     Scaffold(
         topBar = {
@@ -91,10 +86,7 @@ fun ThemeScreen(
                 icon = Icons.Default.LightMode,
                 isSelected = selectedThemeMode == ThemeMode.LIGHT,
                 onClick = {
-                    selectedThemeMode = ThemeMode.LIGHT
-                    scope.launch {
-                        // TODO: viewModel.setThemeMode(ThemeMode.LIGHT)
-                    }
+                    viewModel.setThemeMode(ThemeMode.LIGHT)
                 }
             )
 
@@ -108,10 +100,7 @@ fun ThemeScreen(
                 icon = Icons.Default.DarkMode,
                 isSelected = selectedThemeMode == ThemeMode.DARK,
                 onClick = {
-                    selectedThemeMode = ThemeMode.DARK
-                    scope.launch {
-                        // TODO: viewModel.setThemeMode(ThemeMode.DARK)
-                    }
+                    viewModel.setThemeMode(ThemeMode.DARK)
                 }
             )
 
@@ -125,10 +114,7 @@ fun ThemeScreen(
                 icon = Icons.Default.Brightness4,
                 isSelected = selectedThemeMode == ThemeMode.AUTO,
                 onClick = {
-                    selectedThemeMode = ThemeMode.AUTO
-                    scope.launch {
-                        // TODO: viewModel.setThemeMode(ThemeMode.AUTO)
-                    }
+                    viewModel.setThemeMode(ThemeMode.AUTO)
                 }
             )
 
@@ -191,10 +177,7 @@ fun ThemeScreen(
                     Switch(
                         checked = useDynamicColor,
                         onCheckedChange = {
-                            useDynamicColor = it
-                            scope.launch {
-                                // TODO: viewModel.setUseDynamicColor(it)
-                            }
+                            viewModel.setUseDynamicColor(it)
                         }
                     )
                 }
@@ -234,10 +217,7 @@ fun ThemeScreen(
                             name = "Teal",
                             isSelected = selectedAccentColor == AccentColor.TEAL,
                             onClick = {
-                                selectedAccentColor = AccentColor.TEAL
-                                scope.launch {
-                                    // TODO: viewModel.setAccentColor(AccentColor.TEAL)
-                                }
+                                viewModel.setAccentColor(AccentColor.TEAL)
                             }
                         )
                         AccentColorOption(
@@ -245,10 +225,7 @@ fun ThemeScreen(
                             name = "Green",
                             isSelected = selectedAccentColor == AccentColor.GREEN,
                             onClick = {
-                                selectedAccentColor = AccentColor.GREEN
-                                scope.launch {
-                                    // TODO: viewModel.setAccentColor(AccentColor.GREEN)
-                                }
+                                viewModel.setAccentColor(AccentColor.GREEN)
                             }
                         )
                         AccentColorOption(
@@ -256,10 +233,7 @@ fun ThemeScreen(
                             name = "Blue",
                             isSelected = selectedAccentColor == AccentColor.BLUE,
                             onClick = {
-                                selectedAccentColor = AccentColor.BLUE
-                                scope.launch {
-                                    // TODO: viewModel.setAccentColor(AccentColor.BLUE)
-                                }
+                                viewModel.setAccentColor(AccentColor.BLUE)
                             }
                         )
                         AccentColorOption(
@@ -267,10 +241,7 @@ fun ThemeScreen(
                             name = "Purple",
                             isSelected = selectedAccentColor == AccentColor.PURPLE,
                             onClick = {
-                                selectedAccentColor = AccentColor.PURPLE
-                                scope.launch {
-                                    // TODO: viewModel.setAccentColor(AccentColor.PURPLE)
-                                }
+                                viewModel.setAccentColor(AccentColor.PURPLE)
                             }
                         )
                         AccentColorOption(
@@ -278,10 +249,7 @@ fun ThemeScreen(
                             name = "Orange",
                             isSelected = selectedAccentColor == AccentColor.ORANGE,
                             onClick = {
-                                selectedAccentColor = AccentColor.ORANGE
-                                scope.launch {
-                                    // TODO: viewModel.setAccentColor(AccentColor.ORANGE)
-                                }
+                                viewModel.setAccentColor(AccentColor.ORANGE)
                             }
                         )
                     }

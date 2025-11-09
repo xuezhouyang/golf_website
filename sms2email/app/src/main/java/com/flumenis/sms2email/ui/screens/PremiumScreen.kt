@@ -19,8 +19,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flumenis.sms2email.ui.MainViewModel
+import com.flumenis.sms2email.ui.UiState
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,16 +35,36 @@ fun PremiumScreen(
     val scrollState = rememberScrollState()
 
     var inviteCode by remember { mutableStateOf("") }
-    var isVerifying by remember { mutableStateOf(false) }
     var verificationResult by remember { mutableStateOf<String?>(null) }
-    var isPremium by remember { mutableStateOf(false) }
-    var attemptsRemaining by remember { mutableStateOf(10) }
 
-    // Check premium status on launch
+    // Collect states from ViewModel
+    val isPremium by viewModel.isPremiumActive.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val attemptsRemaining by remember {
+        derivedStateOf { viewModel.getAttemptsRemaining() }
+    }
+
+    // Check premium status and get activated code on launch
     LaunchedEffect(Unit) {
-        // TODO: Check premium status from InviteCodeManager
-        // isPremium = viewModel.checkPremiumStatus()
-        // attemptsRemaining = viewModel.getAttemptsRemaining()
+        viewModel.getActivatedCode()?.let { code ->
+            inviteCode = code
+        }
+    }
+
+    // Handle UI state changes
+    LaunchedEffect(uiState) {
+        when (val state = uiState) {
+            is UiState.Success -> {
+                verificationResult = state.message
+                inviteCode = ""
+                viewModel.clearUiState()
+            }
+            is UiState.Error -> {
+                verificationResult = state.message
+                viewModel.clearUiState()
+            }
+            else -> {}
+        }
     }
 
     Scaffold(
@@ -76,7 +98,7 @@ fun PremiumScreen(
             ) {
                 PremiumStatusCard(
                     isPremium = true,
-                    activatedCode = "ONEDAY"
+                    activatedCode = viewModel.getActivatedCode() ?: "UNKNOWN"
                 )
             }
 
@@ -147,31 +169,16 @@ fun PremiumScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // Verify button with loading state
+                    val isLoading = uiState is UiState.Loading
                     Button(
                         onClick = {
-                            scope.launch {
-                                isVerifying = true
-                                verificationResult = null
-
-                                // TODO: Call viewModel.verifyInviteCode(inviteCode)
-                                kotlinx.coroutines.delay(1000) // Simulate API call
-
-                                // Mock result
-                                if (inviteCode in listOf("ONEDAY", "FLUMENIS", "WELCOME2025")) {
-                                    verificationResult = "Success! Premium activated."
-                                    isPremium = true
-                                } else {
-                                    verificationResult = "Invalid invite code."
-                                    attemptsRemaining--
-                                }
-
-                                isVerifying = false
-                            }
+                            verificationResult = null
+                            viewModel.verifyInviteCode(inviteCode)
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = inviteCode.isNotBlank() && !isVerifying && attemptsRemaining > 0
+                        enabled = inviteCode.isNotBlank() && !isLoading && attemptsRemaining > 0
                     ) {
-                        if (isVerifying) {
+                        if (isLoading) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(20.dp),
                                 strokeWidth = 2.dp,

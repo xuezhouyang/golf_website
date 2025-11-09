@@ -11,7 +11,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flumenis.sms2email.ui.MainViewModel
 import kotlinx.coroutines.launch
@@ -32,21 +34,31 @@ fun SmsForwardingScreen(
 ) {
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
+    val prefs = remember { context.getSharedPreferences("sms_forwarding", android.content.Context.MODE_PRIVATE) }
 
-    var forwardingEnabled by remember { mutableStateOf(false) }
-    var targetNumber by remember { mutableStateOf("") }
-    var selectedSimSlot by remember { mutableStateOf(-1) }
-    var isPremium by remember { mutableStateOf(false) }
+    var forwardingEnabled by remember { mutableStateOf(prefs.getBoolean("enabled", false)) }
+    var targetNumber by remember { mutableStateOf(prefs.getString("target_number", "") ?: "") }
+    var selectedSimSlot by remember { mutableStateOf(prefs.getInt("sim_slot", -1)) }
     var availableSimSlots by remember { mutableStateOf<List<SimSlotData>>(emptyList()) }
 
+    // Collect premium status from ViewModel
+    val isPremium by viewModel.isPremiumActive.collectAsStateWithLifecycle()
+
     LaunchedEffect(Unit) {
-        // TODO: Load from viewModel
-        // isPremium = viewModel.checkPremiumStatus()
-        // availableSimSlots = viewModel.getAvailableSimSlots()
         availableSimSlots = listOf(
             SimSlotData(0, "China Mobile", "SIM 1", "+86 138****1234"),
             SimSlotData(1, "China Unicom", "SIM 2", "+86 186****5678")
         )
+    }
+
+    // Save configuration when changed
+    fun saveConfig() {
+        prefs.edit()
+            .putBoolean("enabled", forwardingEnabled)
+            .putString("target_number", targetNumber)
+            .putInt("sim_slot", selectedSimSlot)
+            .apply()
     }
 
     Scaffold(
@@ -117,7 +129,10 @@ fun SmsForwardingScreen(
                     }
                     Switch(
                         checked = forwardingEnabled,
-                        onCheckedChange = { forwardingEnabled = it && isPremium },
+                        onCheckedChange = {
+                            forwardingEnabled = it && isPremium
+                            saveConfig()
+                        },
                         enabled = isPremium
                     )
                 }
@@ -192,9 +207,14 @@ fun SmsForwardingScreen(
             // Save button
             Button(
                 onClick = {
+                    saveConfig()
+                    // Show confirmation
                     scope.launch {
-                        // TODO: Save forwarding config
-                        // viewModel.saveSmsForwardingConfig(targetNumber, selectedSimSlot)
+                        android.widget.Toast.makeText(
+                            context,
+                            "SMS forwarding configuration saved",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),

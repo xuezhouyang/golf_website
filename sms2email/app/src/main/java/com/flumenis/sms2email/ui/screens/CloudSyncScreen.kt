@@ -14,10 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flumenis.sms2email.sync.CloudProvider
 import com.flumenis.sms2email.ui.MainViewModel
+import com.flumenis.sms2email.ui.UiState
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,16 +34,30 @@ fun CloudSyncScreen(
     val scrollState = rememberScrollState()
 
     var selectedProvider by remember { mutableStateOf<CloudProvider?>(null) }
-    var isSyncing by remember { mutableStateOf(false) }
     var syncResult by remember { mutableStateOf<String?>(null) }
-    var isPremium by remember { mutableStateOf(false) }
     var lastSyncTime by remember { mutableStateOf<String?>(null) }
+    var accessToken by remember { mutableStateOf("") }
+    var showTokenDialog by remember { mutableStateOf(false) }
+    var pendingAction by remember { mutableStateOf<(() -> Unit)?>(null) }
 
-    // Check premium status
-    LaunchedEffect(Unit) {
-        // TODO: Check premium status
-        // isPremium = viewModel.checkPremiumStatus()
-        // lastSyncTime = viewModel.getLastSyncTime()
+    // Collect states from ViewModel
+    val isPremium by viewModel.isPremiumActive.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    // Handle UI state changes
+    LaunchedEffect(uiState) {
+        when (val state = uiState) {
+            is UiState.Success -> {
+                syncResult = state.message
+                lastSyncTime = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(Date())
+                viewModel.clearUiState()
+            }
+            is UiState.Error -> {
+                syncResult = state.message
+                viewModel.clearUiState()
+            }
+            else -> {}
+        }
     }
 
     Scaffold(
@@ -119,7 +138,7 @@ fun CloudSyncScreen(
                 title = "Google Drive",
                 description = "Sync to Google Drive with OAuth 2.0",
                 isSelected = selectedProvider == CloudProvider.GOOGLE_DRIVE,
-                isEnabled = isPremium && !isSyncing,
+                isEnabled = isPremium && !(uiState is UiState.Loading),
                 onClick = { selectedProvider = CloudProvider.GOOGLE_DRIVE }
             )
 
@@ -132,7 +151,7 @@ fun CloudSyncScreen(
                 title = "OneDrive",
                 description = "Microsoft OneDrive via Graph API",
                 isSelected = selectedProvider == CloudProvider.ONEDRIVE,
-                isEnabled = isPremium && !isSyncing,
+                isEnabled = isPremium && !(uiState is UiState.Loading),
                 onClick = { selectedProvider = CloudProvider.ONEDRIVE }
             )
 
@@ -145,13 +164,14 @@ fun CloudSyncScreen(
                 title = "GitHub Gist",
                 description = "Private Gist for configuration backup",
                 isSelected = selectedProvider == CloudProvider.GITHUB,
-                isEnabled = isPremium && !isSyncing,
+                isEnabled = isPremium && !(uiState is UiState.Loading),
                 onClick = { selectedProvider = CloudProvider.GITHUB }
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             // Sync actions
+            val isLoading = uiState is UiState.Loading
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -159,24 +179,16 @@ fun CloudSyncScreen(
                 // Backup button
                 Button(
                     onClick = {
-                        scope.launch {
-                            if (selectedProvider != null) {
-                                isSyncing = true
-                                syncResult = null
-
-                                // TODO: Call viewModel.syncToCloud(selectedProvider)
-                                kotlinx.coroutines.delay(2000)
-
-                                syncResult = "Backup successful!"
-                                lastSyncTime = "Just now"
-                                isSyncing = false
-                            }
+                        if (selectedProvider != null) {
+                            syncResult = null
+                            // Using demo token for now - in production, implement OAuth flow
+                            viewModel.backupToCloud(selectedProvider!!, accessToken.ifBlank { "demo_token" })
                         }
                     },
                     modifier = Modifier.weight(1f),
-                    enabled = selectedProvider != null && !isSyncing && isPremium
+                    enabled = selectedProvider != null && !isLoading && isPremium
                 ) {
-                    if (isSyncing) {
+                    if (isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(20.dp),
                             strokeWidth = 2.dp,
@@ -186,27 +198,20 @@ fun CloudSyncScreen(
                         Icon(Icons.Default.CloudUpload, null)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(if (isSyncing) "Syncing..." else "Backup")
+                    Text(if (isLoading) "Syncing..." else "Backup")
                 }
 
                 // Restore button
                 OutlinedButton(
                     onClick = {
-                        scope.launch {
-                            if (selectedProvider != null) {
-                                isSyncing = true
-                                syncResult = null
-
-                                // TODO: Call viewModel.restoreFromCloud(selectedProvider)
-                                kotlinx.coroutines.delay(2000)
-
-                                syncResult = "Restore successful!"
-                                isSyncing = false
-                            }
+                        if (selectedProvider != null) {
+                            syncResult = null
+                            // Using demo token for now - in production, implement OAuth flow
+                            viewModel.restoreFromCloud(selectedProvider!!, accessToken.ifBlank { "demo_token" })
                         }
                     },
                     modifier = Modifier.weight(1f),
-                    enabled = selectedProvider != null && !isSyncing && isPremium
+                    enabled = selectedProvider != null && !isLoading && isPremium
                 ) {
                     Icon(Icons.Default.CloudDownload, null)
                     Spacer(modifier = Modifier.width(8.dp))
