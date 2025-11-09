@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -165,8 +166,11 @@ fun SettingsScreen(
                 OutlinedTextField(
                     value = smtpPort,
                     onValueChange = {
-                        smtpPort = it
-                        smtpPortError = null
+                        // Only allow digits, max 5 characters
+                        if (it.all { char -> char.isDigit() } && it.length <= 5) {
+                            smtpPort = it
+                            smtpPortError = null
+                        }
                     },
                     label = { Text("SMTP Port") },
                     placeholder = { Text("587") },
@@ -174,15 +178,16 @@ fun SettingsScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
                     isError = smtpPortError != null,
-                    supportingText = smtpPortError?.let { { Text(it) } }
+                    supportingText = smtpPortError?.let { { Text(it) } } ?: { Text("Range: 1-65535") }
                 )
 
                 OutlinedTextField(
                     value = smtpUsername,
-                    onValueChange = { smtpUsername = it },
+                    onValueChange = { smtpUsername = it.trim() },
                     label = { Text("Username") },
                     placeholder = { Text("your@email.com") },
                     modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     singleLine = true
                 )
 
@@ -253,12 +258,13 @@ fun SettingsScreen(
                 OutlinedTextField(
                     value = fromEmail,
                     onValueChange = {
-                        fromEmail = it
+                        fromEmail = it.trim()
                         fromEmailError = null
                     },
                     label = { Text("From Email") },
                     placeholder = { Text("sender@example.com") },
                     modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     singleLine = true,
                     isError = fromEmailError != null,
                     supportingText = fromEmailError?.let { { Text(it) } }
@@ -270,18 +276,20 @@ fun SettingsScreen(
                     label = { Text("From Name") },
                     placeholder = { Text("PostaFide") },
                     modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
                     singleLine = true
                 )
 
                 OutlinedTextField(
                     value = toEmail,
                     onValueChange = {
-                        toEmail = it
+                        toEmail = it.trim()
                         toEmailError = null
                     },
                     label = { Text("To Email") },
                     placeholder = { Text("recipient@example.com") },
                     modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     singleLine = true,
                     isError = toEmailError != null,
                     supportingText = toEmailError?.let { { Text(it) } }

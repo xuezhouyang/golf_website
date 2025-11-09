@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -16,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -162,16 +165,29 @@ fun PremiumScreen(
                     OutlinedTextField(
                         value = activationCode,
                         onValueChange = {
-                            activationCode = it.uppercase().replace(" ", "")
+                            // Only allow valid activation code characters: A-Z (except I,O), 2-9 (except 0,1), and hyphen
+                            val validChars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789-"
+                            val filtered = it.uppercase()
+                                .replace(" ", "")
+                                .filter { char -> char in validChars }
+                                .take(29) // Max length: 25 chars + 4 hyphens
+                            activationCode = filtered
                             verificationResult = null
                         },
                         label = { Text("Activation Code") },
                         placeholder = { Text("XXXXX-XXXXX-XXXXX-XXXXX-XXXXX") },
                         modifier = Modifier.fillMaxWidth(),
                         enabled = !isLockedOut && attemptsRemaining > 0,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            capitalization = KeyboardCapitalization.Characters
+                        ),
                         singleLine = true,
                         leadingIcon = {
                             Icon(Icons.Default.Key, "Activation")
+                        },
+                        supportingText = {
+                            Text("Format: XXXXX-XXXXX-XXXXX-XXXXX-XXXXX (25 characters)")
                         }
                     )
 
