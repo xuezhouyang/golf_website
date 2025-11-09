@@ -43,7 +43,7 @@ fun SettingsScreen(
     var smtpUseTls by remember { mutableStateOf(true) }
     var smtpUseSsl by remember { mutableStateOf(false) }
     var fromEmail by remember { mutableStateOf("") }
-    var fromName by remember { mutableStateOf("SMS2Email") }
+    var fromName by remember { mutableStateOf("PostaFide") }
     var toEmail by remember { mutableStateOf("") }
 
     // Validation error states
@@ -268,7 +268,7 @@ fun SettingsScreen(
                     value = fromName,
                     onValueChange = { fromName = it },
                     label = { Text("From Name") },
-                    placeholder = { Text("SMS2Email") },
+                    placeholder = { Text("PostaFide") },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )

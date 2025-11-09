@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 private val Context.themeDataStore: DataStore<Preferences> by preferencesDataStore(name = "theme_preferences")
 
 /**
- * Theme Manager for SMS2Email v2.0
+ * Theme Manager for PostaFide v2.0
  *
  * Supports:
  * - Light/Dark/Auto modes

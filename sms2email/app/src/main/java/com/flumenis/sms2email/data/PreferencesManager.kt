@@ -46,7 +46,7 @@ class PreferencesManager(private val context: Context) {
             smtpUseTls = prefs[SMTP_USE_TLS] ?: true,
             smtpUseSsl = prefs[SMTP_USE_SSL] ?: false,
             fromEmail = prefs[FROM_EMAIL] ?: "",
-            fromName = prefs[FROM_NAME] ?: "SMS2Email",
+            fromName = prefs[FROM_NAME] ?: "PostaFide",
             toEmail = prefs[TO_EMAIL] ?: "",
             subjectTemplate = prefs[SUBJECT_TEMPLATE] ?: "SMS from {{sender}} ({{sim_slot}})",
             bodyTemplate = prefs[BODY_TEMPLATE] ?: """
@@ -70,7 +70,7 @@ class PreferencesManager(private val context: Context) {
             smtpUseTls = prefs[SMTP_USE_TLS] ?: true,
             smtpUseSsl = prefs[SMTP_USE_SSL] ?: false,
             fromEmail = prefs[FROM_EMAIL] ?: "",
-            fromName = prefs[FROM_NAME] ?: "SMS2Email",
+            fromName = prefs[FROM_NAME] ?: "PostaFide",
             toEmail = prefs[TO_EMAIL] ?: "",
             subjectTemplate = prefs[SUBJECT_TEMPLATE] ?: "SMS from {{sender}} ({{sim_slot}})",
             bodyTemplate = prefs[BODY_TEMPLATE] ?: """

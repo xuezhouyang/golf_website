@@ -127,7 +127,7 @@ class CallLogMonitor(private val context: Context) {
             Time: $timestamp<br>
             Duration: $durationFormatted<br>
             <br>
-            <i>Sent via SMS2Email by Flumenis LLC</i>
+            <i>Sent via PostaFide by Flumenis LLC</i>
         """.trimIndent()
 
         try {

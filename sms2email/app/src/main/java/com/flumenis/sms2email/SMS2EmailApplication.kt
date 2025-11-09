@@ -3,7 +3,7 @@ package com.flumenis.sms2email
 import android.app.Application
 
 /**
- * Application class for SMS2Email
+ * Application class for PostaFide
  * Flumenis LLC, Delaware
  */
 class SMS2EmailApplication : Application() {

@@ -28,7 +28,7 @@ data class EmailConfig(
     val fromEmail: String = "",
 
     @SerializedName("from_name")
-    val fromName: String = "SMS2Email",
+    val fromName: String = "PostaFide",
 
     @SerializedName("to_email")
     val toEmail: String = "",

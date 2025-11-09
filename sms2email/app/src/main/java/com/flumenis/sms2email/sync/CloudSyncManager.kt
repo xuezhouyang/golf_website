@@ -263,7 +263,7 @@ class CloudSyncManager(private val context: Context) {
                 val url = "https://api.github.com/gists"
 
                 val gistData = mapOf(
-                    "description" to "SMS2Email Configuration Backup",
+                    "description" to "PostaFide Configuration Backup",
                     "public" to false,
                     "files" to mapOf(
                         BACKUP_FILENAME to mapOf(
