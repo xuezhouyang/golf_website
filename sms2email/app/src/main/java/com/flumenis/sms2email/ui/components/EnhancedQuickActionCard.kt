@@ -59,7 +59,10 @@ fun EnhancedQuickActionCard(
             isPremium -> MaterialTheme.colorScheme.tertiary
             else -> MaterialTheme.colorScheme.primary
         },
-        animationSpec = AnimationConfig.scaleDown,
+        animationSpec = androidx.compose.animation.core.tween(
+            durationMillis = AnimationConfig.DURATION_SHORT,
+            easing = AnimationConfig.EasingStandard
+        ),
         label = "icon_color"
     )
 

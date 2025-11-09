@@ -2,6 +2,7 @@ package com.flumenis.sms2email
 
 import android.app.Application
 import android.util.Log
+import com.flumenis.sms2email.BuildConfig
 import com.flumenis.sms2email.security.SecurityManager
 import com.flumenis.sms2email.service.KeepAliveManager
 
