@@ -33,7 +33,8 @@ fun HomeScreen(
     onNavigateToPremium: () -> Unit = {},
     onNavigateToCloudSync: () -> Unit = {},
     onNavigateToSmsForwarding: () -> Unit = {},
-    onNavigateToTheme: () -> Unit = {}
+    onNavigateToTheme: () -> Unit = {},
+    onNavigateToPermissions: () -> Unit = {}
 ) {
     val emailConfig by viewModel.emailConfig.collectAsStateWithLifecycle(initialValue = null)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -116,6 +117,22 @@ fun HomeScreen(
                         onClick = onNavigateToTemplate,
                         modifier = Modifier.weight(1f)
                     )
+                }
+
+                // Row 2: Permissions
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    QuickActionCard(
+                        icon = Icons.Default.Security,
+                        label = "Permissions",
+                        onClick = onNavigateToPermissions,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    // Empty spacer to maintain alignment
+                    Spacer(modifier = Modifier.weight(1f))
                 }
 
                 // Row 2: Premium features

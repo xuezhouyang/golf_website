@@ -16,6 +16,7 @@ sealed class Screen(val route: String) {
     object CloudSync : Screen("cloud_sync")
     object SmsForwarding : Screen("sms_forwarding")
     object Theme : Screen("theme")
+    object Permissions : Screen("permissions")
 }
 
 @Composable
@@ -35,7 +36,8 @@ fun AppNavigation(viewModel: MainViewModel) {
                 onNavigateToPremium = { navController.navigate(Screen.Premium.route) },
                 onNavigateToCloudSync = { navController.navigate(Screen.CloudSync.route) },
                 onNavigateToSmsForwarding = { navController.navigate(Screen.SmsForwarding.route) },
-                onNavigateToTheme = { navController.navigate(Screen.Theme.route) }
+                onNavigateToTheme = { navController.navigate(Screen.Theme.route) },
+                onNavigateToPermissions = { navController.navigate(Screen.Permissions.route) }
             )
         }
 
@@ -83,6 +85,12 @@ fun AppNavigation(viewModel: MainViewModel) {
         composable(Screen.Theme.route) {
             ThemeScreen(
                 viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.Permissions.route) {
+            PermissionSettingsScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }
