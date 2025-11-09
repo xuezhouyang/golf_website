@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,7 +15,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flumenis.sms2email.ui.MainViewModel
@@ -25,11 +29,18 @@ fun HomeScreen(
     viewModel: MainViewModel,
     onNavigateToSettings: () -> Unit,
     onNavigateToTemplate: () -> Unit,
-    onNavigateToAbout: () -> Unit
+    onNavigateToAbout: () -> Unit,
+    onNavigateToPremium: () -> Unit = {},
+    onNavigateToCloudSync: () -> Unit = {},
+    onNavigateToSmsForwarding: () -> Unit = {},
+    onNavigateToTheme: () -> Unit = {}
 ) {
     val emailConfig by viewModel.emailConfig.collectAsStateWithLifecycle(initialValue = null)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
+    // Mock premium status - TODO: Get from viewModel
+    var isPremium by remember { mutableStateOf(false) }
 
     val exportLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/json")
@@ -48,6 +59,14 @@ fun HomeScreen(
             TopAppBar(
                 title = { Text("SMS2Email") },
                 actions = {
+                    // Premium status bell icon with animation
+                    PremiumBellIcon(
+                        isPremium = isPremium,
+                        onClick = onNavigateToPremium
+                    )
+                    IconButton(onClick = onNavigateToTheme) {
+                        Icon(Icons.Default.Palette, contentDescription = "Theme")
+                    }
                     IconButton(onClick = onNavigateToAbout) {
                         Icon(Icons.Default.Info, contentDescription = "About")
                     }
@@ -77,6 +96,35 @@ fun HomeScreen(
                 Text(
                     text = "Quick Actions",
                     style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+
+                // Row 1: Basic actions
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    QuickActionCard(
+                        icon = Icons.Default.Settings,
+                        label = "Settings",
+                        onClick = onNavigateToSettings,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    QuickActionCard(
+                        icon = Icons.Default.Edit,
+                        label = "Template",
+                        onClick = onNavigateToTemplate,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                // Row 2: Premium features
+                Text(
+                    text = "Premium Features",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 8.dp)
                 )
 
@@ -84,41 +132,23 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    OutlinedCard(
-                        onClick = onNavigateToSettings,
+                    QuickActionCard(
+                        icon = Icons.Default.Cloud,
+                        label = "Cloud Sync",
+                        onClick = onNavigateToCloudSync,
+                        isPremium = true,
+                        isLocked = !isPremium,
                         modifier = Modifier.weight(1f)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                Icons.Default.Settings,
-                                contentDescription = null,
-                                modifier = Modifier.size(48.dp)
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text("Settings", style = MaterialTheme.typography.bodyMedium)
-                        }
-                    }
+                    )
 
-                    OutlinedCard(
-                        onClick = onNavigateToTemplate,
+                    QuickActionCard(
+                        icon = Icons.Default.PhoneForwarded,
+                        label = "SMS Forward",
+                        onClick = onNavigateToSmsForwarding,
+                        isPremium = true,
+                        isLocked = !isPremium,
                         modifier = Modifier.weight(1f)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                Icons.Default.Edit,
-                                contentDescription = null,
-                                modifier = Modifier.size(48.dp)
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text("Template", style = MaterialTheme.typography.bodyMedium)
-                        }
-                    }
+                    )
                 }
 
                 // Configuration Management
@@ -261,5 +291,155 @@ fun SummaryItem(label: String, value: String) {
             text = value,
             style = MaterialTheme.typography.bodyMedium
         )
+    }
+}
+
+@Composable
+fun PremiumBellIcon(
+    isPremium: Boolean,
+    onClick: () -> Unit
+) {
+    // Animated bell icon
+    val infiniteTransition = rememberInfiniteTransition(label = "bell")
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = -10f,
+        targetValue = 10f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(500, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "rotation"
+    )
+
+    BadgedBox(
+        badge = {
+            if (!isPremium) {
+                Badge(
+                    containerColor = MaterialTheme.colorScheme.error
+                )
+            } else {
+                Badge(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ) {
+                    Icon(
+                        Icons.Default.Check,
+                        contentDescription = null,
+                        modifier = Modifier.size(12.dp)
+                    )
+                }
+            }
+        }
+    ) {
+        IconButton(onClick = onClick) {
+            Icon(
+                Icons.Default.Notifications,
+                contentDescription = "Premium Status",
+                tint = if (isPremium) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
+}
+
+@Composable
+fun QuickActionCard(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    isPremium: Boolean = false,
+    isLocked: Boolean = false
+) {
+    val scale by animateFloatAsState(
+        targetValue = if (isLocked) 0.95f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        ),
+        label = "scale"
+    )
+
+    OutlinedCard(
+        onClick = if (!isLocked) onClick else ({}),
+        modifier = modifier.scale(scale),
+        enabled = !isLocked,
+        colors = if (isPremium) {
+            CardDefaults.outlinedCardColors(
+                containerColor = if (isLocked)
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                else
+                    MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.3f)
+            )
+        } else {
+            CardDefaults.outlinedCardColors()
+        }
+    ) {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box {
+                    Icon(
+                        icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(48.dp),
+                        tint = if (isLocked)
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                        else if (isPremium)
+                            MaterialTheme.colorScheme.tertiary
+                        else
+                            MaterialTheme.colorScheme.primary
+                    )
+
+                    // Lock overlay for premium features
+                    if (isLocked) {
+                        Icon(
+                            Icons.Default.Lock,
+                            contentDescription = "Locked",
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .size(24.dp),
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    label,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = if (isPremium) FontWeight.SemiBold else FontWeight.Normal,
+                    color = if (isLocked)
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                    else
+                        MaterialTheme.colorScheme.onSurface
+                )
+
+                if (isPremium) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            Icons.Default.Stars,
+                            contentDescription = null,
+                            modifier = Modifier.size(12.dp),
+                            tint = if (isLocked)
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                            else
+                                MaterialTheme.colorScheme.tertiary
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            "Premium",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (isLocked)
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                            else
+                                MaterialTheme.colorScheme.tertiary
+                        )
+                    }
+                }
+            }
+        }
     }
 }

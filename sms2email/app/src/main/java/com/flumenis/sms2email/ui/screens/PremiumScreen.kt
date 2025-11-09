@@ -1,0 +1,427 @@
+package com.flumenis.sms2email.ui.screens
+
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flumenis.sms2email.ui.MainViewModel
+import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PremiumScreen(
+    viewModel: MainViewModel = viewModel(),
+    onNavigateBack: () -> Unit
+) {
+    val scope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
+
+    var inviteCode by remember { mutableStateOf("") }
+    var isVerifying by remember { mutableStateOf(false) }
+    var verificationResult by remember { mutableStateOf<String?>(null) }
+    var isPremium by remember { mutableStateOf(false) }
+    var attemptsRemaining by remember { mutableStateOf(10) }
+
+    // Check premium status on launch
+    LaunchedEffect(Unit) {
+        // TODO: Check premium status from InviteCodeManager
+        // isPremium = viewModel.checkPremiumStatus()
+        // attemptsRemaining = viewModel.getAttemptsRemaining()
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Premium Subscription") },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(Icons.Default.ArrowBack, "返回")
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .verticalScroll(scrollState)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Premium status card with animation
+            AnimatedVisibility(
+                visible = isPremium,
+                enter = expandVertically() + fadeIn(),
+                exit = shrinkVertically() + fadeOut()
+            ) {
+                PremiumStatusCard(
+                    isPremium = true,
+                    activatedCode = "ONEDAY"
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Premium features list
+            if (!isPremium) {
+                PremiumFeaturesCard()
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+
+            // Invite code input section
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(
+                        text = if (isPremium) "Change Invite Code" else "Enter Invite Code",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "Default codes: ONEDAY, FLUMENIS, WELCOME2025",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedTextField(
+                        value = inviteCode,
+                        onValueChange = {
+                            inviteCode = it.uppercase()
+                            verificationResult = null
+                        },
+                        label = { Text("Invite Code") },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = !isVerifying && attemptsRemaining > 0,
+                        singleLine = true,
+                        leadingIcon = {
+                            Icon(Icons.Default.Key, "Invite Code")
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Attempts remaining
+                    if (attemptsRemaining < 10) {
+                        Text(
+                            text = "Attempts remaining: $attemptsRemaining/10",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (attemptsRemaining <= 3)
+                                MaterialTheme.colorScheme.error
+                            else
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Verify button with loading state
+                    Button(
+                        onClick = {
+                            scope.launch {
+                                isVerifying = true
+                                verificationResult = null
+
+                                // TODO: Call viewModel.verifyInviteCode(inviteCode)
+                                kotlinx.coroutines.delay(1000) // Simulate API call
+
+                                // Mock result
+                                if (inviteCode in listOf("ONEDAY", "FLUMENIS", "WELCOME2025")) {
+                                    verificationResult = "Success! Premium activated."
+                                    isPremium = true
+                                } else {
+                                    verificationResult = "Invalid invite code."
+                                    attemptsRemaining--
+                                }
+
+                                isVerifying = false
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = inviteCode.isNotBlank() && !isVerifying && attemptsRemaining > 0
+                    ) {
+                        if (isVerifying) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(20.dp),
+                                strokeWidth = 2.dp,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Verifying...")
+                        } else {
+                            Icon(Icons.Default.CheckCircle, null)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Activate Premium")
+                        }
+                    }
+
+                    // Verification result
+                    verificationResult?.let { result ->
+                        Spacer(modifier = Modifier.height(8.dp))
+                        AnimatedContent(
+                            targetState = result,
+                            transitionSpec = {
+                                slideInVertically { it } + fadeIn() togetherWith
+                                slideOutVertically { -it } + fadeOut()
+                            },
+                            label = "result"
+                        ) { text ->
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = if (text.startsWith("Success"))
+                                        MaterialTheme.colorScheme.primaryContainer
+                                    else
+                                        MaterialTheme.colorScheme.errorContainer
+                                )
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        if (text.startsWith("Success"))
+                                            Icons.Default.CheckCircle
+                                        else
+                                            Icons.Default.Error,
+                                        contentDescription = null,
+                                        tint = if (text.startsWith("Success"))
+                                            MaterialTheme.colorScheme.onPrimaryContainer
+                                        else
+                                            MaterialTheme.colorScheme.onErrorContainer
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = text,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = if (text.startsWith("Success"))
+                                            MaterialTheme.colorScheme.onPrimaryContainer
+                                        else
+                                            MaterialTheme.colorScheme.onErrorContainer
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (attemptsRemaining == 0) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            Icons.Default.Lock,
+                            contentDescription = null,
+                            modifier = Modifier.size(48.dp),
+                            tint = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Too Many Attempts",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                        Text(
+                            text = "Please try again in 24 hours",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PremiumStatusCard(isPremium: Boolean, activatedCode: String? = null) {
+    val infiniteTransition = rememberInfiniteTransition(label = "premium")
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 0.95f,
+        targetValue = 1.05f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "scale"
+    )
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .scale(scale),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Brush.horizontalGradient(
+                        listOf(
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.3f)
+                        )
+                    )
+                )
+                .padding(24.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    Icons.Default.Stars,
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Premium Activated",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+                if (activatedCode != null) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Code: $activatedCode",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PremiumFeaturesCard() {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "Premium Features",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            PremiumFeatureItem(
+                icon = Icons.Default.Cloud,
+                title = "Cloud Sync",
+                description = "Backup to Google Drive, OneDrive, or GitHub"
+            )
+            PremiumFeatureItem(
+                icon = Icons.Default.PhoneAndroid,
+                title = "SMS Forwarding",
+                description = "Forward SMS to phone numbers with dual SIM support"
+            )
+            PremiumFeatureItem(
+                icon = Icons.Default.History,
+                title = "Version History",
+                description = "Access configuration history and rollback"
+            )
+            PremiumFeatureItem(
+                icon = Icons.Default.Security,
+                title = "Enhanced Security",
+                description = "Device fingerprint binding and encryption"
+            )
+        }
+    }
+}
+
+@Composable
+fun PremiumFeatureItem(
+    icon: ImageVector,
+    title: String,
+    description: String
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Surface(
+            modifier = Modifier.size(48.dp),
+            shape = RoundedCornerShape(12.dp),
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Icon(
+            Icons.Default.CheckCircle,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary
+        )
+    }
+}
