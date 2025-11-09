@@ -73,9 +73,9 @@ class EmailService(private val context: Context) {
             }
 
             Transport.send(message)
-            Result.success(Unit)
+            return@withContext Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(e)
+            return@withContext Result.failure(e)
         }
     }
 
@@ -184,9 +184,9 @@ class EmailService(private val context: Context) {
             transport.connect()
             transport.close()
 
-            Result.success("Connection successful!")
+            return@withContext Result.success("Connection successful!")
         } catch (e: Exception) {
-            Result.failure(e)
+            return@withContext Result.failure(e)
         }
     }
 }
