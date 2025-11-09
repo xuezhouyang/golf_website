@@ -44,14 +44,6 @@ android {
         }
     }
 
-    // Rename output APK files to PostaFide branding
-    applicationVariants.all {
-        outputs.all {
-            val output = this as? com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            output?.outputFileName = "PostaFide-v${versionName}-${buildType.name}.apk"
-        }
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -75,6 +67,15 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "/META-INF/NOTICE.md"
             excludes += "/META-INF/LICENSE.md"
+        }
+    }
+}
+
+// Rename output APK files to PostaFide branding
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            output.outputFileName.set("PostaFide-v${variant.buildType}-${variant.name}.apk")
         }
     }
 }
