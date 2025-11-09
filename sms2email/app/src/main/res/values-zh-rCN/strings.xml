@@ -105,4 +105,23 @@
     <string name="no_logs_for_date">该日期无日志记录</string>
     <string name="sim_slot">SIM%1$d</string>
     <string name="machine_code_copied">机器码已复制到剪贴板</string>
+
+    <!-- Language Settings -->
+    <string name="language">语言</string>
+    <string name="language_settings">语言设置</string>
+    <string name="select_language">选择语言</string>
+    <string name="system_default">跟随系统</string>
+    <string name="lang_en">English (英语)</string>
+    <string name="lang_zh_cn">简体中文</string>
+    <string name="lang_zh_tw">繁體中文</string>
+    <string name="lang_fr">Français (法语)</string>
+    <string name="lang_ar">العربية (阿拉伯语)</string>
+    <string name="lang_es">Español (西班牙语)</string>
+    <string name="lang_ru">Русский (俄语)</string>
+    <string name="lang_ja">日本語 (日语)</string>
+    <string name="lang_bo">བོད་སྐད (藏语)</string>
+    <string name="lang_ug">ئۇيغۇرچە (维吾尔语)</string>
+    <string name="lang_mn">Монгол (蒙古语)</string>
+    <string name="restart_required">需要重启</string>
+    <string name="language_change_restart_message">重启应用后语言设置将生效</string>
 </resources>

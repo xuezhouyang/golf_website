@@ -105,4 +105,23 @@
     <string name="no_logs_for_date">No logs for this date</string>
     <string name="sim_slot">SIM%1$d</string>
     <string name="machine_code_copied">Machine code copied to clipboard</string>
+
+    <!-- Language Settings -->
+    <string name="language">Language</string>
+    <string name="language_settings">Language Settings</string>
+    <string name="select_language">Select Language</string>
+    <string name="system_default">System Default</string>
+    <string name="lang_en">English</string>
+    <string name="lang_zh_cn">简体中文 (Simplified Chinese)</string>
+    <string name="lang_zh_tw">繁體中文 (Traditional Chinese)</string>
+    <string name="lang_fr">Français (French)</string>
+    <string name="lang_ar">العربية (Arabic)</string>
+    <string name="lang_es">Español (Spanish)</string>
+    <string name="lang_ru">Русский (Russian)</string>
+    <string name="lang_ja">日本語 (Japanese)</string>
+    <string name="lang_bo">བོད་སྐད (Tibetan)</string>
+    <string name="lang_ug">ئۇيغۇرچە (Uyghur)</string>
+    <string name="lang_mn">Монгол (Mongolian)</string>
+    <string name="restart_required">Restart Required</string>
+    <string name="language_change_restart_message">Language will be applied when you restart the app</string>
 </resources>
