@@ -45,8 +45,8 @@ jobs:
       - name: Get version info
         id: version
         run: |
-          VERSION_NAME=$(grep versionName sms2email/app/build.gradle.kts | awk -F'"' '{print $2}')
-          VERSION_CODE=$(grep versionCode sms2email/app/build.gradle.kts | awk '{print $3}')
+          VERSION_NAME=$(grep '^\s*versionName = ' sms2email/app/build.gradle.kts | awk -F'"' '{print $2}')
+          VERSION_CODE=$(grep '^\s*versionCode = ' sms2email/app/build.gradle.kts | awk '{print $3}')
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
           echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
 
