@@ -39,6 +39,17 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
         }
+        debug {
+            isMinifyEnabled = false
+        }
+    }
+
+    // Rename output APK files to PostaFide branding
+    applicationVariants.all {
+        outputs.all {
+            val output = this as? com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            output?.outputFileName = "PostaFide-v${versionName}-${buildType.name}.apk"
+        }
     }
 
     compileOptions {
