@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PostaFide</string>
+    <string name="notification_channel_name">Surveillance SMS</string>
+    <string name="notification_channel_description">Surveille les messages SMS entrants pour le transfert par e-mail</string>
+    <string name="notification_title">PostaFide Actif</string>
+    <string name="notification_text">Vos SMS, Votre Contrôle</string>
+    <string name="company_name">Flumenis LLC, Delaware</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">Accueil</string>
+    <string name="service_active">Service Actif</string>
+    <string name="service_inactive">Service Inactif</string>
+    <string name="service_active_desc">Le transfert SMS est activé</string>
+    <string name="service_inactive_desc">Le transfert SMS est désactivé</string>
+    <string name="quick_actions">Actions Rapides</string>
+    <string name="settings">Paramètres</string>
+    <string name="template">Modèle</string>
+    <string name="configuration">Configuration</string>
+    <string name="export">Exporter</string>
+    <string name="import_config">Importer</string>
+    <string name="current_config">Configuration Actuelle</string>
+
+    <!-- Settings Screen -->
+    <string name="email_settings">Paramètres E-mail</string>
+    <string name="smtp_config">Configuration du Serveur SMTP</string>
+    <string name="smtp_server">Serveur SMTP</string>
+    <string name="smtp_port">Port SMTP</string>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="password">Mot de passe</string>
+    <string name="security">Sécurité</string>
+    <string name="use_tls">Utiliser TLS (Recommandé)</string>
+    <string name="use_ssl">Utiliser SSL</string>
+    <string name="email_info">Informations E-mail</string>
+    <string name="from_email">E-mail Expéditeur</string>
+    <string name="from_name">Nom Expéditeur</string>
+    <string name="to_email">E-mail Destinataire</string>
+    <string name="test_connection">Tester la Connexion</string>
+    <string name="save">Enregistrer</string>
+
+    <!-- Template Screen -->
+    <string name="email_template">Modèle d\'E-mail</string>
+    <string name="available_variables">Variables Disponibles</string>
+    <string name="html_support">Support HTML</string>
+    <string name="subject_template">Modèle de Sujet</string>
+    <string name="body_template">Modèle de Corps</string>
+    <string name="save_template">Enregistrer le Modèle</string>
+
+    <!-- About Screen -->
+    <string name="about">À Propos</string>
+    <string name="version">Version</string>
+    <string name="version_name">Version 2.0.0</string>
+    <string name="app_slogan">Vos SMS, Votre Contrôle</string>
+    <string name="machine_code">Code Machine de l\'Appareil</string>
+    <string name="copy_machine_code">Copier le code machine</string>
+    <string name="machine_code_usage">Utilisez ce code pour demander l\'activation à l\'auteur</string>
+    <string name="android_id">ID Android :</string>
+    <string name="device_model">Modèle d\'Appareil :</string>
+    <string name="features">Fonctionnalités</string>
+    <string name="feature_dual_sim">• Support double SIM</string>
+    <string name="feature_custom_smtp">• Configuration SMTP personnalisée</string>
+    <string name="feature_email_template">• Modèle d\'e-mail avec variables</string>
+    <string name="feature_config_import_export">• Import/Export de configuration</string>
+    <string name="feature_background_service">• Service en arrière-plan avec maintien actif</string>
+    <string name="feature_no_root">• Aucun root requis</string>
+    <string name="feature_material_design">• Interface Material Design 3</string>
+    <string name="developed_by">Développé par</string>
+    <string name="company_name_full">Flumenis LLC</string>
+    <string name="company_location">Delaware, États-Unis</string>
+    <string name="privacy_permissions">Confidentialité et Autorisations</string>
+    <string name="privacy_description">Cette application nécessite des autorisations SMS et Internet pour transférer les messages. Toutes les données sont envoyées directement à votre serveur de messagerie configuré. Aucune donnée n\'est collectée ou stockée par des tiers.</string>
+    <string name="copyright">© 2025 Flumenis LLC. Tous droits réservés.</string>
+    <string name="back">Retour</string>
+
+    <!-- Call Log -->
+    <string name="call_log_monitoring">Surveillance du Journal d\'Appels</string>
+    <string name="enable_call_log">Activer le Transfert du Journal d\'Appels</string>
+    <string name="incoming_calls">Appels Entrants</string>
+    <string name="outgoing_calls">Appels Sortants</string>
+    <string name="missed_calls">Appels Manqués</string>
+
+    <!-- Advanced -->
+    <string name="advanced_settings">Paramètres Avancés</string>
+    <string name="keep_alive_mode">Mode Maintien Actif</string>
+    <string name="normal_mode">Mode Normal</string>
+    <string name="advanced_mode">Mode Avancé</string>
+    <string name="battery_optimization">Optimisation de la Batterie</string>
+    <string name="network_settings">Paramètres Réseau</string>
+    <string name="rate_limiting">Limitation de Débit</string>
+
+    <!-- Premium -->
+    <string name="premium_features">Fonctionnalités Premium</string>
+    <string name="subscribe">S\'abonner</string>
+    <string name="upgrade_to_premium">Passer à Premium</string>
+
+    <!-- Log Viewer -->
+    <string name="send_logs">Envoyer les Journaux</string>
+    <string name="clear_all_logs">Effacer Tous les Journaux</string>
+    <string name="previous_day">Jour Précédent</string>
+    <string name="today">Aujourd\'hui</string>
+    <string name="next_day">Jour Suivant</string>
+    <string name="success">Succès</string>
+    <string name="failed">Échec</string>
+    <string name="logs_total">Journaux (%1$d au total)</string>
+    <string name="no_logs_for_date">Aucun journal pour cette date</string>
+    <string name="sim_slot">SIM%1$d</string>
+    <string name="machine_code_copied">Code machine copié dans le presse-papiers</string>
+</resources>

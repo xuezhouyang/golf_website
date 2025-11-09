@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PostaFide</string>
+    <string name="notification_channel_name">مراقبة الرسائل القصيرة</string>
+    <string name="notification_channel_description">يراقب الرسائل القصيرة الواردة لإعادة التوجيه عبر البريد الإلكتروني</string>
+    <string name="notification_title">PostaFide نشط</string>
+    <string name="notification_text">رسائلك القصيرة، تحت سيطرتك</string>
+    <string name="company_name">شركة Flumenis LLC، ديلاوير</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">الصفحة الرئيسية</string>
+    <string name="service_active">الخدمة نشطة</string>
+    <string name="service_inactive">الخدمة غير نشطة</string>
+    <string name="service_active_desc">إعادة توجيه الرسائل القصيرة مفعّلة</string>
+    <string name="service_inactive_desc">إعادة توجيه الرسائل القصيرة معطّلة</string>
+    <string name="quick_actions">إجراءات سريعة</string>
+    <string name="settings">الإعدادات</string>
+    <string name="template">القالب</string>
+    <string name="configuration">التكوين</string>
+    <string name="export">تصدير</string>
+    <string name="import_config">استيراد</string>
+    <string name="current_config">التكوين الحالي</string>
+
+    <!-- Settings Screen -->
+    <string name="email_settings">إعدادات البريد الإلكتروني</string>
+    <string name="smtp_config">تكوين خادم SMTP</string>
+    <string name="smtp_server">خادم SMTP</string>
+    <string name="smtp_port">منفذ SMTP</string>
+    <string name="username">اسم المستخدم</string>
+    <string name="password">كلمة المرور</string>
+    <string name="security">الأمان</string>
+    <string name="use_tls">استخدام TLS (موصى به)</string>
+    <string name="use_ssl">استخدام SSL</string>
+    <string name="email_info">معلومات البريد الإلكتروني</string>
+    <string name="from_email">البريد الإلكتروني للمرسل</string>
+    <string name="from_name">اسم المرسل</string>
+    <string name="to_email">البريد الإلكتروني للمستلم</string>
+    <string name="test_connection">اختبار الاتصال</string>
+    <string name="save">حفظ</string>
+
+    <!-- Template Screen -->
+    <string name="email_template">قالب البريد الإلكتروني</string>
+    <string name="available_variables">المتغيرات المتاحة</string>
+    <string name="html_support">دعم HTML</string>
+    <string name="subject_template">قالب الموضوع</string>
+    <string name="body_template">قالب المحتوى</string>
+    <string name="save_template">حفظ القالب</string>
+
+    <!-- About Screen -->
+    <string name="about">حول</string>
+    <string name="version">الإصدار</string>
+    <string name="version_name">الإصدار 2.0.0</string>
+    <string name="app_slogan">رسائلك القصيرة، تحت سيطرتك</string>
+    <string name="machine_code">رمز الجهاز</string>
+    <string name="copy_machine_code">نسخ رمز الجهاز</string>
+    <string name="machine_code_usage">استخدم هذا الرمز عند طلب التفعيل من المطور</string>
+    <string name="android_id">معرف Android:</string>
+    <string name="device_model">طراز الجهاز:</string>
+    <string name="features">الميزات</string>
+    <string name="feature_dual_sim">• دعم شريحتي SIM</string>
+    <string name="feature_custom_smtp">• تكوين SMTP مخصص</string>
+    <string name="feature_email_template">• قالب بريد إلكتروني مع المتغيرات</string>
+    <string name="feature_config_import_export">• استيراد/تصدير التكوين</string>
+    <string name="feature_background_service">• خدمة في الخلفية مع الحفاظ على النشاط</string>
+    <string name="feature_no_root">• لا يتطلب صلاحيات الروت</string>
+    <string name="feature_material_design">• واجهة Material Design 3</string>
+    <string name="developed_by">تطوير</string>
+    <string name="company_name_full">Flumenis LLC</string>
+    <string name="company_location">ديلاوير، الولايات المتحدة الأمريكية</string>
+    <string name="privacy_permissions">الخصوصية والأذونات</string>
+    <string name="privacy_description">يتطلب هذا التطبيق أذونات الرسائل القصيرة والإنترنت لإعادة توجيه الرسائل. يتم إرسال جميع البيانات مباشرة إلى خادم البريد الإلكتروني المُكوَّن. لا يتم جمع البيانات أو تخزينها بواسطة أطراف ثالثة.</string>
+    <string name="copyright">© 2025 Flumenis LLC. جميع الحقوق محفوظة.</string>
+    <string name="back">رجوع</string>
+
+    <!-- Call Log -->
+    <string name="call_log_monitoring">مراقبة سجل المكالمات</string>
+    <string name="enable_call_log">تفعيل إعادة توجيه سجل المكالمات</string>
+    <string name="incoming_calls">المكالمات الواردة</string>
+    <string name="outgoing_calls">المكالمات الصادرة</string>
+    <string name="missed_calls">المكالمات الفائتة</string>
+
+    <!-- Advanced -->
+    <string name="advanced_settings">الإعدادات المتقدمة</string>
+    <string name="keep_alive_mode">وضع الحفاظ على النشاط</string>
+    <string name="normal_mode">الوضع العادي</string>
+    <string name="advanced_mode">الوضع المتقدم</string>
+    <string name="battery_optimization">تحسين البطارية</string>
+    <string name="network_settings">إعدادات الشبكة</string>
+    <string name="rate_limiting">تحديد المعدل</string>
+
+    <!-- Premium -->
+    <string name="premium_features">الميزات المتميزة</string>
+    <string name="subscribe">الاشتراك</string>
+    <string name="upgrade_to_premium">الترقية إلى النسخة المتميزة</string>
+
+    <!-- Log Viewer -->
+    <string name="send_logs">إرسال السجلات</string>
+    <string name="clear_all_logs">مسح جميع السجلات</string>
+    <string name="previous_day">اليوم السابق</string>
+    <string name="today">اليوم</string>
+    <string name="next_day">اليوم التالي</string>
+    <string name="success">نجح</string>
+    <string name="failed">فشل</string>
+    <string name="logs_total">السجلات (%1$d إجمالي)</string>
+    <string name="no_logs_for_date">لا توجد سجلات لهذا التاريخ</string>
+    <string name="sim_slot">SIM%1$d</string>
+    <string name="machine_code_copied">تم نسخ رمز الجهاز إلى الحافظة</string>
+</resources>

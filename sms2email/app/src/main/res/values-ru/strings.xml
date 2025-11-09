@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PostaFide</string>
+    <string name="notification_channel_name">Мониторинг СМС</string>
+    <string name="notification_channel_description">Отслеживает входящие СМС-сообщения для пересылки по электронной почте</string>
+    <string name="notification_title">PostaFide Активен</string>
+    <string name="notification_text">Ваши СМС, Ваш Контроль</string>
+    <string name="company_name">Flumenis LLC, Делавэр</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">Главная</string>
+    <string name="service_active">Служба Активна</string>
+    <string name="service_inactive">Служба Неактивна</string>
+    <string name="service_active_desc">Пересылка СМС включена</string>
+    <string name="service_inactive_desc">Пересылка СМС отключена</string>
+    <string name="quick_actions">Быстрые Действия</string>
+    <string name="settings">Настройки</string>
+    <string name="template">Шаблон</string>
+    <string name="configuration">Конфигурация</string>
+    <string name="export">Экспорт</string>
+    <string name="import_config">Импорт</string>
+    <string name="current_config">Текущая Конфигурация</string>
+
+    <!-- Settings Screen -->
+    <string name="email_settings">Настройки Почты</string>
+    <string name="smtp_config">Конфигурация SMTP-сервера</string>
+    <string name="smtp_server">SMTP-сервер</string>
+    <string name="smtp_port">SMTP-порт</string>
+    <string name="username">Имя пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="security">Безопасность</string>
+    <string name="use_tls">Использовать TLS (Рекомендуется)</string>
+    <string name="use_ssl">Использовать SSL</string>
+    <string name="email_info">Информация о Почте</string>
+    <string name="from_email">Почта Отправителя</string>
+    <string name="from_name">Имя Отправителя</string>
+    <string name="to_email">Почта Получателя</string>
+    <string name="test_connection">Проверить Соединение</string>
+    <string name="save">Сохранить</string>
+
+    <!-- Template Screen -->
+    <string name="email_template">Шаблон Письма</string>
+    <string name="available_variables">Доступные Переменные</string>
+    <string name="html_support">Поддержка HTML</string>
+    <string name="subject_template">Шаблон Темы</string>
+    <string name="body_template">Шаблон Текста</string>
+    <string name="save_template">Сохранить Шаблон</string>
+
+    <!-- About Screen -->
+    <string name="about">О Программе</string>
+    <string name="version">Версия</string>
+    <string name="version_name">Версия 2.0.0</string>
+    <string name="app_slogan">Ваши СМС, Ваш Контроль</string>
+    <string name="machine_code">Машинный Код Устройства</string>
+    <string name="copy_machine_code">Скопировать машинный код</string>
+    <string name="machine_code_usage">Используйте этот код при запросе активации у автора</string>
+    <string name="android_id">Android ID:</string>
+    <string name="device_model">Модель Устройства:</string>
+    <string name="features">Возможности</string>
+    <string name="feature_dual_sim">• Поддержка двух SIM-карт</string>
+    <string name="feature_custom_smtp">• Пользовательская конфигурация SMTP</string>
+    <string name="feature_email_template">• Шаблон письма с переменными</string>
+    <string name="feature_config_import_export">• Импорт/экспорт конфигурации</string>
+    <string name="feature_background_service">• Фоновая служба с поддержкой активности</string>
+    <string name="feature_no_root">• Не требуется root</string>
+    <string name="feature_material_design">• Интерфейс Material Design 3</string>
+    <string name="developed_by">Разработчик</string>
+    <string name="company_name_full">Flumenis LLC</string>
+    <string name="company_location">Делавэр, США</string>
+    <string name="privacy_permissions">Конфиденциальность и Разрешения</string>
+    <string name="privacy_description">Это приложение требует разрешения на СМС и Интернет для пересылки сообщений. Все данные отправляются напрямую на настроенный вами почтовый сервер. Данные не собираются и не хранятся третьими лицами.</string>
+    <string name="copyright">© 2025 Flumenis LLC. Все права защищены.</string>
+    <string name="back">Назад</string>
+
+    <!-- Call Log -->
+    <string name="call_log_monitoring">Мониторинг Журнала Вызовов</string>
+    <string name="enable_call_log">Включить Пересылку Журнала Вызовов</string>
+    <string name="incoming_calls">Входящие Вызовы</string>
+    <string name="outgoing_calls">Исходящие Вызовы</string>
+    <string name="missed_calls">Пропущенные Вызовы</string>
+
+    <!-- Advanced -->
+    <string name="advanced_settings">Расширенные Настройки</string>
+    <string name="keep_alive_mode">Режим Поддержки Активности</string>
+    <string name="normal_mode">Обычный Режим</string>
+    <string name="advanced_mode">Расширенный Режим</string>
+    <string name="battery_optimization">Оптимизация Батареи</string>
+    <string name="network_settings">Сетевые Настройки</string>
+    <string name="rate_limiting">Ограничение Скорости</string>
+
+    <!-- Premium -->
+    <string name="premium_features">Премиум-Функции</string>
+    <string name="subscribe">Подписаться</string>
+    <string name="upgrade_to_premium">Перейти на Премиум</string>
+
+    <!-- Log Viewer -->
+    <string name="send_logs">Отправить Журналы</string>
+    <string name="clear_all_logs">Очистить Все Журналы</string>
+    <string name="previous_day">Предыдущий День</string>
+    <string name="today">Сегодня</string>
+    <string name="next_day">Следующий День</string>
+    <string name="success">Успешно</string>
+    <string name="failed">Неудачно</string>
+    <string name="logs_total">Журналы (всего %1$d)</string>
+    <string name="no_logs_for_date">Нет журналов за эту дату</string>
+    <string name="sim_slot">SIM%1$d</string>
+    <string name="machine_code_copied">Машинный код скопирован в буфер обмена</string>
+</resources>

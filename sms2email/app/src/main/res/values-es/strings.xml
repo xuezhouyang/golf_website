@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PostaFide</string>
+    <string name="notification_channel_name">Monitoreo de SMS</string>
+    <string name="notification_channel_description">Monitorea los mensajes SMS entrantes para reenviarlos por correo electrónico</string>
+    <string name="notification_title">PostaFide Activo</string>
+    <string name="notification_text">Tus SMS, Tu Control</string>
+    <string name="company_name">Flumenis LLC, Delaware</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">Inicio</string>
+    <string name="service_active">Servicio Activo</string>
+    <string name="service_inactive">Servicio Inactivo</string>
+    <string name="service_active_desc">Reenvío de SMS activado</string>
+    <string name="service_inactive_desc">Reenvío de SMS desactivado</string>
+    <string name="quick_actions">Acciones Rápidas</string>
+    <string name="settings">Ajustes</string>
+    <string name="template">Plantilla</string>
+    <string name="configuration">Configuración</string>
+    <string name="export">Exportar</string>
+    <string name="import_config">Importar</string>
+    <string name="current_config">Configuración Actual</string>
+
+    <!-- Settings Screen -->
+    <string name="email_settings">Configuración de Correo</string>
+    <string name="smtp_config">Configuración del Servidor SMTP</string>
+    <string name="smtp_server">Servidor SMTP</string>
+    <string name="smtp_port">Puerto SMTP</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="security">Seguridad</string>
+    <string name="use_tls">Usar TLS (Recomendado)</string>
+    <string name="use_ssl">Usar SSL</string>
+    <string name="email_info">Información de Correo</string>
+    <string name="from_email">Correo del Remitente</string>
+    <string name="from_name">Nombre del Remitente</string>
+    <string name="to_email">Correo del Destinatario</string>
+    <string name="test_connection">Probar Conexión</string>
+    <string name="save">Guardar</string>
+
+    <!-- Template Screen -->
+    <string name="email_template">Plantilla de Correo</string>
+    <string name="available_variables">Variables Disponibles</string>
+    <string name="html_support">Soporte HTML</string>
+    <string name="subject_template">Plantilla de Asunto</string>
+    <string name="body_template">Plantilla de Cuerpo</string>
+    <string name="save_template">Guardar Plantilla</string>
+
+    <!-- About Screen -->
+    <string name="about">Acerca de</string>
+    <string name="version">Versión</string>
+    <string name="version_name">Versión 2.0.0</string>
+    <string name="app_slogan">Tus SMS, Tu Control</string>
+    <string name="machine_code">Código de Máquina del Dispositivo</string>
+    <string name="copy_machine_code">Copiar código de máquina</string>
+    <string name="machine_code_usage">Use este código al solicitar la activación al autor</string>
+    <string name="android_id">ID de Android:</string>
+    <string name="device_model">Modelo del Dispositivo:</string>
+    <string name="features">Características</string>
+    <string name="feature_dual_sim">• Soporte para doble SIM</string>
+    <string name="feature_custom_smtp">• Configuración SMTP personalizada</string>
+    <string name="feature_email_template">• Plantilla de correo con variables</string>
+    <string name="feature_config_import_export">• Importar/Exportar configuración</string>
+    <string name="feature_background_service">• Servicio en segundo plano con mantenimiento activo</string>
+    <string name="feature_no_root">• No requiere root</string>
+    <string name="feature_material_design">• Interfaz Material Design 3</string>
+    <string name="developed_by">Desarrollado por</string>
+    <string name="company_name_full">Flumenis LLC</string>
+    <string name="company_location">Delaware, Estados Unidos</string>
+    <string name="privacy_permissions">Privacidad y Permisos</string>
+    <string name="privacy_description">Esta aplicación requiere permisos de SMS e Internet para reenviar mensajes. Todos los datos se envían directamente a su servidor de correo configurado. No se recopilan ni almacenan datos por terceros.</string>
+    <string name="copyright">© 2025 Flumenis LLC. Todos los derechos reservados.</string>
+    <string name="back">Atrás</string>
+
+    <!-- Call Log -->
+    <string name="call_log_monitoring">Monitoreo de Registro de Llamadas</string>
+    <string name="enable_call_log">Activar Reenvío de Registro de Llamadas</string>
+    <string name="incoming_calls">Llamadas Entrantes</string>
+    <string name="outgoing_calls">Llamadas Salientes</string>
+    <string name="missed_calls">Llamadas Perdidas</string>
+
+    <!-- Advanced -->
+    <string name="advanced_settings">Ajustes Avanzados</string>
+    <string name="keep_alive_mode">Modo Mantener Activo</string>
+    <string name="normal_mode">Modo Normal</string>
+    <string name="advanced_mode">Modo Avanzado</string>
+    <string name="battery_optimization">Optimización de Batería</string>
+    <string name="network_settings">Configuración de Red</string>
+    <string name="rate_limiting">Limitación de Tasa</string>
+
+    <!-- Premium -->
+    <string name="premium_features">Características Premium</string>
+    <string name="subscribe">Suscribirse</string>
+    <string name="upgrade_to_premium">Actualizar a Premium</string>
+
+    <!-- Log Viewer -->
+    <string name="send_logs">Enviar Registros</string>
+    <string name="clear_all_logs">Borrar Todos los Registros</string>
+    <string name="previous_day">Día Anterior</string>
+    <string name="today">Hoy</string>
+    <string name="next_day">Día Siguiente</string>
+    <string name="success">Éxito</string>
+    <string name="failed">Fallido</string>
+    <string name="logs_total">Registros (%1$d en total)</string>
+    <string name="no_logs_for_date">No hay registros para esta fecha</string>
+    <string name="sim_slot">SIM%1$d</string>
+    <string name="machine_code_copied">Código de máquina copiado al portapapeles</string>
+</resources>

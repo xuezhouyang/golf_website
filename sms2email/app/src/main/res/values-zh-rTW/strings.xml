@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">信郵守護</string>
+    <string name="notification_channel_name">簡訊監控</string>
+    <string name="notification_channel_description">監控來電簡訊以轉發到信箱</string>
+    <string name="notification_title">信郵守護運行中</string>
+    <string name="notification_text">您的簡訊，由您掌控</string>
+    <string name="company_name">Flumenis LLC, 德拉瓦州</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">主頁</string>
+    <string name="service_active">服務已啟用</string>
+    <string name="service_inactive">服務未啟用</string>
+    <string name="service_active_desc">簡訊轉發已啟用</string>
+    <string name="service_inactive_desc">簡訊轉發已停用</string>
+    <string name="quick_actions">快速操作</string>
+    <string name="settings">設定</string>
+    <string name="template">範本</string>
+    <string name="configuration">配置</string>
+    <string name="export">匯出</string>
+    <string name="import_config">匯入</string>
+    <string name="current_config">目前配置</string>
+
+    <!-- Settings Screen -->
+    <string name="email_settings">郵件設定</string>
+    <string name="smtp_config">SMTP伺服器配置</string>
+    <string name="smtp_server">SMTP伺服器</string>
+    <string name="smtp_port">SMTP連接埠</string>
+    <string name="username">使用者名稱</string>
+    <string name="password">密碼</string>
+    <string name="security">安全性</string>
+    <string name="use_tls">使用TLS（建議）</string>
+    <string name="use_ssl">使用SSL</string>
+    <string name="email_info">郵件資訊</string>
+    <string name="from_email">寄件人信箱</string>
+    <string name="from_name">寄件人名稱</string>
+    <string name="to_email">收件人信箱</string>
+    <string name="test_connection">測試連接</string>
+    <string name="save">儲存</string>
+
+    <!-- Template Screen -->
+    <string name="email_template">郵件範本</string>
+    <string name="available_variables">可用變數</string>
+    <string name="html_support">HTML支援</string>
+    <string name="subject_template">主旨範本</string>
+    <string name="body_template">正文範本</string>
+    <string name="save_template">儲存範本</string>
+
+    <!-- About Screen -->
+    <string name="about">關於</string>
+    <string name="version">版本</string>
+    <string name="version_name">版本 2.0.0</string>
+    <string name="app_slogan">您的簡訊，由您掌控</string>
+    <string name="machine_code">裝置機器碼</string>
+    <string name="copy_machine_code">複製機器碼</string>
+    <string name="machine_code_usage">請使用此代碼向作者請求啟用</string>
+    <string name="android_id">Android ID：</string>
+    <string name="device_model">裝置型號：</string>
+    <string name="features">功能特性</string>
+    <string name="feature_dual_sim">• 雙卡雙待支援</string>
+    <string name="feature_custom_smtp">• 自訂SMTP配置</string>
+    <string name="feature_email_template">• 郵件範本與變數</string>
+    <string name="feature_config_import_export">• 配置匯入匯出</string>
+    <string name="feature_background_service">• 背景服務保活</string>
+    <string name="feature_no_root">• 無需Root權限</string>
+    <string name="feature_material_design">• Material Design 3 介面</string>
+    <string name="developed_by">開發者</string>
+    <string name="company_name_full">Flumenis LLC</string>
+    <string name="company_location">德拉瓦州，美國</string>
+    <string name="privacy_permissions">隱私與權限</string>
+    <string name="privacy_description">此應用程式需要簡訊和網路權限以轉發訊息。所有資料直接傳送至您配置的郵件伺服器。我們不會收集或向第三方儲存任何資料。</string>
+    <string name="copyright">© 2025 Flumenis LLC. 保留所有權利。</string>
+    <string name="back">返回</string>
+
+    <!-- Call Log -->
+    <string name="call_log_monitoring">通話記錄監控</string>
+    <string name="enable_call_log">啟用通話記錄轉發</string>
+    <string name="incoming_calls">來電</string>
+    <string name="outgoing_calls">撥出</string>
+    <string name="missed_calls">未接來電</string>
+
+    <!-- Advanced -->
+    <string name="advanced_settings">進階設定</string>
+    <string name="keep_alive_mode">保活模式</string>
+    <string name="normal_mode">普通模式</string>
+    <string name="advanced_mode">進階模式</string>
+    <string name="battery_optimization">電池最佳化</string>
+    <string name="network_settings">網路設定</string>
+    <string name="rate_limiting">頻率限制</string>
+
+    <!-- Premium -->
+    <string name="premium_features">進階功能</string>
+    <string name="subscribe">訂閱</string>
+    <string name="upgrade_to_premium">升級至進階版</string>
+
+    <!-- Log Viewer -->
+    <string name="send_logs">傳送日誌</string>
+    <string name="clear_all_logs">清除所有日誌</string>
+    <string name="previous_day">前一天</string>
+    <string name="today">今天</string>
+    <string name="next_day">後一天</string>
+    <string name="success">成功</string>
+    <string name="failed">失敗</string>
+    <string name="logs_total">日誌（共 %1$d 筆）</string>
+    <string name="no_logs_for_date">該日期無日誌記錄</string>
+    <string name="sim_slot">SIM%1$d</string>
+    <string name="machine_code_copied">機器碼已複製到剪貼簿</string>
+</resources>

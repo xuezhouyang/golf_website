@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PostaFide</string>
+    <string name="notification_channel_name">SMS監視</string>
+    <string name="notification_channel_description">受信SMSメッセージを監視し、メールで転送します</string>
+    <string name="notification_title">PostaFide 稼働中</string>
+    <string name="notification_text">あなたのSMS、あなたの管理</string>
+    <string name="company_name">Flumenis LLC、デラウェア州</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">ホーム</string>
+    <string name="service_active">サービス有効</string>
+    <string name="service_inactive">サービス無効</string>
+    <string name="service_active_desc">SMS転送が有効です</string>
+    <string name="service_inactive_desc">SMS転送が無効です</string>
+    <string name="quick_actions">クイックアクション</string>
+    <string name="settings">設定</string>
+    <string name="template">テンプレート</string>
+    <string name="configuration">構成</string>
+    <string name="export">エクスポート</string>
+    <string name="import_config">インポート</string>
+    <string name="current_config">現在の構成</string>
+
+    <!-- Settings Screen -->
+    <string name="email_settings">メール設定</string>
+    <string name="smtp_config">SMTPサーバー構成</string>
+    <string name="smtp_server">SMTPサーバー</string>
+    <string name="smtp_port">SMTPポート</string>
+    <string name="username">ユーザー名</string>
+    <string name="password">パスワード</string>
+    <string name="security">セキュリティ</string>
+    <string name="use_tls">TLSを使用（推奨）</string>
+    <string name="use_ssl">SSLを使用</string>
+    <string name="email_info">メール情報</string>
+    <string name="from_email">送信元メール</string>
+    <string name="from_name">送信者名</string>
+    <string name="to_email">宛先メール</string>
+    <string name="test_connection">接続テスト</string>
+    <string name="save">保存</string>
+
+    <!-- Template Screen -->
+    <string name="email_template">メールテンプレート</string>
+    <string name="available_variables">利用可能な変数</string>
+    <string name="html_support">HTMLサポート</string>
+    <string name="subject_template">件名テンプレート</string>
+    <string name="body_template">本文テンプレート</string>
+    <string name="save_template">テンプレートを保存</string>
+
+    <!-- About Screen -->
+    <string name="about">アプリについて</string>
+    <string name="version">バージョン</string>
+    <string name="version_name">バージョン 2.0.0</string>
+    <string name="app_slogan">あなたのSMS、あなたの管理</string>
+    <string name="machine_code">デバイスマシンコード</string>
+    <string name="copy_machine_code">マシンコードをコピー</string>
+    <string name="machine_code_usage">作者にアクティベーションをリクエストする際は、このコードを使用してください</string>
+    <string name="android_id">Android ID：</string>
+    <string name="device_model">デバイスモデル：</string>
+    <string name="features">機能</string>
+    <string name="feature_dual_sim">• デュアルSIMサポート</string>
+    <string name="feature_custom_smtp">• カスタムSMTP構成</string>
+    <string name="feature_email_template">• 変数付きメールテンプレート</string>
+    <string name="feature_config_import_export">• 構成のインポート/エクスポート</string>
+    <string name="feature_background_service">• キープアライブ機能付きバックグラウンドサービス</string>
+    <string name="feature_no_root">• root不要</string>
+    <string name="feature_material_design">• Material Design 3 UI</string>
+    <string name="developed_by">開発元</string>
+    <string name="company_name_full">Flumenis LLC</string>
+    <string name="company_location">デラウェア州、米国</string>
+    <string name="privacy_permissions">プライバシーと許可</string>
+    <string name="privacy_description">このアプリはメッセージを転送するために、SMSとインターネットの許可が必要です。すべてのデータは、設定されたメールサーバーに直接送信されます。第三者によるデータの収集や保存は行われません。</string>
+    <string name="copyright">© 2025 Flumenis LLC. All rights reserved.</string>
+    <string name="back">戻る</string>
+
+    <!-- Call Log -->
+    <string name="call_log_monitoring">通話履歴の監視</string>
+    <string name="enable_call_log">通話履歴転送を有効にする</string>
+    <string name="incoming_calls">着信通話</string>
+    <string name="outgoing_calls">発信通話</string>
+    <string name="missed_calls">不在着信</string>
+
+    <!-- Advanced -->
+    <string name="advanced_settings">詳細設定</string>
+    <string name="keep_alive_mode">キープアライブモード</string>
+    <string name="normal_mode">通常モード</string>
+    <string name="advanced_mode">詳細モード</string>
+    <string name="battery_optimization">バッテリー最適化</string>
+    <string name="network_settings">ネットワーク設定</string>
+    <string name="rate_limiting">レート制限</string>
+
+    <!-- Premium -->
+    <string name="premium_features">プレミアム機能</string>
+    <string name="subscribe">サブスクライブ</string>
+    <string name="upgrade_to_premium">プレミアムにアップグレード</string>
+
+    <!-- Log Viewer -->
+    <string name="send_logs">ログを送信</string>
+    <string name="clear_all_logs">すべてのログをクリア</string>
+    <string name="previous_day">前日</string>
+    <string name="today">今日</string>
+    <string name="next_day">翌日</string>
+    <string name="success">成功</string>
+    <string name="failed">失敗</string>
+    <string name="logs_total">ログ（合計 %1$d 件）</string>
+    <string name="no_logs_for_date">この日付のログはありません</string>
+    <string name="sim_slot">SIM%1$d</string>
+    <string name="machine_code_copied">マシンコードをクリップボードにコピーしました</string>
+</resources>
