@@ -78,7 +78,7 @@ fun PremiumScreen(
         when (val state = uiState) {
             is UiState.Success -> {
                 verificationResult = state.message
-                inviteCode = ""
+                activationCode = ""
                 viewModel.clearUiState()
             }
             is UiState.Error -> {
