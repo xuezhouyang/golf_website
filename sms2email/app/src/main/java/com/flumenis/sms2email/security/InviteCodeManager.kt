@@ -109,7 +109,7 @@ J9mN3xT5vK7pR2yL4cH6zV9wE8jM3nS7xT4pK2vR5bL6cN9zH3wQ7xJ8pM2vT5yK
                 else -> verifySignedCode(code)
             }
 
-            if (isValid) {
+            return if (isValid) {
                 // Activate premium
                 activateCode(code)
                 resetFailedAttempts()
@@ -122,7 +122,7 @@ J9mN3xT5vK7pR2yL4cH6zV9wE8jM3nS7xT4pK2vR5bL6cN9zH3wQ7xJ8pM2vT5yK
         } catch (e: Exception) {
             Log.e(TAG, "Error verifying invite code", e)
             incrementFailedAttempts()
-            Result.failure(e)
+            return Result.failure(e)
         }
     }
 

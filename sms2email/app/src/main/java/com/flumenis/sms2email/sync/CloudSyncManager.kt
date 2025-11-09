@@ -59,14 +59,14 @@ class CloudSyncManager(private val context: Context) {
                 return@withContext Result.failure(Exception("Cloud sync requires premium subscription"))
             }
 
-            when (provider) {
+            return@withContext when (provider) {
                 CloudProvider.GOOGLE_DRIVE -> syncToGoogleDrive(config, accessToken)
                 CloudProvider.ONEDRIVE -> syncToOneDrive(config, accessToken)
                 CloudProvider.GITHUB -> syncToGitHub(config, accessToken)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error syncing to cloud", e)
-            Result.failure(e)
+            return@withContext Result.failure(e)
         }
     }
 
@@ -82,14 +82,14 @@ class CloudSyncManager(private val context: Context) {
                 return@withContext Result.failure(Exception("Cloud sync requires premium subscription"))
             }
 
-            when (provider) {
+            return@withContext when (provider) {
                 CloudProvider.GOOGLE_DRIVE -> restoreFromGoogleDrive(accessToken)
                 CloudProvider.ONEDRIVE -> restoreFromOneDrive(accessToken)
                 CloudProvider.GITHUB -> restoreFromGitHub(accessToken)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error restoring from cloud", e)
-            Result.failure(e)
+            return@withContext Result.failure(e)
         }
     }
 
