@@ -74,8 +74,7 @@ android {
     applicationVariants.all {
         outputs.all {
             val outputImpl = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            val variantName = name
-            outputImpl.outputFileName = "PostaFide-v${defaultConfig.versionName}-${variantName}.apk"
+            outputImpl.outputFileName = "PostaFide-v${defaultConfig.versionName}-${buildType.name}.apk"
         }
     }
 }
