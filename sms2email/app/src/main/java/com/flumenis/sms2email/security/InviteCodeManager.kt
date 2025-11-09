@@ -62,15 +62,7 @@ class InviteCodeManager(private val context: Context) {
          * IMPORTANT: Keep the private key secure and offline!
          * Use the companion script to generate codes.
          */
-        private const val DEVELOPER_PUBLIC_KEY = """
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw8kZL5TpVGx3YmE9qKJm
-F4KXoN2vP7RuN5xQH8fM9yL2WpXdJ3rYvKmN4fQ8zE6bC3tL9wS5gH2jV8oP4xYz
-L9mR6kT3nF5wQ2xH7vL4pN8cB3tM9xW2vK5dR3jN7fT8qL6mV9wE4zH2nS7cJ3xV
-8yK4pT6nL2wR5vM9xB3tQ7zN2cH4rV6jL9wS3xK8pN5tM7zQ2vE9bR4cT6nL3wH5
-yJ8pM2xV7zK4rN6tQ9cL3vH5xJ2nR8yP4zT6wM9vE7bS3xK5pN2tL7rV6cH4zQ8w
-J9mN3xT5vK7pR2yL4cH6zV9wE8jM3nS7xT4pK2vR5bL6cN9zH3wQ7xJ8pM2vT5yK
-4pL6zR3wN7vH9cQ2xJ5tM8bS6yK4pT3nL7rV9cH2zE6wQIDAQAB
-        """.trimIndent().replace("\n", "")
+        private const val DEVELOPER_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw8kZL5TpVGx3YmE9qKJmF4KXoN2vP7RuN5xQH8fM9yL2WpXdJ3rYvKmN4fQ8zE6bC3tL9wS5gH2jV8oP4xYzL9mR6kT3nF5wQ2xH7vL4pN8cB3tM9xW2vK5dR3jN7fT8qL6mV9wE4zH2nS7cJ3xV8yK4pT6nL2wR5vM9xB3tQ7zN2cH4rV6jL9wS3xK8pN5tM7zQ2vE9bR4cT6nL3wH5yJ8pM2xV7zK4rN6tQ9cL3vH5xJ2nR8yP4zT6wM9vE7bS3xK5pN2tL7rV6cH4zQ8wJ9mN3xT5vK7pR2yL4cH6zV9wE8jM3nS7xT4pK2vR5bL6cN9zH3wQ7xJ8pM2vT5yK4pL6zR3wN7vH9cQ2xJ5tM8bS6yK4pT3nL7rV9cH2zE6wQIDAQAB"
 
         // Default invite codes (hardcoded for initial release)
         private val DEFAULT_CODES = setOf(
