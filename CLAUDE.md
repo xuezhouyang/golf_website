@@ -90,6 +90,55 @@ applicationVariants.all {
 
 ---
 
+#### 3. GitHub Actions 版本信息提取错误
+
+**Problem**: GitHub Actions 工作流在提取版本信息时失败
+
+**Error Message**:
+```
+Error: Unable to process file command 'output' successfully.
+Error: Invalid format 'PostaFide-v${defaultConfig.versionName}-${buildType.name}.apk'
+```
+
+**Root Cause**:
+- `grep versionName` 匹配到多行结果：
+  1. `versionName = "2.0.0"` （正确的行）
+  2. `outputImpl.outputFileName = "PostaFide-v${defaultConfig.versionName}-${buildType.name}.apk"` （包含 versionName 的配置）
+- 多行结果导致 `awk` 处理失败，版本提取失败
+
+**Incorrect Code**:
+```bash
+# .github/workflows/build-sms2email.yml
+VERSION_NAME=$(grep versionName sms2email/app/build.gradle.kts | awk -F'"' '{print $2}')
+# 返回多行，导致错误
+```
+
+**Solution**:
+```bash
+# 使用精确的正则表达式，只匹配定义行
+VERSION_NAME=$(grep '^\s*versionName = ' sms2email/app/build.gradle.kts | awk -F'"' '{print $2}')
+VERSION_CODE=$(grep '^\s*versionCode = ' sms2email/app/build.gradle.kts | awk '{print $3}')
+```
+
+**Verification**:
+```bash
+$ grep '^\s*versionName = ' sms2email/app/build.gradle.kts | awk -F'"' '{print $2}'
+2.0.0
+
+$ grep '^\s*versionCode = ' sms2email/app/build.gradle.kts | awk '{print $3}'
+2
+```
+
+**Lesson**:
+- 在提取配置值时使用精确的正则表达式
+- `^\s*` 匹配行首和可能的空白
+- 避免模糊匹配导致的多行结果
+- CI/CD 脚本需要考虑配置文件的所有可能匹配
+
+**Commit**: `55f41c4`
+
+---
+
 ### Verification Results
 
 进行了以下全面检查，未发现其他问题：
