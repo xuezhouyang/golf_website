@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Base configuration for all connections -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <!-- Trust system certificates -->
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- Allow cleartext for SMTP servers if needed (user configured) -->
+    <!-- This will be overridden by user's SMTP settings -->
+    <domain-config cleartextTrafficPermitted="false">
+        <!-- Add specific SMTP domains if needed -->
+        <!-- Most SMTP should use TLS/SSL -->
+    </domain-config>
+</network-security-config>

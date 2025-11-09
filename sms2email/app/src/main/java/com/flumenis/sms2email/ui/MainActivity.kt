@@ -2,6 +2,7 @@ package com.flumenis.sms2email.ui
 
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -12,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.flumenis.sms2email.security.AntiHijackManager
+import com.flumenis.sms2email.service.KeepAliveManager
 import com.flumenis.sms2email.ui.navigation.AppNavigation
 import com.flumenis.sms2email.ui.theme.PostaFideTheme
 import com.flumenis.sms2email.ui.theme.ThemeMode
@@ -25,8 +28,38 @@ import com.flumenis.sms2email.ui.theme.ThemeMode
  */
 class MainActivity : ComponentActivity() {
 
+    private lateinit var antiHijackManager: AntiHijackManager
+    private lateinit var keepAliveManager: KeepAliveManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Initialize security managers
+        antiHijackManager = AntiHijackManager(this)
+        keepAliveManager = KeepAliveManager(this)
+
+        // Prevent screenshots for security (optional, can be removed if not needed)
+        // Uncomment if you want to prevent screenshots
+        // window.setFlags(
+        //     WindowManager.LayoutParams.FLAG_SECURE,
+        //     WindowManager.LayoutParams.FLAG_SECURE
+        // )
+
+        // Check for screen overlay
+        antiHijackManager.checkScreenOverlay(this)
+
+        // Verify intent source
+        if (!antiHijackManager.verifyIntentSource(this)) {
+            // Intent from untrusted source, finish activity
+            finish()
+            return
+        }
+
+        // Register activity for hijack monitoring
+        antiHijackManager.registerActivity(this)
+
+        // Setup keep-alive mechanisms
+        keepAliveManager.setupKeepAlive()
 
         setContent {
             val viewModel: MainViewModel = viewModel()
@@ -51,5 +84,23 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Start monitoring for hijacking when activity is visible
+        antiHijackManager.startMonitoring()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Stop monitoring when activity is not visible
+        antiHijackManager.stopMonitoring()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Unregister activity
+        antiHijackManager.unregisterActivity()
     }
 }

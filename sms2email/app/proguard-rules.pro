@@ -95,3 +95,76 @@
 -keepclassmembers class * extends android.content.BroadcastReceiver {
     <init>(...);
 }
+
+# ===== Security Hardening =====
+
+# Obfuscation settings
+-repackageclasses 'o'
+-allowaccessmodification
+-optimizationpasses 5
+-overloadaggressively
+
+# Remove logging in release builds
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** i(...);
+    public static *** w(...);
+    public static *** e(...);
+}
+
+# Remove printStackTrace in release
+-assumenosideeffects class java.lang.Throwable {
+    public void printStackTrace();
+}
+
+# Keep security manager but obfuscate internals
+-keep class com.flumenis.sms2email.security.SecurityManager {
+    public <methods>;
+}
+-keep class com.flumenis.sms2email.security.SecurityReport { *; }
+-keep enum com.flumenis.sms2email.security.SecurityIssue { *; }
+
+# Keep activation manager (already secured)
+-keep class com.flumenis.sms2email.security.ActivationManager {
+    public <methods>;
+}
+
+# Obfuscate sensitive implementations
+-keepclassmembernames class com.flumenis.sms2email.security.** {
+    private <fields>;
+    private <methods>;
+}
+
+# SQLCipher
+-keep class net.sqlcipher.** { *; }
+-keep class net.sqlcipher.database.** { *; }
+-dontwarn net.sqlcipher.**
+
+# Remove debug information but keep line numbers for crash reports
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+
+# Anti-tampering: Remove reflection metadata where possible
+-keepattributes Signature
+-keepattributes Exceptions
+-keepattributes InnerClasses
+-keepattributes EnclosingMethod
+
+# Optimize and obfuscate string constants
+-optimizations !code/simplification/string
+
+# Keep native methods
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+# Keep KeepAlive components
+-keep class com.flumenis.sms2email.service.KeepAliveManager { *; }
+-keep class com.flumenis.sms2email.service.KeepAliveWorker { *; }
+-keep class com.flumenis.sms2email.service.KeepAliveReceiver { *; }
+
+# Anti-hijack manager
+-keep class com.flumenis.sms2email.security.AntiHijackManager {
+    public <methods>;
+}
