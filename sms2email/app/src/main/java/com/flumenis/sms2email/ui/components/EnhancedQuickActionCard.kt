@@ -2,7 +2,9 @@ package com.flumenis.sms2email.ui.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -59,7 +61,7 @@ fun EnhancedQuickActionCard(
             isPremium -> MaterialTheme.colorScheme.tertiary
             else -> MaterialTheme.colorScheme.primary
         },
-        animationSpec = androidx.compose.animation.core.tween(
+        animationSpec = tween(
             durationMillis = AnimationConfig.DURATION_SHORT,
             easing = AnimationConfig.EasingStandard
         ),
