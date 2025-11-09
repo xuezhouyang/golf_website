@@ -39,13 +39,20 @@ fun AboutScreen(onNavigateBack: () -> Unit) {
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = "SMS2Email",
+                text = "PostaFide",
                 style = MaterialTheme.typography.displaySmall,
                 textAlign = TextAlign.Center
             )
 
             Text(
-                text = "Version 1.0.0",
+                text = "Your SMS, Your Control",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = "Version 2.0.0",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

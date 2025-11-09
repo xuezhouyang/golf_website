@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PostaFide Main Logo - With Background -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="1024dp"
+    android:height="1024dp"
+    android:viewportWidth="1024"
+    android:viewportHeight="1024">
+
+    <!-- Background rounded rectangle -->
+    <path
+        android:fillColor="#0F7A72"
+        android:pathData="M200,0 h624 a200,200 0,0,1 200,200 v624 a200,200 0,0,1 -200,200 h-624 a200,200 0,0,1 -200,-200 v-624 a200,200 0,0,1 200,-200 z"/>
+
+    <!-- Upper line: Posta (white text with gold P) -->
+    <!-- P in gold -->
+    <path
+        android:fillColor="#E0A84C"
+        android:pathData="M200,340 l0,180 l40,0 l0,-70 l40,0 c35,0 60,-25 60,-55 c0,-30 -25,-55 -60,-55 l-80,0 z M240,370 l40,0 c15,0 25,10 25,25 c0,15 -10,25 -25,25 l-40,0 l0,-50 z"/>
+
+    <!-- osta in white -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M360,420 c0,55 45,100 100,100 c55,0 100,-45 100,-100 c0,-55 -45,-100 -100,-100 c-55,0 -100,45 -100,100 z M400,420 c0,-35 25,-60 60,-60 c35,0 60,25 60,60 c0,35 -25,60 -60,60 c-35,0 -60,-25 -60,-60 z"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M580,440 c0,40 25,80 65,80 c25,0 45,-15 55,-35 l0,25 l35,0 l0,-150 l-35,0 l0,80 c0,30 -15,45 -40,45 c-20,0 -35,-15 -35,-35 l0,-90 l-45,0 l0,80 z"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M750,340 l0,35 l-30,0 l0,35 l30,0 l0,70 c0,25 20,40 45,40 l20,0 l0,-35 l-15,0 c-10,0 -15,-5 -15,-15 l0,-60 l30,0 l0,-35 l-30,0 l0,-35 l-35,0 z"/>
+
+    <!-- Lower line: Fide (gold text) -->
+    <!-- F in bold gold -->
+    <path
+        android:fillColor="#E0A84C"
+        android:pathData="M200,580 l0,180 l40,0 l0,-70 l60,0 l0,-35 l-60,0 l0,-40 l80,0 l0,-35 l-120,0 z"/>
+
+    <!-- ide in gold -->
+    <path
+        android:fillColor="#E0A84C"
+        android:pathData="M340,580 l0,180 l40,0 l0,-180 l-40,0 z"/>
+
+    <path
+        android:fillColor="#E0A84C"
+        android:pathData="M420,660 c0,55 45,100 100,100 l50,0 l0,-180 l-40,0 l0,145 l-10,0 c-55,0 -100,-45 -100,-100 l-40,0 z"/>
+
+    <path
+        android:fillColor="#E0A84C"
+        android:pathData="M600,625 c0,70 50,135 120,135 c40,0 75,-20 95,-50 l-30,-25 c-15,20 -35,30 -65,30 c-45,0 -80,-35 -80,-90 c0,-50 35,-85 80,-85 c30,0 50,15 65,35 l30,-25 c-20,-30 -55,-50 -95,-50 c-70,0 -120,55 -120,125 z"/>
+
+    <!-- Decorative curve -->
+    <path
+        android:strokeColor="#E0A84C"
+        android:strokeWidth="8"
+        android:fillColor="#00000000"
+        android:strokeAlpha="0.4"
+        android:pathData="M250,720 Q512,780 774,720"/>
+
+    <!-- Soft border -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="12"
+        android:fillColor="#00000000"
+        android:strokeAlpha="0.15"
+        android:pathData="M208,8 h608 a200,200 0,0,1 200,200 v608 a200,200 0,0,1 -200,200 h-608 a200,200 0,0,1 -200,-200 v-608 a200,200 0,0,1 200,-200 z"/>
+</vector>

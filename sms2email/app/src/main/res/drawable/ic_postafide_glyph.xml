@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PostaFide Glyph - PF Symbol -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="512dp"
+    android:height="512dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+    <!-- P letter in gold -->
+    <path
+        android:fillColor="#E0A84C"
+        android:pathData="M80,80 h48 c0,0 0,360 0,360 h-48 z"/>
+
+    <path
+        android:fillColor="#E0A84C"
+        android:pathData="M128,80 h100 c40,0 80,30 80,70 c0,50 -40,90 -80,90 h-100 z"/>
+
+    <!-- F letter in teal -->
+    <path
+        android:fillColor="#0F7A72"
+        android:pathData="M280,200 h140 v40 h-140 v40 h140 v40 h-140 v40 h200 v-40 h-60 v-40 h60 v-40 h-60 v-40 z"/>
+</vector>

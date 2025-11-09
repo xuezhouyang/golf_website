@@ -56,7 +56,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("SMS2Email") },
+                title = { Text("PostaFide") },
                 actions = {
                     // Premium status bell icon with animation
                     PremiumBellIcon(

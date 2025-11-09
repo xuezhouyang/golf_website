@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SMS2Email</string>
+    <string name="app_name">PostaFide</string>
     <string name="notification_channel_name">SMS Monitoring</string>
     <string name="notification_channel_description">Monitors incoming SMS messages for email forwarding</string>
-    <string name="notification_title">SMS2Email Active</string>
-    <string name="notification_text">Monitoring SMS messages</string>
+    <string name="notification_title">PostaFide Active</string>
+    <string name="notification_text">Your SMS, Your Control</string>
     <string name="company_name">Flumenis LLC, Delaware</string>
 
     <!-- Home Screen -->

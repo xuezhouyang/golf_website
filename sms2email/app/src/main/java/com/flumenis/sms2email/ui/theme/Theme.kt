@@ -76,7 +76,7 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun SMS2EmailTheme(
+fun PostaFideTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit

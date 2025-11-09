@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">短信转邮件</string>
+    <string name="app_name">信邮守护</string>
     <string name="notification_channel_name">短信监控</string>
     <string name="notification_channel_description">监控来电短信以转发到邮箱</string>
-    <string name="notification_title">短信转邮件运行中</string>
-    <string name="notification_text">正在监控短信消息</string>
+    <string name="notification_title">信邮守护运行中</string>
+    <string name="notification_text">您的短信，由您掌控</string>
     <string name="company_name">Flumenis LLC, 特拉华州</string>
 
     <!-- Home Screen -->

@@ -13,11 +13,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flumenis.sms2email.ui.navigation.AppNavigation
-import com.flumenis.sms2email.ui.theme.SMS2EmailTheme
+import com.flumenis.sms2email.ui.theme.PostaFideTheme
 import com.flumenis.sms2email.ui.theme.ThemeMode
 
 /**
- * Main Activity
+ * Main Activity - PostaFide
  *
  * Note: Permissions are managed through PermissionSettingsScreen.
  * We do NOT automatically request permissions on startup.
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
             val themeMode by viewModel.themeModeFlow.collectAsState(initial = ThemeMode.AUTO)
             val useDynamicColor by viewModel.useDynamicColorFlow.collectAsState(initial = true)
 
-            SMS2EmailTheme(
+            PostaFideTheme(
                 darkTheme = when (themeMode) {
                     ThemeMode.LIGHT -> false
                     ThemeMode.DARK -> true
