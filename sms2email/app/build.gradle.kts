@@ -21,6 +21,15 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("../release-keystore.jks")
+            storePassword = "flumenis2025"
+            keyAlias = "sms2email"
+            keyPassword = "flumenis2025"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -28,6 +37,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
