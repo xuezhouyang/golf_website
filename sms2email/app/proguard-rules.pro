@@ -107,9 +107,6 @@
 # Build performance optimization
 -dontpreverify
 
-# Aggressive optimizations (safe for modern Android)
--optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
-
 # Remove logging in release builds
 -assumenosideeffects class android.util.Log {
     public static *** d(...);
