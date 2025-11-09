@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flumenis.sms2email.ui.MainViewModel
+import com.flumenis.sms2email.util.ValidationUtils
+import com.flumenis.sms2email.util.UserFeedback
 import kotlinx.coroutines.launch
 
 // SIM slot data model
@@ -34,11 +36,13 @@ fun SmsForwardingScreen(
 ) {
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("sms_forwarding", android.content.Context.MODE_PRIVATE) }
 
     var forwardingEnabled by remember { mutableStateOf(prefs.getBoolean("enabled", false)) }
     var targetNumber by remember { mutableStateOf(prefs.getString("target_number", "") ?: "") }
+    var targetNumberError by remember { mutableStateOf<String?>(null) }
     var selectedSimSlot by remember { mutableStateOf(prefs.getInt("sim_slot", -1)) }
     var availableSimSlots by remember { mutableStateOf<List<SimSlotData>>(emptyList()) }
 
@@ -66,12 +70,35 @@ fun SmsForwardingScreen(
     }
 
     // Save configuration when changed
-    fun saveConfig() {
+    fun saveConfig(): Boolean {
+        // Validate phone number if forwarding is enabled
+        if (forwardingEnabled && targetNumber.isNotBlank()) {
+            if (!ValidationUtils.isValidPhoneNumber(targetNumber)) {
+                targetNumberError = ValidationUtils.ErrorMessages.INVALID_PHONE
+                scope.launch {
+                    UserFeedback.showError(
+                        scope, snackbarHostState,
+                        "Invalid phone number format"
+                    )
+                }
+                return false
+            }
+        }
+
+        targetNumberError = null
         prefs.edit()
             .putBoolean("enabled", forwardingEnabled)
             .putString("target_number", targetNumber)
             .putInt("sim_slot", selectedSimSlot)
             .apply()
+
+        scope.launch {
+            UserFeedback.showSuccess(
+                scope, snackbarHostState,
+                "SMS forwarding settings saved"
+            )
+        }
+        return true
     }
 
     Scaffold(
@@ -87,7 +114,8 @@ fun SmsForwardingScreen(
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer
                 )
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -168,15 +196,30 @@ fun SmsForwardingScreen(
                     Spacer(modifier = Modifier.height(8.dp))
                     OutlinedTextField(
                         value = targetNumber,
-                        onValueChange = { targetNumber = it },
+                        onValueChange = {
+                            targetNumber = it
+                            targetNumberError = null
+                        },
                         label = { Text("Phone Number") },
                         placeholder = { Text("+86 138 0013 8000") },
                         leadingIcon = {
                             Icon(Icons.Default.Phone, "Phone")
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+                        singleLine = true,
+                        isError = targetNumberError != null,
+                        supportingText = targetNumberError?.let { { Text(it) } }
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(
+                        onClick = { saveConfig() },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = isPremium && targetNumber.isNotBlank()
+                    ) {
+                        Icon(Icons.Default.Save, null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Save Settings")
+                    }
                 }
             }
 

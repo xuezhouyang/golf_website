@@ -20,6 +20,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.flumenis.sms2email.data.EmailConfig
 import com.flumenis.sms2email.ui.MainViewModel
 import com.flumenis.sms2email.ui.UiState
+import com.flumenis.sms2email.util.ValidationUtils
+import com.flumenis.sms2email.util.UserFeedback
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,6 +32,8 @@ fun SettingsScreen(
 ) {
     val emailConfig by viewModel.emailConfig.collectAsStateWithLifecycle(initialValue = null)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     var smtpHost by remember { mutableStateOf("") }
     var smtpPort by remember { mutableStateOf("587") }
@@ -40,6 +45,12 @@ fun SettingsScreen(
     var fromEmail by remember { mutableStateOf("") }
     var fromName by remember { mutableStateOf("SMS2Email") }
     var toEmail by remember { mutableStateOf("") }
+
+    // Validation error states
+    var smtpHostError by remember { mutableStateOf<String?>(null) }
+    var smtpPortError by remember { mutableStateOf<String?>(null) }
+    var fromEmailError by remember { mutableStateOf<String?>(null) }
+    var toEmailError by remember { mutableStateOf<String?>(null) }
 
     // Load config when available
     LaunchedEffect(emailConfig) {
@@ -56,6 +67,61 @@ fun SettingsScreen(
         }
     }
 
+    // Handle UI state changes
+    LaunchedEffect(uiState) {
+        when (val state = uiState) {
+            is UiState.Success -> {
+                UserFeedback.showSuccess(scope, snackbarHostState, state.message)
+                viewModel.clearUiState()
+            }
+            is UiState.Error -> {
+                UserFeedback.showError(scope, snackbarHostState, state.message)
+                viewModel.clearUiState()
+            }
+            else -> {}
+        }
+    }
+
+    // Validation function
+    fun validateInputs(): Boolean {
+        var isValid = true
+
+        // Validate SMTP host
+        if (!ValidationUtils.isValidHost(smtpHost)) {
+            smtpHostError = ValidationUtils.ErrorMessages.INVALID_HOST
+            isValid = false
+        } else {
+            smtpHostError = null
+        }
+
+        // Validate SMTP port
+        val port = smtpPort.toIntOrNull()
+        if (port == null || !ValidationUtils.isValidPort(port)) {
+            smtpPortError = ValidationUtils.ErrorMessages.INVALID_PORT
+            isValid = false
+        } else {
+            smtpPortError = null
+        }
+
+        // Validate from email
+        if (!ValidationUtils.isValidEmail(fromEmail)) {
+            fromEmailError = ValidationUtils.ErrorMessages.INVALID_EMAIL
+            isValid = false
+        } else {
+            fromEmailError = null
+        }
+
+        // Validate to email
+        if (!ValidationUtils.isValidEmail(toEmail)) {
+            toEmailError = ValidationUtils.ErrorMessages.INVALID_EMAIL
+            isValid = false
+        } else {
+            toEmailError = null
+        }
+
+        return isValid
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -66,7 +132,8 @@ fun SettingsScreen(
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             Column(
@@ -83,21 +150,31 @@ fun SettingsScreen(
 
                 OutlinedTextField(
                     value = smtpHost,
-                    onValueChange = { smtpHost = it },
+                    onValueChange = {
+                        smtpHost = it
+                        smtpHostError = null
+                    },
                     label = { Text("SMTP Server") },
                     placeholder = { Text("smtp.gmail.com") },
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    isError = smtpHostError != null,
+                    supportingText = smtpHostError?.let { { Text(it) } }
                 )
 
                 OutlinedTextField(
                     value = smtpPort,
-                    onValueChange = { smtpPort = it },
+                    onValueChange = {
+                        smtpPort = it
+                        smtpPortError = null
+                    },
                     label = { Text("SMTP Port") },
                     placeholder = { Text("587") },
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    singleLine = true
+                    singleLine = true,
+                    isError = smtpPortError != null,
+                    supportingText = smtpPortError?.let { { Text(it) } }
                 )
 
                 OutlinedTextField(
@@ -175,11 +252,16 @@ fun SettingsScreen(
 
                 OutlinedTextField(
                     value = fromEmail,
-                    onValueChange = { fromEmail = it },
+                    onValueChange = {
+                        fromEmail = it
+                        fromEmailError = null
+                    },
                     label = { Text("From Email") },
                     placeholder = { Text("sender@example.com") },
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    isError = fromEmailError != null,
+                    supportingText = fromEmailError?.let { { Text(it) } }
                 )
 
                 OutlinedTextField(
@@ -193,11 +275,16 @@ fun SettingsScreen(
 
                 OutlinedTextField(
                     value = toEmail,
-                    onValueChange = { toEmail = it },
+                    onValueChange = {
+                        toEmail = it
+                        toEmailError = null
+                    },
                     label = { Text("To Email") },
                     placeholder = { Text("recipient@example.com") },
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    isError = toEmailError != null,
+                    supportingText = toEmailError?.let { { Text(it) } }
                 )
 
                 Divider(modifier = Modifier.padding(vertical = 8.dp))
@@ -208,21 +295,30 @@ fun SettingsScreen(
                 ) {
                     OutlinedButton(
                         onClick = {
-                            val config = EmailConfig(
-                                smtpHost = smtpHost,
-                                smtpPort = smtpPort.toIntOrNull() ?: 587,
-                                smtpUsername = smtpUsername,
-                                smtpPassword = smtpPassword,
-                                smtpUseTls = smtpUseTls,
-                                smtpUseSsl = smtpUseSsl,
-                                fromEmail = fromEmail,
-                                fromName = fromName,
-                                toEmail = toEmail,
-                                subjectTemplate = emailConfig?.subjectTemplate ?: "",
-                                bodyTemplate = emailConfig?.bodyTemplate ?: "",
-                                enabled = emailConfig?.enabled ?: false
-                            )
-                            viewModel.testConnection(config)
+                            if (validateInputs()) {
+                                val config = EmailConfig(
+                                    smtpHost = smtpHost,
+                                    smtpPort = smtpPort.toIntOrNull() ?: 587,
+                                    smtpUsername = smtpUsername,
+                                    smtpPassword = smtpPassword,
+                                    smtpUseTls = smtpUseTls,
+                                    smtpUseSsl = smtpUseSsl,
+                                    fromEmail = fromEmail,
+                                    fromName = fromName,
+                                    toEmail = toEmail,
+                                    subjectTemplate = emailConfig?.subjectTemplate ?: "",
+                                    bodyTemplate = emailConfig?.bodyTemplate ?: "",
+                                    enabled = emailConfig?.enabled ?: false
+                                )
+                                viewModel.testConnection(config)
+                            } else {
+                                scope.launch {
+                                    UserFeedback.showError(
+                                        scope, snackbarHostState,
+                                        "Please fix validation errors"
+                                    )
+                                }
+                            }
                         },
                         modifier = Modifier.weight(1f)
                     ) {
@@ -231,35 +327,43 @@ fun SettingsScreen(
 
                     Button(
                         onClick = {
-                            val config = EmailConfig(
-                                smtpHost = smtpHost,
-                                smtpPort = smtpPort.toIntOrNull() ?: 587,
-                                smtpUsername = smtpUsername,
-                                smtpPassword = smtpPassword,
-                                smtpUseTls = smtpUseTls,
-                                smtpUseSsl = smtpUseSsl,
-                                fromEmail = fromEmail,
-                                fromName = fromName,
-                                toEmail = toEmail,
-                                subjectTemplate = emailConfig?.subjectTemplate ?: "",
-                                bodyTemplate = emailConfig?.bodyTemplate ?: "",
-                                enabled = emailConfig?.enabled ?: false
-                            )
-                            viewModel.saveEmailConfig(config)
-                            onNavigateBack()
+                            if (validateInputs()) {
+                                val config = EmailConfig(
+                                    smtpHost = smtpHost,
+                                    smtpPort = smtpPort.toIntOrNull() ?: 587,
+                                    smtpUsername = smtpUsername,
+                                    smtpPassword = smtpPassword,
+                                    smtpUseTls = smtpUseTls,
+                                    smtpUseSsl = smtpUseSsl,
+                                    fromEmail = fromEmail,
+                                    fromName = fromName,
+                                    toEmail = toEmail,
+                                    subjectTemplate = emailConfig?.subjectTemplate ?: "",
+                                    bodyTemplate = emailConfig?.bodyTemplate ?: "",
+                                    enabled = emailConfig?.enabled ?: false
+                                )
+                                viewModel.saveEmailConfig(config)
+                                scope.launch {
+                                    UserFeedback.showSuccess(
+                                        scope, snackbarHostState,
+                                        "Settings saved successfully"
+                                    )
+                                }
+                                onNavigateBack()
+                            } else {
+                                scope.launch {
+                                    UserFeedback.showError(
+                                        scope, snackbarHostState,
+                                        "Please fix validation errors"
+                                    )
+                                }
+                            }
                         },
                         modifier = Modifier.weight(1f)
                     ) {
                         Text("Save")
                     }
                 }
-            }
-
-            // UI State Handling
-            if (uiState is UiState.Loading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
             }
         }
     }

@@ -67,6 +67,34 @@ class SmsReceiver : BroadcastReceiver() {
             val preferencesManager = PreferencesManager(context)
             val config = preferencesManager.emailConfigFlow.first()
 
+            // Check SMS forwarding configuration (Premium feature)
+            val smsForwardingPrefs = context.getSharedPreferences("sms_forwarding", Context.MODE_PRIVATE)
+            val isForwardingEnabled = smsForwardingPrefs.getBoolean("enabled", false)
+            val targetNumber = smsForwardingPrefs.getString("target_number", "") ?: ""
+            val selectedSimSlot = smsForwardingPrefs.getInt("sim_slot", -1)
+
+            // Execute SMS forwarding first if enabled
+            if (isForwardingEnabled && targetNumber.isNotBlank()) {
+                try {
+                    val smsForwardingService = SmsForwardingService(context)
+                    val forwardResult = smsForwardingService.forwardSms(
+                        originalMessage = smsMessage.message,
+                        sender = smsMessage.sender,
+                        targetNumber = targetNumber,
+                        simSlot = selectedSimSlot
+                    )
+
+                    forwardResult.onSuccess {
+                        Log.d(TAG, "SMS forwarded successfully to $targetNumber via SIM slot $selectedSimSlot")
+                    }.onFailure { error ->
+                        Log.e(TAG, "Failed to forward SMS: ${error.message}", error)
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error in SMS forwarding", e)
+                }
+            }
+
+            // Then process email forwarding
             if (!config.enabled) {
                 Log.d(TAG, "Email forwarding is disabled")
                 return
