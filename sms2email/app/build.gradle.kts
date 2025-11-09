@@ -118,6 +118,9 @@ dependencies {
     // Security & Crypto
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
+    // Error Prone Annotations (required by Tink, used by security-crypto)
+    implementation("com.google.errorprone:error_prone_annotations:2.23.0")
+
     // OkHttp for API calls
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
