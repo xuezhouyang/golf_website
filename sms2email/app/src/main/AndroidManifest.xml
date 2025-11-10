@@ -81,12 +81,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- Keep Alive Receiver -->
-        <receiver
-            android:name=".service.KeepAliveReceiver"
-            android:exported="false"
-            android:enabled="true" />
-
         <!-- Foreground Service -->
         <service
             android:name=".service.SmsMonitorService"
