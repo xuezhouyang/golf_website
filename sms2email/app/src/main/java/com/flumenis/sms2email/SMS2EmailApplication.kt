@@ -5,6 +5,7 @@ import android.util.Log
 import com.flumenis.sms2email.BuildConfig
 import com.flumenis.sms2email.security.SecurityManager
 import com.flumenis.sms2email.service.KeepAliveManager
+import com.flumenis.sms2email.util.CrashHandler
 
 /**
  * Application class for PostaFide
@@ -15,6 +16,9 @@ class SMS2EmailApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        // 初始化崩溃日志处理器（必须最先执行）
+        CrashHandler.init(this)
 
         // Perform security check
         performSecurityCheck()

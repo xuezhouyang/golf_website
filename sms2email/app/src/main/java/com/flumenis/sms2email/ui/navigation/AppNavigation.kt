@@ -19,6 +19,7 @@ sealed class Screen(val route: String) {
     object Theme : Screen("theme")
     object Permissions : Screen("permissions")
     object LogViewer : Screen("log_viewer")
+    object CrashLogs : Screen("crash_logs")
 }
 
 @Composable
@@ -40,7 +41,8 @@ fun AppNavigation(viewModel: MainViewModel) {
                 onNavigateToSmsForwarding = { navController.navigate(Screen.SmsForwarding.route) },
                 onNavigateToTheme = { navController.navigate(Screen.Theme.route) },
                 onNavigateToPermissions = { navController.navigate(Screen.Permissions.route) },
-                onNavigateToLogViewer = { navController.navigate(Screen.LogViewer.route) }
+                onNavigateToLogViewer = { navController.navigate(Screen.LogViewer.route) },
+                onNavigateToCrashLogs = { navController.navigate(Screen.CrashLogs.route) }
             )
         }
 
@@ -155,6 +157,18 @@ fun AppNavigation(viewModel: MainViewModel) {
         ) {
             LogViewerScreen(
                 viewModel = viewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Screen.CrashLogs.route,
+            enterTransition = { AnimationConfig.enterTransition() },
+            exitTransition = { AnimationConfig.exitTransition() },
+            popEnterTransition = { AnimationConfig.popEnterTransition() },
+            popExitTransition = { AnimationConfig.popExitTransition() }
+        ) {
+            CrashLogsScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }

@@ -38,7 +38,8 @@ fun HomeScreen(
     onNavigateToSmsForwarding: () -> Unit = {},
     onNavigateToTheme: () -> Unit = {},
     onNavigateToPermissions: () -> Unit = {},
-    onNavigateToLogViewer: () -> Unit = {}
+    onNavigateToLogViewer: () -> Unit = {},
+    onNavigateToCrashLogs: () -> Unit = {}
 ) {
     val emailConfig by viewModel.emailConfig.collectAsStateWithLifecycle(initialValue = null)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -215,6 +216,16 @@ fun HomeScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Import")
                     }
+                }
+
+                // Crash Logs (Debug)
+                OutlinedButton(
+                    onClick = onNavigateToCrashLogs,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(Icons.Default.BugReport, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("崩溃日志 (Crash Logs)")
                 }
 
                 // Configuration Summary
