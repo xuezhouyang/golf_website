@@ -38,6 +38,19 @@ class CrashHandler private constructor(private val context: Context) : Thread.Un
                     if (instance == null) {
                         instance = CrashHandler(context.applicationContext)
                         Thread.setDefaultUncaughtExceptionHandler(instance)
+
+                        // 立即创建日志目录，确保目录存在
+                        try {
+                            val logDir = File(context.getExternalFilesDir(null), "crash_logs")
+                            if (!logDir.exists()) {
+                                logDir.mkdirs()
+                                Log.d(TAG, "Crash log directory created: ${logDir.absolutePath}")
+                            } else {
+                                Log.d(TAG, "Crash log directory exists: ${logDir.absolutePath}")
+                            }
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Failed to create crash log directory", e)
+                        }
                     }
                 }
             }

@@ -74,7 +74,8 @@ fun CrashLogsScreen(
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
                             text = "✓ 没有崩溃日志",
@@ -85,6 +86,25 @@ fun CrashLogsScreen(
                             text = "应用运行正常",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // 测试崩溃按钮（用于验证崩溃日志系统）
+                        OutlinedButton(
+                            onClick = {
+                                // 触发测试崩溃
+                                throw RuntimeException("测试崩溃 - 这是故意的崩溃用于验证崩溃日志系统是否正常工作")
+                            }
+                        ) {
+                            Text("测试崩溃日志系统")
+                        }
+
+                        Text(
+                            text = "点击上面的按钮会触发一个测试崩溃\n应用将关闭，重新打开后可查看崩溃日志",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
                         )
                     }
                 }
