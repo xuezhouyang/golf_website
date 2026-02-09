@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SMS2Email</string>
+    <string name="notification_channel_name">SMS Monitoring</string>
+    <string name="notification_channel_description">Monitors incoming SMS messages for email forwarding</string>
+    <string name="notification_title">SMS2Email Active</string>
+    <string name="notification_text">Monitoring SMS messages</string>
+    <string name="company_name">Flumenis LLC, Delaware</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">Home</string>
+    <string name="service_active">Service Active</string>
+    <string name="service_inactive">Service Inactive</string>
+    <string name="service_active_desc">SMS forwarding is enabled</string>
+    <string name="service_inactive_desc">SMS forwarding is disabled</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="settings">Settings</string>
+    <string name="template">Template</string>
+    <string name="configuration">Configuration</string>
+    <string name="export">Export</string>
+    <string name="import_config">Import</string>
+    <string name="current_config">Current Configuration</string>
+
+    <!-- Settings Screen -->
+    <string name="email_settings">Email Settings</string>
+    <string name="smtp_config">SMTP Server Configuration</string>
+    <string name="smtp_server">SMTP Server</string>
+    <string name="smtp_port">SMTP Port</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="security">Security</string>
+    <string name="use_tls">Use TLS (Recommended)</string>
+    <string name="use_ssl">Use SSL</string>
+    <string name="email_info">Email Information</string>
+    <string name="from_email">From Email</string>
+    <string name="from_name">From Name</string>
+    <string name="to_email">To Email</string>
+    <string name="test_connection">Test Connection</string>
+    <string name="save">Save</string>
+
+    <!-- Template Screen -->
+    <string name="email_template">Email Template</string>
+    <string name="available_variables">Available Variables</string>
+    <string name="html_support">HTML Support</string>
+    <string name="subject_template">Subject Template</string>
+    <string name="body_template">Body Template</string>
+    <string name="save_template">Save Template</string>
+
+    <!-- About Screen -->
+    <string name="about">About</string>
+    <string name="version">Version</string>
+    <string name="features">Features</string>
+    <string name="developed_by">Developed by</string>
+    <string name="privacy_permissions">Privacy &amp; Permissions</string>
+
+    <!-- Call Log -->
+    <string name="call_log_monitoring">Call Log Monitoring</string>
+    <string name="enable_call_log">Enable Call Log Forwarding</string>
+    <string name="incoming_calls">Incoming Calls</string>
+    <string name="outgoing_calls">Outgoing Calls</string>
+    <string name="missed_calls">Missed Calls</string>
+
+    <!-- Advanced -->
+    <string name="advanced_settings">Advanced Settings</string>
+    <string name="keep_alive_mode">Keep-Alive Mode</string>
+    <string name="normal_mode">Normal Mode</string>
+    <string name="advanced_mode">Advanced Mode</string>
+    <string name="battery_optimization">Battery Optimization</string>
+    <string name="network_settings">Network Settings</string>
+    <string name="rate_limiting">Rate Limiting</string>
+
+    <!-- Premium -->
+    <string name="premium_features">Premium Features</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="upgrade_to_premium">Upgrade to Premium</string>
+</resources>
